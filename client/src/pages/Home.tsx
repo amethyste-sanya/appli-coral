@@ -35,6 +35,7 @@ type Quest = {
   current: number;
   total: number; // Pour les quêtes avec progression comme "3/10 items collectés"
   deadline?: string; // Pour les quêtes saisonnières avec une date limite
+  objectives?: string[]; // Liste des objectifs spécifiques de la quête
 };
 
 // Type pour les catégories d'artisanat
