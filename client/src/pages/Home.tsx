@@ -264,8 +264,139 @@ export default function Home() {
     { id: "blender", name: "Mixeur", icon: "🥤", color: "bg-blue-100 text-blue-800" },
     { id: "grill", name: "Grill", icon: "♨️", color: "bg-orange-100 text-orange-800" },
     { id: "seasoning_set", name: "Ensemble d'assaisonnement", icon: "🧂", color: "bg-yellow-100 text-yellow-800" },
-    { id: "skillet", name: "Poêlon", icon: "🥘", color: "bg-zinc-100 text-zinc-800" },
+    { id: "skillet", name: "Poêlon", icon: "🍳", color: "bg-slate-100 text-slate-800" },
   ];
+  
+  // Recettes par type d'équipement de cuisine
+  const cookingRecipes = {
+    // Poêle à frire
+    frying_pan: [
+      { name: "Beignet de banane", ingredients: ["Banane", "Farine", "Huile"] },
+      { name: "Chips de betterave", ingredients: ["Betterave", "Huile"] },
+      { name: "Falafel", ingredients: ["Pois", "Concombre", "Huile"] },
+      { name: "Riz frit", ingredients: ["Riz", "Légume", "Échalote", "Œuf"] },
+      { name: "Tempeh frit", ingredients: ["Tempeh", "Huile"] },
+      { name: "Chips de chou frisé", ingredients: ["Chou frisé", "Huile de canola"] },
+      { name: "Omurice", ingredients: ["Riz", "Œuf", "Ketchup", "Carotte"] },
+      { name: "Pad Thaï", ingredients: ["Farine", "Crevette", "Citron", "Légume"] },
+      { name: "Peyek", ingredients: ["Chenille", "Amande", "Farine"] },
+      { name: "Chips de pomme de terre", ingredients: ["Pomme de terre", "Huile"] },
+      { name: "Amandes grillées", ingredients: ["Amande"] },
+      { name: "Châtaignes grillées", ingredients: ["Châtaigne"] },
+      { name: "Champignons grillés", ingredients: ["Champignon", "Basilic", "Huile d'olive"] },
+      { name: "Frites de patate douce", ingredients: ["Patate douce", "Huile"] },
+      { name: "Poutine de patate douce", ingredients: ["Patate douce", "Fromage", "Huile"] },
+    ],
+    
+    // Couteau de chef
+    chef_knife: [
+      { name: "Sandwich au poisson", ingredients: ["Pain", "Laitue", "Échalote", "Poisson"] },
+      { name: "Salade fraîche", ingredients: ["Légume"] },
+      { name: "Sandwich arc-en-ciel", ingredients: ["Pain", "Tomate", "Légume", "Mayonnaise"] },
+      { name: "Sashimi", ingredients: ["Poisson", "Wasabi"] },
+      { name: "Sushi", ingredients: ["Poisson", "Riz"] },
+      { name: "Boisson à la noix de coco", ingredients: ["Noix de coco"] },
+    ],
+    
+    // Four
+    oven: [
+      { name: "Tarte aux pommes", ingredients: ["Pomme", "Farine de blé", "Beurre", "Miel"] },
+      { name: "Pain", ingredients: ["Farine"] },
+      { name: "Croissant au beurre", ingredients: ["Farine", "Lait", "Beurre"] },
+      { name: "Muffins aux pépites de chocolat", ingredients: ["Cacao", "Farine", "Œuf"] },
+      { name: "Cookies", ingredients: ["Cacao", "Farine", "Beurre"] },
+      { name: "Lasagnes d'aubergine", ingredients: ["Aubergine", "Tomate", "Fromage"] },
+      { name: "Tarte aux fruits", ingredients: ["Farine de blé", "Sucre", "Fruit x2"] },
+      { name: "Pizza hawaïenne", ingredients: ["Ananas", "Farine", "Fromage"] },
+      { name: "Gratin de jacquier", ingredients: ["Jacquier", "Pomme de terre", "Champignon", "Lait"] },
+      { name: "Kue Kancing", ingredients: ["Sucre", "Œuf", "Farine"] },
+      { name: "Tourte au jacquier haché", ingredients: ["Jacquier", "Farine", "Beurre"] },
+      { name: "Gâteau de lune", ingredients: ["Lotus", "Farine", "Œuf"] },
+      { name: "Jerky de champignon", ingredients: ["Champignon"] },
+      { name: "Risotto au four", ingredients: ["Riz", "Beurre", "Champignon", "Fromage"] },
+      { name: "Gâteau renversé à l'ananas", ingredients: ["Sucre", "Ananas", "Farine de blé"] },
+      { name: "Pizza", ingredients: ["Tomate", "Farine", "Fromage", "Champignon"] },
+      { name: "Tarte à la citrouille", ingredients: ["Citrouille", "Sucre", "Farine", "Œuf"] },
+      { name: "Raisins secs", ingredients: ["Raisin"] },
+      { name: "Ratatouille", ingredients: ["Poivron", "Olive", "Tomate", "Aubergine"] },
+      { name: "Gâteau Red Velvet", ingredients: ["Œuf", "Lait", "Farine", "Fraise"] },
+      { name: "Jerky de légumes", ingredients: ["Légume"] },
+    ],
+    
+    // Casserole
+    pot: [
+      { name: "Pâtes au pesto de basilic", ingredients: ["Basilic", "Tomate", "Farine de blé"] },
+      { name: "Soupe de palourdes", ingredients: ["Palourde", "Lait"] },
+      { name: "Soupe de poisson", ingredients: ["Saké", "Poisson", "Légume"] },
+      { name: "Gnocchi", ingredients: ["Farine de blé", "Sucre", "Fruit x2"] },
+      { name: "Curry vert", ingredients: ["Poivron", "Basilic", "Pois", "Noix de coco"] },
+      { name: "Œuf dur de canard", ingredients: ["Œuf de canard"] },
+      { name: "Œuf dur", ingredients: ["Œuf"] },
+      { name: "Œuf dur de caille", ingredients: ["Œuf de caille"] },
+      { name: "Chocolat chaud", ingredients: ["Cacao", "Lait"] },
+      { name: "Kue Lapis", ingredients: ["Sucre", "Taro", "Noix de coco"] },
+      { name: "Lodeh", ingredients: ["Aubergine", "Tempeh", "Légume", "Noix de coco"] },
+      { name: "Curry rouge", ingredients: ["Piment", "Échalote", "Carotte", "Noix de coco"] },
+      { name: "Ramen aux fruits de mer", ingredients: ["Farine de blé", "Poisson", "Moule"] },
+      { name: "Ragoût", ingredients: ["Pomme de terre", "Champignon"] },
+      { name: "Soupe de pierre", ingredients: ["Pierre", "Ingrédient comestible"] },
+      { name: "Soupe de tomate", ingredients: ["Tomate"] },
+      { name: "Ramen végétarien", ingredients: ["Farine de blé", "Kombu", "Champignon"] },
+      { name: "Polenta aux champignons sauvages", ingredients: ["Maïs", "Champignon"] },
+    ],
+    
+    // Bol en céramique
+    ceramic_bowl: [
+      { name: "Cenil", ingredients: ["Noix de coco", "Sucre", "Taro"] },
+      { name: "Flan aux œufs", ingredients: ["Œuf", "Lait", "Sucre"] },
+      { name: "Es Cendol", ingredients: ["Sirop", "Noix de coco", "Farine de riz"] },
+      { name: "Es Doger", ingredients: ["Sirop", "Noix de coco", "Patate douce", "Lait"] },
+      { name: "Klepon", ingredients: ["Noix de coco", "Farine de riz", "Sucre"] },
+      { name: "Purée", ingredients: ["Fruit ou Légume"] },
+      { name: "Yaourt", ingredients: ["Lait"] },
+      { name: "Wakame", ingredients: ["Algue x2"] },
+    ],
+    
+    // Mixeur
+    blender: [
+      { name: "Smoothie vert", ingredients: ["Légume"] },
+      { name: "Guacamole", ingredients: ["Avocat", "Tomate", "Ail"] },
+      { name: "Houmous", ingredients: ["Pois", "Huile d'olive"] },
+      { name: "Glace", ingredients: ["Lait"] },
+      { name: "Jamu", ingredients: ["Gingembre", "Miel", "Ginseng"] },
+      { name: "Ketchup", ingredients: ["Tomate", "Sel gourmet"] },
+      { name: "Beurre de cacahuète", ingredients: ["Amande", "Beurre"] },
+      { name: "Smoothie", ingredients: ["Fruit"] },
+      { name: "Pâte de wasabi", ingredients: ["Wasabi"] },
+    ],
+    
+    // Grill
+    grill: [
+      { name: "Assortiment grillé", ingredients: ["Légume x2", "Miel"] },
+      { name: "Jerky d'insecte", ingredients: ["Insecte"] },
+      { name: "Maïs grillé", ingredients: ["Maïs", "Beurre"] },
+      { name: "Poisson grillé", ingredients: ["Poisson"] },
+      { name: "Tempeh aux herbes", ingredients: ["Tempeh", "Sel gourmet", "Basilic"] },
+      { name: "Poisson fumé", ingredients: ["Poisson", "Bois"] },
+      { name: "Saumon fumé", ingredients: ["Saumon", "Bois"] },
+      { name: "Burger d'été", ingredients: ["Pain", "Ananas", "Échalote", "Fromage"] },
+    ],
+    
+    // Ensemble d'assaisonnement
+    seasoning_set: [
+      { name: "Burrito", ingredients: ["Tortilla", "Soja", "Fromage", "Légume"] },
+      { name: "Edamame", ingredients: ["Pois"] },
+      { name: "Wrap de laitue", ingredients: ["Laitue", "Soja"] },
+      { name: "Onigiri", ingredients: ["Riz"] },
+      { name: "Gombo gluant", ingredients: ["Gombo", "Gelée de slime"] },
+      { name: "Choucroute épicée", ingredients: ["Piment", "Chou rouge"] },
+    ],
+    
+    // Poêlon
+    skillet: [
+      { name: "Gratin de chou-fleur", ingredients: ["Pomme de terre", "Chou-fleur", "Farine"] },
+    ],
+  };
   
   // Jour de la semaine dans Coral Island
   const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
@@ -1948,11 +2079,14 @@ export default function Home() {
                           <div className="text-3xl">
                             {cookingSubcategories.find(s => s.id === selectedCookingSubcategory)?.icon}
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <h3 className="text-lg font-medium text-orange-800">
                               {cookingSubcategories.find(s => s.id === selectedCookingSubcategory)?.name}
                             </h3>
                             <p className="text-sm text-orange-600">Équipement de cuisine</p>
+                          </div>
+                          <div className="text-sm text-orange-800 font-medium px-2 py-1 bg-orange-100 rounded-full">
+                            {cookingRecipes[selectedCookingSubcategory as keyof typeof cookingRecipes].length} recettes
                           </div>
                         </div>
                         
@@ -1973,32 +2107,39 @@ export default function Home() {
                           </div>
                           
                           <div className="bg-white p-3 rounded-md border border-orange-100">
-                            <h4 className="text-sm font-medium text-gray-700 mb-2">Utilisation</h4>
-                            <p className="text-sm text-gray-600">
-                              {selectedCookingSubcategory === "frying_pan" && "Idéal pour faire frire des œufs, sauter des légumes ou cuire des crêpes."}
-                              {selectedCookingSubcategory === "chef_knife" && "Parfait pour trancher, hacher et découper tous types d'ingrédients avec précision."}
-                              {selectedCookingSubcategory === "oven" && "Utilisé pour la cuisson au four des pains, gâteaux, viandes et plats mijotés."}
-                              {selectedCookingSubcategory === "pot" && "Excellent pour les soupes, les pâtes, ou pour faire bouillir des légumes."}
-                              {selectedCookingSubcategory === "ceramic_bowl" && "Utile pour mélanger les ingrédients, mariner ou servir les salades et desserts."}
-                              {selectedCookingSubcategory === "blender" && "Permet de réaliser des smoothies, soupes crémeuses et sauces homogènes."}
-                              {selectedCookingSubcategory === "grill" && "Pour les barbecues, la cuisson de viandes, poissons et légumes grillés."}
-                              {selectedCookingSubcategory === "seasoning_set" && "Permet d'ajouter saveurs et arômes à tous vos plats cuisinés."}
-                              {selectedCookingSubcategory === "skillet" && "Idéal pour la cuisson à haute température, les sautés et les plats mijotés."}
-                            </p>
+                            <h4 className="text-sm font-medium text-gray-700 mb-2">Recettes ({cookingRecipes[selectedCookingSubcategory as keyof typeof cookingRecipes].length})</h4>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {cookingRecipes[selectedCookingSubcategory as keyof typeof cookingRecipes].map((recipe, index) => (
+                                <div key={index} className="border border-orange-100 rounded-md p-2 hover:bg-orange-50 transition-colors">
+                                  <div className="font-medium text-orange-800">{recipe.name}</div>
+                                  <div className="mt-1 text-xs text-gray-600">
+                                    <span className="font-medium">Ingrédients:</span>
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {recipe.ingredients.map((ingredient, idx) => (
+                                        <span key={idx} className="inline-block bg-orange-50 text-orange-700 px-1 py-0.5 rounded text-xs">
+                                          {ingredient}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                           
                           <div className="bg-white p-3 rounded-md border border-orange-100">
-                            <h4 className="text-sm font-medium text-gray-700 mb-2">Entretien</h4>
+                            <h4 className="text-sm font-medium text-gray-700 mb-2">Conseils d'utilisation</h4>
                             <p className="text-sm text-gray-600">
-                              {selectedCookingSubcategory === "frying_pan" && "Laver à la main avec un savon doux, éviter les éponges abrasives."}
-                              {selectedCookingSubcategory === "chef_knife" && "Affûter régulièrement, laver à la main et essuyer immédiatement."}
-                              {selectedCookingSubcategory === "oven" && "Nettoyer les résidus après chaque utilisation, dégraisser périodiquement."}
-                              {selectedCookingSubcategory === "pot" && "Laver à l'eau chaude savonneuse, faire tremper si nécessaire."}
-                              {selectedCookingSubcategory === "ceramic_bowl" && "Laver à la main ou au lave-vaisselle, éviter les chocs thermiques."}
-                              {selectedCookingSubcategory === "blender" && "Rincer immédiatement après usage, démonter pour un nettoyage complet."}
-                              {selectedCookingSubcategory === "grill" && "Nettoyer à chaud avec une brosse métallique, vider les cendres régulièrement."}
-                              {selectedCookingSubcategory === "seasoning_set" && "Garder au sec et à l'abri de la lumière pour préserver les arômes."}
-                              {selectedCookingSubcategory === "skillet" && "Culotter régulièrement, ne jamais tremper dans l'eau, sécher après lavage."}
+                              {selectedCookingSubcategory === "frying_pan" && "Idéal pour faire frire des œufs, sauter des légumes ou cuire des crêpes. Chauffez à température moyenne et utilisez une petite quantité d'huile."}
+                              {selectedCookingSubcategory === "chef_knife" && "Parfait pour trancher, hacher et découper tous types d'ingrédients avec précision. Tenez votre couteau avec une prise sûre et coupez avec un mouvement de balancier."}
+                              {selectedCookingSubcategory === "oven" && "Utilisé pour la cuisson au four des pains, gâteaux, viandes et plats mijotés. Préchauffez toujours le four avant d'y placer vos préparations."}
+                              {selectedCookingSubcategory === "pot" && "Excellent pour les soupes, les pâtes, ou pour faire bouillir des légumes. Utilisez un couvercle pour accélérer l'ébullition et économiser de l'énergie."}
+                              {selectedCookingSubcategory === "ceramic_bowl" && "Utile pour mélanger les ingrédients, mariner ou servir les salades et desserts. Chaque préparation nécessite un bol de taille adaptée."}
+                              {selectedCookingSubcategory === "blender" && "Permet de réaliser des smoothies, soupes crémeuses et sauces homogènes. Commencez à basse vitesse puis augmentez progressivement."}
+                              {selectedCookingSubcategory === "grill" && "Pour les barbecues, la cuisson de viandes, poissons et légumes grillés. Huilez légèrement la grille avant utilisation pour éviter que les aliments ne collent."}
+                              {selectedCookingSubcategory === "seasoning_set" && "Permet d'ajouter saveurs et arômes à tous vos plats cuisinés. Expérimentez différentes combinaisons d'herbes et d'épices pour créer des saveurs uniques."}
+                              {selectedCookingSubcategory === "skillet" && "Idéal pour la cuisson à haute température, les sautés et les plats mijotés. Sa fonte conserve et répartit uniformément la chaleur."}
                             </p>
                           </div>
                         </div>
