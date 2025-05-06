@@ -426,25 +426,7 @@ export default function Home() {
             </Card>
           </TabsContent>
 
-          {/* Relationships Tab */}
-          <TabsContent value="relationships">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5 text-center">
-                <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                  <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
-                  <p className="text-gray-600">
-                    Cette section qui vous permettra de suivre vos relations avec les villageois
-                    sera bientôt disponible.
-                  </p>
-                  <p className="text-gray-600 mt-2">
-                    Vous pourrez suivre vos affinités, offrir les cadeaux appropriés et garder 
-                    une trace des anniversaires et événements spéciaux.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {/* Relationships Tab - Maintenant accessible via le chemin /relations */}
 
           {/* Events Tab */}
           <TabsContent value="events">
