@@ -31,6 +31,47 @@ export type Villager = {
 // Liste des villageois avec leurs informations
 export const villagers: Villager[] = [
   {
+    id: "aaliyah",
+    name: "Aaliyah",
+    birthday: {
+      day: 12,
+      season: "Printemps"
+    },
+    occupation: "Pâtissière",
+    description: "Aaliyah est la propriétaire de la boulangerie de Coral Island.",
+    romanceable: true,
+    gifts: {
+      love: [
+        { item: "Muffin aux pépites de chocolat" },
+        { item: "Lasagnes aux aubergines" },
+        { item: "Houmous" },
+        { item: "Café Gesha" },
+        { item: "Fraise" },
+        { item: "Hibiscus blanc" }
+      ]
+    }
+  },
+  {
+    id: "alice",
+    name: "Alice",
+    birthday: {
+      day: 18,
+      season: "Été"
+    },
+    occupation: "Artiste",
+    description: "Alice est une artiste qui vit à Coral Island.",
+    romanceable: true,
+    gifts: {
+      love: [
+        { item: "Huile d'amande" },
+        { item: "Colorant" },
+        { item: "Smoothie vert" },
+        { item: "Tarte au jacquier hachée" },
+        { item: "Huile d'olive" }
+      ]
+    }
+  },
+  {
     id: "connor",
     name: "Connor",
     birthday: {
@@ -42,11 +83,10 @@ export const villagers: Villager[] = [
     romanceable: false,
     gifts: {
       love: [
-        { item: "Gâteau renversé à l'ananas" },
         { item: "Bok choy" },
+        { item: "Gâteau renversé à l'ananas" },
         { item: "Saké" },
-        { item: "Huile de truffe blanche" },
-        { item: "Rose noire" }
+        { item: "Huile de truffe blanche" }
       ]
     }
   },
@@ -68,14 +108,13 @@ export const villagers: Villager[] = [
     romanceable: false,
     gifts: {
       love: [
-        { item: "Ananas" },
-        { item: "Blettes sautées" },
-        { item: "Edamame" },
         { item: "Beignet de banane" },
         { item: "Café" },
+        { item: "Edamame" },
         { item: "Riz frit" },
-        { item: "Yaourt" },
-        { item: "Rose noire" }
+        { item: "Ananas" },
+        { item: "Bette sautée" },
+        { item: "Yaourt" }
       ]
     }
   },
@@ -91,6 +130,11 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
+        { item: "Croissant au beurre" },
+        { item: "Lasagnes aux aubergines" },
+        { item: "Ratatouille" },
+        { item: "Soupe de tomates" },
+        { item: "Ragoût" },
         { item: "Vin" }
       ]
     }
@@ -107,7 +151,13 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
-        { item: "Café" }
+        { item: "Muffin aux pépites de chocolat" },
+        { item: "Sandwich au poisson" },
+        { item: "Poisson-grenouille" },
+        { item: "Curry vert" },
+        { item: "Homard" },
+        { item: "Curry rouge" },
+        { item: "Choucroute épicée" }
       ]
     }
   },
@@ -123,7 +173,9 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
-        { item: "Cristal" }
+        { item: "Banane" },
+        { item: "Thé vert" },
+        { item: "Champignons" }
       ]
     }
   },
