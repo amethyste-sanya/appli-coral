@@ -1,0 +1,225 @@
+culture suivante:
+
+Chou-fleur
+Légumes
+Les boutons floraux pâles et immatures sont appelés caillés. Ils sont riches en nutriments.
+
+graines de chou-fleur
+70
+Saison : Printemps
+Temps de maturation : 10 jours
+Source
+Bazar de Sam
+Rang
+F
+revente 175 Po
+adoré par: Betty
+
+
+Carotte
+Légumes
+Un légume-racine aux couleurs vives. Très croquant cru.
+
+graines de carottes
+35
+Saison : Printemps
+Temps de maturation : 7 jours
+Source
+Bazar de Sam
+Rang
+F
+revente 78 Po
+adoré par: Anne et Walter
+
+
+Pavot/coquelicot
+Fleur
+Un symbole de souvenir et de résurrection.
+
+graines de pavot
+30
+Saison : Printemps
+Temps de maturation : 7 jours
+Source
+Bazar de Sam
+Rang
+E
+revente 82 Po
+adoré par personne
+
+
+Fraise
+Fruit
+Un fruit de printemps rouge et juteux.
+
+graines de fraises
+145
+Saison : Printemps
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Source
+Bazar de Sam
+Rang
+D
+revente 102 Po
+adoré par: Aaliyah, Charles et Paul
+
+Radis
+Légumes
+Une racine croquante et comestible de couleur rouge vif.
+
+graines de radis
+60
+Saison : Printemps, Été
+Temps de maturation : 6 jours
+Source
+Bazar de Sam
+Rang
+E
+revente 119 Po
+adoré par: Dippa
+
+
+
+Petits pois
+Légumes
+Petit, vert et riche en nutriments.
+
+graines de pois
+45
+Saison : Printemps
+Temps de maturation : 11 jours
+Repousse : 4 jours
+Source
+Bazar de Sam
+Rang
+D
+revente 59 Po
+adoré par personne
+
+
+
+Canne à sucre
+Légumes
+Couramment cultivé pour son jus, qui peut être transformé en sucre.
+
+graines de canne à sucre
+50
+Saison : Printemps
+Temps de maturation : 5 jours
+Repousse : 1 jour
+Source
+Bazar de Sam
+Rang
+E
+revente 23
+adoré par: Groo et Millie
+
+
+Concombre
+Légumes
+Légume vert riche en eau. Rafraîchissant cru.
+
+graines de concombre
+25
+Saison : Printemps
+Temps de maturation : 9 jours
+Repousse : 3 jours
+Source
+Bazar de Sam
+Rang
+E
+revente 41
+adoré par personne
+
+
+
+Laitue
+Légumes
+Légumes verts à feuilles souvent utilisés pour les salades.
+
+graines de laitue
+20
+Saison : Printemps
+Temps de maturation : 5 jours
+Source
+Bazar de Sam
+Rang
+D
+revente 47 Po
+adoré par Jack
+
+
+
+
+Soja
+Grain
+Une excellente source de protéines.
+
+graines de soja
+20
+Saison : Printemps
+Temps de maturation : 7 jours
+Repousse : 4 jours
+Source
+Bazar de Sam
+Rang
+E
+revente 19 Po
+adoré par Kenny
+
+
+
+
+Perce-neige
+Fleur
+Sa couleur imite la neige et il peut survivre au froid.
+
+graines de perce-neige
+45
+Saison : Printemps, Hiver
+Temps de maturation : 12 jours
+Source
+Bazar de Sam
+Rang
+C
+revente 125 Po
+adoré par personne
+
+
+
+
+Bettes
+Légumes
+Un légume à feuilles avec une tige violette majestueuse.
+
+graines de blettes
+50
+Saison : Printemps
+Temps de maturation : 6 jours
+Source
+Bazar de Sam
+Rang
+D
+revente 111 Po
+adoré par personne.
+
+
+ - ensuite ajouté plus bas les "arbres" et "arbres fruitiers"
+
+
+Banane
+Fruit
+Une baie nutritive et nourrissante. Elle pousse sur les arbres et dégage un parfum doux et sucré.
+
+Plant de bananier
+800
+Saison : Printemps, Été
+Temps de maturation : 10 jours
+Repousse : 3 jours
+Source
+Bazar de Sam
+Rang
+E
+revente 50 Po
+adoré par Ben
