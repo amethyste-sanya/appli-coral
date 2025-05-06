@@ -885,7 +885,7 @@ export default function Home() {
                             <div key={crop.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                               <div className="flex gap-4">
                                 {/* Image et nom */}
-                                <div className="flex-shrink-0">
+                                <div className="flex-shrink-0 relative">
                                   <div className="w-16 h-16 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
                                     <img 
                                       src={crop.imagePath} 
@@ -897,6 +897,14 @@ export default function Home() {
                                       }}
                                     />
                                   </div>
+                                  {crop.isGoddessOffering && (
+                                    <div 
+                                      className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 bg-opacity-90 rounded-full flex items-center justify-center text-white shadow-md border border-purple-300"
+                                      title={crop.goddessOfferingNote || "Requis pour le Temple de la Déesse"}
+                                    >
+                                      <div className="text-xs font-bold">💠</div>
+                                    </div>
+                                  )}
                                 </div>
                                 
                                 {/* Informations principales */}
@@ -959,6 +967,16 @@ export default function Home() {
                                   </div>
                                 )}
                               </div>
+                              
+                              {/* Temple de la Déesse */}
+                              {crop.isGoddessOffering && (
+                                <div className="mt-3 pt-3 border-t border-gray-100">
+                                  <div className="bg-purple-50 border border-purple-200 rounded-md p-2 text-sm text-purple-800 flex items-center gap-2">
+                                    <div className="text-purple-600">💠</div>
+                                    <div>{crop.goddessOfferingNote || "Requis pour le Temple de la Déesse"}</div>
+                                  </div>
+                                </div>
+                              )}
                               
                               {/* Préférences des villageois */}
                               {crop.preferences && crop.preferences.length > 0 && (

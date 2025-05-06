@@ -25,6 +25,8 @@ export type Crop = {
   effects?: string[];     // Effets spéciaux (optionnel)
   preferences?: VillagerPreference[]; // Préférences des villageois
   notes?: string;         // Notes supplémentaires (optionnel)
+  isGoddessOffering?: boolean; // Item nécessaire pour le temple de la déesse
+  goddessOfferingNote?: string; // Note spécifique pour l'offrande à la déesse
 };
 
 // Liste des cultures
@@ -50,6 +52,8 @@ export const crops: Crop[] = [
       { name: "Eva", preference: "aime" },
       { name: "Scott", preference: "aime" },
     ],
+    isGoddessOffering: true,
+    goddessOfferingNote: "Requis pour le Temple de la Déesse",
   },
   // Autres cultures à ajouter...
 ];
