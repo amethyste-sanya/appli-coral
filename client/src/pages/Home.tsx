@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
-import { getAllVillagers, getVillagersBySeason, getVillagersByLove } from "@/lib/villagers";
+import { getAllVillagers, getVillagersBySeason, getVillagersByLove, Villager, villagers } from "@/lib/villagers";
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
 
 export default function Home() {
@@ -236,6 +236,13 @@ export default function Home() {
   
   // Jour de la semaine dans Coral Island
   const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+  
+  // Fonction pour récupérer les anniversaires des villageois pour un jour et une saison donnés
+  const getVillagersBirthday = (season: string, day: number): string[] => {
+    return villagers
+      .filter(v => v.birthday && v.birthday.season === season && v.birthday.day === day)
+      .map(v => v.name);
+  };
 
   // Fonction pour mettre à jour la saison et le jour dans le jeu
   const updateGameDate = (newDate: Date) => {
@@ -1631,13 +1638,18 @@ export default function Home() {
                       {Array.from({ length: 28 }, (_, i) => {
                         const dayNumber = i + 1;
                         const isSelected = gameDate.day === dayNumber;
+                        const birthdays = getVillagersBirthday(gameDate.season, dayNumber);
+                        const hasBirthday = birthdays.length > 0;
+                        
                         return (
                           <button
                             key={i}
-                            className={`h-8 w-full flex items-center justify-center rounded-md text-sm transition-colors ${
+                            className={`relative h-8 w-full flex items-center justify-center rounded-md text-sm transition-colors ${
                               isSelected 
                                 ? "bg-blue-100 text-blue-700 font-medium" 
-                                : "hover:bg-gray-100"
+                                : hasBirthday
+                                  ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
+                                  : "hover:bg-gray-100"
                             }`}
                             onClick={() => {
                               let monthValue = 0;
@@ -1652,14 +1664,18 @@ export default function Home() {
                               newDate.setDate(dayNumber);
                               updateGameDate(newDate);
                             }}
+                            title={hasBirthday ? `Anniversaire: ${birthdays.join(', ')}` : ''}
                           >
                             {dayNumber}
+                            {hasBirthday && (
+                              <div className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full"></div>
+                            )}
                           </button>
                         );
                       })}
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-4">
                       <div className={cn(
                         "text-lg font-medium px-4 py-2 rounded-md",
                         gameDate.season === "Printemps" ? "bg-green-100 text-green-800" : 
@@ -1674,6 +1690,29 @@ export default function Home() {
                         <span className="text-xs text-gray-500">Semaine {Math.ceil(gameDate.day / 7)}</span>
                       </div>
                     </div>
+
+                    {/* Affichage des anniversaires du jour sélectionné */}
+                    {(() => {
+                      const birthdays = getVillagersBirthday(gameDate.season, gameDate.day);
+                      if (birthdays.length > 0) {
+                        return (
+                          <div className="bg-rose-50 rounded-md p-3 border border-rose-200 mt-2">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
+                              <h4 className="font-medium text-rose-700">Anniversaires aujourd'hui</h4>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {birthdays.map((name, index) => (
+                                <Badge key={index} variant="outline" className="bg-white text-rose-600 border-rose-200">
+                                  {name}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                   </div>
                 </CardContent>
               </Card>
