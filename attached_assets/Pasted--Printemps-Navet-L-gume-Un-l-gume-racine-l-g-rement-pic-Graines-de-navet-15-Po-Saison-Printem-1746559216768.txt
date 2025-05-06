@@ -1,0 +1,359 @@
+🌱 Printemps
+Navet
+Légume
+Un légume-racine légèrement épicé.
+Graines de navet
+15 Po
+Saison : Printemps
+Temps de maturation : 4 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 40 Po
+
+Carotte
+Légume
+Une racine sucrée et croquante.
+Graines de carotte
+35 Po
+Saison : Printemps
+Temps de maturation : 7 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 78 Po
+
+Chou-fleur
+Légume
+Un légume à tête blanche, riche en nutriments.
+Graines de chou-fleur
+70 Po
+Saison : Printemps
+Temps de maturation : 10 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 175 Po
+
+Pomme de terre
+Légume
+Un tubercule polyvalent.
+Graines de pomme de terre
+25 Po
+Saison : Printemps
+Temps de maturation : 5 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 75 Po
+
+Laitue
+Légume
+Une feuille verte croquante.
+Graines de laitue
+20 Po
+Saison : Printemps
+Temps de maturation : 5 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 47 Po
+
+Concombre
+Légume
+Un légume long et vert, idéal pour les salades.
+Graines de concombre
+25 Po
+Saison : Printemps
+Temps de maturation : 9 jours
+Repousse : 3 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 41 Po
+
+Petits pois
+Légume
+De petites graines vertes sucrées.
+Graines de petits pois
+45 Po
+Saison : Printemps
+Temps de maturation : 11 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 59 Po
+
+Canne à sucre
+Plante
+Une tige sucrée utilisée pour produire du sucre.
+Graines de canne à sucre
+50 Po
+Saison : Printemps
+Temps de maturation : 5 jours
+Repousse : 1 jour
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 23 Po
+
+Fraise
+Fruit
+Un fruit rouge sucré et juteux.
+Graines de fraise
+145 Po
+Saison : Printemps
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 102 Po
+
+Radis
+Légume
+Un légume-racine piquant.
+Graines de radis
+60 Po
+Saison : Printemps
+Temps de maturation : 6 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 119 Po
+
+Soja
+Légumineuse
+Une légumineuse riche en protéines.
+Graines de soja
+20 Po
+Saison : Printemps
+Temps de maturation : 7 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : C
+Revente de base : 19 Po
+
+☀️ Été
+Maïs
+Céréale
+Une céréale jaune sucrée.
+Graines de maïs
+25 Po
+Saison : Été
+Temps de maturation : 12 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 24 Po
+
+Piment fort
+Légume
+Un petit légume rouge très épicé.
+Graines de piment fort
+40 Po
+Saison : Été
+Temps de maturation : 7 jours
+Repousse : 3 jours
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 36 Po
+
+Myrtille
+Fruit
+Une petite baie bleue sucrée.
+Graines de myrtille
+50 Po
+Saison : Été
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 41 Po
+
+Tomate
+Fruit
+Un fruit rouge juteux.
+Graines de tomate
+25 Po
+Saison : Été
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 34 Po
+
+Melon
+Fruit
+Un gros fruit sucré à chair rose.
+Graines de melon
+130 Po
+Saison : Été
+Temps de maturation : 12 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 233 Po
+
+Poivron
+Légume
+Un légume croquant et coloré.
+Graines de poivron
+70 Po
+Saison : Été
+Temps de maturation : 8 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 47 Po
+
+Ananas
+Fruit
+Un fruit tropical sucré et acidulé.
+Graines d'ananas
+110 Po
+Saison : Été
+Temps de maturation : 9 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 201 Po
+
+Okra
+Légume
+Un légume vert allongé.
+Graines d'okra
+60 Po
+Saison : Été
+Temps de maturation : 9 jours
+Repousse : 6 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 59 Po
+
+🍂 Automne
+Patate douce
+Légume
+Un tubercule sucré à chair orange.
+Graines de patate douce
+60 Po
+Saison : Automne
+Temps de maturation : 9 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 30 Po
+
+Aubergine
+Légume
+Un légume violet allongé.
+Graines d'aubergine
+35 Po
+Saison : Automne
+Temps de maturation : 9 jours
+Repousse : 3 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 36 Po
+
+Citrouille
+Légume
+Un gros légume orange.
+Graines de citrouille
+90 Po
+Saison : Automne
+Temps de maturation : 13 jours
+Repousse : 7 jours
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 116 Po
+
+Canneberge
+Fruit
+Une petite baie rouge acidulée.
+Graines de canneberge
+20 Po
+Saison : Automne
+Temps de maturation : 5 jours
+Repousse : 2 jours
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 18 Po
+
+Riz
+Céréale
+Une céréale de base.
+Graines de riz
+15 Po
+Saison : Automne
+Temps de maturation : 9 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 33 Po
+
+Betterave
+Légume
+Un légume-racine sucré.
+Graines de betterave
+20 Po
+Saison : Automne
+Temps de maturation : 6 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : E
+Revente de base : 52 Po
+
+Bok choy
+Légume
+Un légume-feuille asiatique.
+Graines de bok choy
+60 Po
+Saison : Automne
+Temps de maturation : 8 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 126 Po
+
+Artichaut
+Légume
+Un légume à feuilles comestibles.
+Graines d'artichaut
+45 Po
+Saison : Automne
+Temps de maturation : 8 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : D
+Revente de base : 29 Po
+
+Orchidée
+Fleur
+Une fleur exotique.
+Graines d'orchidée
+75 Po
+Saison : Automne
+Temps de maturation : 8 jours
+Repousse : Aucune
+Source : Bazar de Sam
+Rang de ville : F
+Revente de base : 130 Po
+
+❄️ Hiver
+Les cultures d'hiver sont débloquées au rang de ville C.
+
+Amande
+Fruit
+Un fruit à coque riche en nutriments.
+Graines d'amandier
+4 250 Po
+Saison : Hiver
+Temps de maturation : 28 jours
+Repousse : 4 jours
+Source : Bazar de Sam
+Rang de ville : C
+Revente de base : 144 Po
+
+Avocat
+Fruit
+Un fruit crémeux et nutritif.
+Graines d'avocatier
+1 000 Po
