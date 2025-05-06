@@ -1585,39 +1585,78 @@ export default function Home() {
               </div>
               
               <div className="space-y-4">
-                {getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => (
-                  <Card key={recipe.id} className="overflow-hidden">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between">
-                        <h3 className="font-medium">{recipe.name}</h3>
-                        <Badge variant="outline" className="ml-2">
-                          Niveau {recipe.level}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {recipe.description || "Aucune description disponible"}
-                      </p>
-                      
-                      <div className="mt-3">
-                        <span className="text-sm font-medium">Matériaux requis:</span>
-                        <div className="grid grid-cols-2 gap-2 mt-1">
-                          {recipe.materials.map((material, index) => (
-                            <div key={index} className="flex items-center">
-                              <ArrowRight className="h-3 w-3 mr-1 text-gray-400" />
-                              <span className="text-sm">{material.quantity}x {material.name}</span>
-                            </div>
-                          ))}
+                {selectedCraftingCategory === "tools" ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-gray-100 text-left">
+                          <th className="p-3 border">Outil</th>
+                          <th className="p-3 border">Niveau</th>
+                          <th className="p-3 border">Matériaux requis</th>
+                          <th className="p-3 border">Prix</th>
+                          <th className="p-3 border">Caractéristiques</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => (
+                          <tr key={recipe.id} className="border-b hover:bg-gray-50">
+                            <td className="p-3 border font-medium">{recipe.name}</td>
+                            <td className="p-3 border">{recipe.level}</td>
+                            <td className="p-3 border">
+                              {recipe.materials.length > 0 ? (
+                                <ul className="list-disc pl-4">
+                                  {recipe.materials.map((material, index) => (
+                                    <li key={index} className="text-sm">
+                                      {material.quantity}x {material.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <span className="text-gray-500 italic">Aucun matériau requis</span>
+                              )}
+                            </td>
+                            <td className="p-3 border">{recipe.sellPrice} pièces</td>
+                            <td className="p-3 border text-sm">{recipe.description}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => (
+                    <Card key={recipe.id} className="overflow-hidden">
+                      <CardContent className="p-4">
+                        <div className="flex justify-between">
+                          <h3 className="font-medium">{recipe.name}</h3>
+                          <Badge variant="outline" className="ml-2">
+                            Niveau {recipe.level}
+                          </Badge>
                         </div>
-                      </div>
-                      
-                      {recipe.sellPrice && (
-                        <div className="mt-2 text-sm">
-                          <span className="font-medium">Prix de vente:</span> {recipe.sellPrice} pièces
+                        <p className="text-sm text-gray-600 mt-1">
+                          {recipe.description || "Aucune description disponible"}
+                        </p>
+                        
+                        <div className="mt-3">
+                          <span className="text-sm font-medium">Matériaux requis:</span>
+                          <div className="grid grid-cols-2 gap-2 mt-1">
+                            {recipe.materials.map((material, index) => (
+                              <div key={index} className="flex items-center">
+                                <ArrowRight className="h-3 w-3 mr-1 text-gray-400" />
+                                <span className="text-sm">{material.quantity}x {material.name}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
+                        
+                        {recipe.sellPrice && (
+                          <div className="mt-2 text-sm">
+                            <span className="font-medium">Prix de vente:</span> {recipe.sellPrice} pièces
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
               </div>
             </TabsContent>
             
