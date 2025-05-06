@@ -1,0 +1,236 @@
+
+Connor
+5 Été
+Avant de devenir maire, Connor tenait son propre magasin général avec sa défunte épouse, Carol. Il porte un chapeau.
+
+Joko
+4 Printemps
+Joko est un charpentier local. Il est marié à Dinda, elle aussi charpentière. Il a de la famille sur une île voisine et leur rend visite de temps en temps.
+
+Luc
+16 automne
+Luke dirige Socket & Pan Electronics et son entreprise familiale, Hillside Manor and Vineyard. Il est connu pour être un fin gourmet et pour sa tendance à trop réfléchir.
+
+Youri
+28 Été
+Yuri a consacré des années à offrir bénévolement ses services médicaux à un programme international de médecins, sans être rémunérée, voire presque, avant de s'installer à Coral Island. Elle aime jouer aux échecs et au billard.
+
+Ben
+22 printemps
+Ben possède une vaste collection de cristaux de guérison. Il adore les voyages en voiture et se fait plaisir en dépensant son argent dans des festivals de musique.
+
+Kira
+Kira est membre du BOS, un groupe international de chasseurs. Elle passe ses journées en forêt, à surveiller la caverne. Elle ne fête pas ses anniversaires.
+
+Sam
+8 Été
+Sam est propriétaire et gérant de l'épicerie. Il consacre son temps libre à des exercices cérébraux, comme les échecs, les puzzles et les mots croisés. Il va également danser avec sa femme, Emily.
+
+Lis
+19 Hiver
+Lily travaille à distance pour une entreprise de cybersécurité et n'a pas d'horaires fixes. Elle aime la solitude et les bonsaïs.
+
+Jack
+Jack est l'éleveur de l'île et vit avec sa famille dans une humble cabane en pleine forêt. Il ne fête pas les anniversaires.
+
+Alice
+27 Hiver
+Alice gère l'auberge familiale avec sa sœur jumelle, Suki. Elle aime discuter de phénomènes inexpliqués, qu'elle a étudiés à l'université.
+
+Anne
+24 Été
+Passionnée de la faune, Anne aime aller à la plage et jouer au volley-ball avec sa famille lorsqu'elle n'est pas occupée à monter des vidéos.
+
+Archie
+24 Hiver
+On peut parfois croiser Archie dans les vignes, jouant avec Taco. Il adore les animaux et rêve de devenir vétérinaire.
+
+Betty
+13 Hiver
+Betty est à la retraite et passe ses journées à remplir les mangeoires à oiseaux de la ville, à éduquer les enfants sur les récifs coralliens et à préparer des pâtisseries.
+
+Bree
+14 Automne
+Bree est propriétaire du Hillside Manor and Vineyard. Ancienne mannequin, elle consacre désormais ses journées à l'agriculture et à la gestion de son foyer.
+
+Charles
+4 Hiver
+Charles est médecin local. Il profite de son temps libre pour discuter avec les insulaires à la taverne et se contente parfois de prodiguer des conseils médicaux.
+
+Dinda
+21 Été
+Dinda est une menuisière locale. Elle affirme que la menuiserie est une passion, pas un métier. Elle entretient son jardin d'herbes aromatiques et participe à des activités communautaires pendant son temps libre.
+
+Dippa
+25 automne
+Dippa aime se perdre dans la création artistique. Comme ils le disaient autrefois, la raison est ennuyeuse, et pour eux, l'ennui n'est pas la vie.
+
+Émilie
+16 Hiver
+Emily travaille comme coiffeuse et gère, avec Erika, le salon attenant à la clinique. Elle et son mari, Sam, habitent au deuxième étage de l'épicerie.
+
+Emma
+13 Été
+Emma mène une vie tranquille avec sa compagne, Dippa, et n'est pas une grande fan des sorties nocturnes. Elle est l'heureuse propriétaire d'un camion de tacos.
+
+Erika
+8 Hiver
+Lorsqu'elle ne travaille pas au salon de coiffure, Erika fait du bénévolat à l'école ou traîne en ville, prêtant une oreille attentive et donnant des conseils, gratuitement.
+
+Eva
+13 Été
+Eva est une boulangère talentueuse qui aime parler aux insulaires – locaux, nouveaux arrivants, visiteurs, tout le monde – et elle a beaucoup de bons amis.
+
+Franc
+16 Été
+Frank gère la taverne avec son frère Noah. Il adore cuisiner et les scooters vintage. Il a deux chats très gâtés, Peanut et Butter.
+
+Jim
+6 Automne
+Jim aide Sunny à gérer le Beach Shack en tant que cuisinier. Il prépare un saumon fumé exceptionnel qu'il vend parfois au bar.
+
+Kenny
+9 Printemps
+Kenny a vécu sur l'île de Corail toute sa vie et a noué des relations étroites avec d'autres insulaires, des gens, des animaux, des arbres, des esprits d'au-delà - tous.
+
+Léa
+24 Été
+Leah est professeure de yoga indépendante au centre communautaire. Elle vit dans une vieille maison avec son père, Randy, et sa belle-mère, Ling.
+
+Lingue
+17 Printemps
+Ling est biologiste marine. Elle consacre sa vie à l'étude des récifs coralliens et au développement de méthodes pour améliorer les pratiques agricoles grâce aux minéraux marins.
+
+Macy
+25 printemps
+Macy a grandi sur une île voisine. Ses passions sont la photographie, les animaux et la nature. Elle a un homard sauvé, Stephen.
+
+Millie
+3 Hiver
+Millie travaille à la bibliothèque et supervise le musée. Elle consacre son temps libre à observer les oiseaux et à restaurer de vieux livres.
+
+Nina
+24 Hiver
+La villa sur la plage est l'une des nombreuses résidences secondaires de Nina. Instruite, humble et coquette par nature, elle apprécie les vacances luxueuses.
+
+Noé
+10 Hiver
+Noah passe ses journées à s'occuper de Fishensips. Lors des rares occasions où il est libre, il apprécie les longues promenades avec sa mère, Betty, et discute de théories sur des phénomènes inexpliqués avec son amie proche, Alice.
+
+Olivier
+12 Printemps
+Oliver veut rejoindre la police quand il sera grand. Il adore les séries policières et rêve de devenir inspecteur.
+
+Pablo
+27 Printemps
+Pablo est un forgeron local. Très apprécié, charismatique et séducteur, il est toujours prêt à jouer au billard avec ses amis le soir au Fishensips.
+
+Paul
+7 Printemps
+Paul est un passionné de la vie sauvage. Avec sa femme, il réalise des documentaires animaliers pour gagner sa vie. Il a un grand cœur et aime la plage.
+
+Rafael
+4 Automne
+Rafael est un forgeron local. Il est réservé et privilégie le silence, ce qu'il considère comme un avantage de son métier.
+
+Excité
+19 automne
+Randy Barnes est un enseignant doté d'une remarquable capacité à expliquer des idées complexes de manière simple et accessible. Il est passionné de littérature classique.
+
+Scott
+12 Printemps
+Scott est toujours prêt à s'amuser et ne s'ennuie jamais. Il s'est découvert une passion pour les objets et a consacré sa vie à leur préservation.
+
+Suki
+27 Hiver
+Suki gère l'auberge avec sa sœur jumelle, Alice. Maman avant tout, tout le reste passe après. Une vie saine est importante pour elle.
+
+Ensoleillé
+26 automne
+Sunny gère le Beach Shack. Bien qu'il ne pêche plus souvent, il garde toujours des photos de ses prises de poissons géants à l'étage de sa maison.
+
+Surya
+25 automne
+Surya est un biologiste marin qui travaille au laboratoire en semaine. Il passe son temps libre avec ses amis.
+
+Taco
+Un chien. Vit dans le vignoble.
+
+Théo
+11 Automne
+Théo est un pêcheur local qui passe la plupart de ses journées à pêcher ou à jouer de la guitare. Le week-end, il se produit au Fishensips pour gagner rapidement de l'argent.
+
+Valentina
+3 Été
+Valentina aime passer du temps avec ses amis et sa famille. Elle vit à l'auberge et joue souvent à la plage.
+
+Walter
+20 printemps
+Walter est un ancien avocat influent. Il est aujourd'hui propriétaire du Hillside Manor and Vineyard.
+
+Zoé
+8 Hiver
+Zoé est une passionnée de la faune, tout comme ses parents. Elle aime le volley-ball, l'observation des oiseaux et l'hiver.
+
+Zarah
+16 Été
+Zarah est une aventurière dans l'âme. Elle aime explorer l'île à la recherche de toutes sortes de trésors : pierres précieuses, artefacts ou vestiges historiques.
+
+Denali
+10 Été
+Gardienne royale. Elle perpétue l'héritage de sa famille, garante de la protection du royaume.
+
+Karen
+Karen est la directrice de la succursale de Pufferfish Corp. Elle est une joueuse d'équipe autoproclamée.
+
+Chef de clan
+Le chef du Village des Géants. Une figure respectée.
+
+Kible
+À déterminer
+portrait de tête non officiel
+
+Arachide
+Un chat. Vit avec Erika et Frank.
+
+Raj
+2 Hiver
+Raj est un amateur de café qui possède un petit café en terrasse à Starlet Town. Ils vivent à l'auberge.
+
+Takeba
+Takeba est le gardien de la source chaude.
+
+Chaem
+6 Automne
+Chaem est une athlète en formation qui rêve de participer un jour à une compétition nationale de volley-ball. Elle travaille à temps partiel comme maître-nageuse.
+
+Ratih
+À déterminer
+
+Marque
+18 printemps
+Mark est membre de BOS, un groupe international de chasseurs. Il fait du bénévolat au refuge pendant son temps libre.
+
+Wakuu
+8 Hiver
+Wakuu est astronome. En semaine, il travaille et vit à l'observatoire. Il passe les week-ends au phare, où vit son père.
+
+Antonio
+7 Printemps
+Antonio est l'ex-mari de Suki et le père de Valentina. Il est propriétaire de la boutique White Flamingo. Lorsqu'il est à Starlet Town, il séjourne à l'auberge.
+
+Aaliyah
+22 printemps
+Aaliyah, l'aînée de la fratrie, était la reine des farces quand elle était petite. Elle est maintenant dans l'armée de l'air et s'entraîne pour devenir astronaute.
+
+Wataru
+3 Été
+Wataru sort généralement uniquement pour s'occuper de son jardin et pour visiter le Beach Shack.
+
+Éléonore
+4 Automne
+Eleanor est l'experte en insectes de Coral Island. Elle fréquente beaucoup Garden Lane.
+
+Agung
+8 Été
+Un gardien royal doté d'une curiosité insatiable et d'une soif

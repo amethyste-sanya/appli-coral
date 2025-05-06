@@ -1435,10 +1435,17 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                      <div className="text-sm text-gray-600 flex items-center mt-1">
-                        <CalendarDays className="h-3.5 w-3.5 mr-1" />
-                        {villager.birthday.season}, jour {villager.birthday.day}
-                      </div>
+                      {villager.birthday ? (
+                        <div className="text-sm text-gray-600 flex items-center mt-1">
+                          <CalendarDays className="h-3.5 w-3.5 mr-1" />
+                          {villager.birthday.season}, jour {villager.birthday.day}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-600 flex items-center mt-1">
+                          <CalendarDays className="h-3.5 w-3.5 mr-1" />
+                          Pas d'anniversaire
+                        </div>
+                      )}
                       <div className="text-sm text-gray-600 flex items-center mt-1">
                         <Clock className="h-3.5 w-3.5 mr-1" />
                         {villager.occupation}
