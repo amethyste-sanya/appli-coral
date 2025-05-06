@@ -1,0 +1,44 @@
+Débuter	Apprenons à cultiver ! Commencez par labourer la terre avec une houe, puis utilisez un sac de semences pour cultiver. Arrosez quotidiennement jusqu'à la récolte. Une fois prêt, rendez-vous au magasin général de Sam en ville pour acheter des semences.	Introduction	• Plantez 10 graines
+• Arrosez 10 graines
+• Visitez le magasin général de Sam
+• Récoltez la première récolte	Progression :
+• Commence Le nouveau fermier
+
+Termine :
+• 100
+Le nouveau fermier	Puisque vous êtes nouveau en ville, pensez à vous présenter aux habitants. Ils seront probablement curieux de savoir qui est le nouveau fermier !	Connor (en entrant dans le magasin général de Sam dans le cadre de son démarrage )	• Rencontrez 30 citadins	Terminer :
+• Commence à se faire des amis
+Se faire des amis	Liez-vous d'amitié avec les citadins en apprenant à les connaître et en leur offrant des cadeaux. Gagnez des points bonus si vous leur offrez quelque chose qu'ils aiment !	Terminer Le nouveau fermier	• Créez un bouquet de fleurs
+• Offrez-le à quelqu'un	En progression :
+• Recette de fabrication de bouquet de fleurs
+Home Sweet Home	Les charpentiers peuvent réparer votre nouvelle maison, mais vous devrez d'abord rassembler quelques ressources. Rendez-leur visite une fois que vous aurez rassemblé suffisamment de bois et de pierres.	Joko et Dinda (courrier du 1er printemps)	• Rassemblez 50 bois
+• Rassemblez 20 pierres
+• Visitez le charpentier
+• Réparez votre maison	Compléter :
+• 100
+• 1 cœur points d'amitié avecJokoetDinda
+Visitez le Beach Shack	Sunny et Eleanor ont des cadeaux de bienvenue pour vous. Rendez-leur visite au Beach Shack pour découvrir ce que c'est…	Sunny et Eleanor (courrier du 3e printemps)	• Visitez la cabane de plage	Compléter :
+• Canne à pêche
+• Filet anti-insectes
+Tout ou rien	Envisagez de fabriquer un four, vous pourrez l’utiliser pour fondre des minerais en barres !	Pablo (le lendemain après avoir obtenu du minerai de bronze , qui est naturellement obtenu dans les mines, mais la quête sera toujours déclenchée si elle est achetée chez le forgeron )	• Fabriquer un four	En progression :
+• Recette de fabrication de four
+
+Terminer :
+• Commencerla fusion pour progresser
+Fondre pour le progrès	Le four est prêt ! Essayez de fondre du minerai de cuivre pour en faire une barre de cuivre. Lorsque vous aurez assez de barres, rendez-vous chez le forgeron et améliorez vos outils. Cela vous simplifiera la vie à la ferme.	Terminer Tout ou rien	• Faites fondre une barre de bronze à l'aide de votre nouveau four	
+L'extracteur	L'extracteur vous permettra d'augmenter vos revenus. Vous pouvez augmenter vos profits en expédiant des produits de meilleure qualité, et le laboratoire peut vous aider en vous fournissant de l'essence de varech. Fabriquez un extracteur pour produire de l'essence de varech.	Surya (le lendemain après avoir obtenu du varech de bronze , qui est naturellement obtenu en plongeant, mais la quête sera toujours déclenchée si elle est achetée en laboratoire )	• Fabriquer un extracteur	En progression :
+• Recette de fabrication d'extracteur
+
+Terminer :
+• Commencel'extraction d'essence
+Extraction d'essence	Maintenant que vous avez un extracteur, vous pouvez essayer de produire de l'essence d'algues bronzées. Pour fabriquer une bouteille, placez 10 algues bronzées et un verre dans l'extracteur.	Compléter l'extracteur	• Produire de l'essence de varech bronzé à l'aide d' un extracteur	
+Produits locaux	Aidez Sam à relancer la section des produits locaux du magasin général en expédiant des légumes et des fruits de qualité bronze.	Sam (doit avoir déclenché le rang F de la ville)Ville de rang F , puis vente/expédition d'une récolte. Le courrier de lancement de la quête sera livré 5 jours plus tard.	• Rencontrez Sam au magasin général • Expédiez 50 légumes
+de qualité bronze • Expédiez 25 fruits de qualité bronze
+Compléter :
+• 1 000
+• Le point de cheminement de la ville est déverrouillé
+Nouvel objectif : rang de ville S !	Aidez Starlet Town à réaliser son rêve d'atteindre le rang de ville S. Commencez par visiter le centre communautaire pour planifier les prochaines étapes.	Déclenchez une cinématique en entrant dans le centre communautaire après avoir obtenu le rang de ville A.	• Atteindre le rang S de la ville
+• Visiter le centre communautaire	
+Attraction de Starlet Town	Aidez la ville en contribuant à sa première attraction majeure. Collaborez ensuite avec les habitants pour construire toutes les attractions.	Après avoir obtenu un nouvel objectif : le rang de ville S !	• Terminez une attraction de la ville (1/1)
+• Terminez toutes les attractions (10/10)	Compléter :
+• 650 × 650
