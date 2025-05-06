@@ -206,6 +206,15 @@ export default function Home() {
       completed: false
     }));
   };
+  
+  // Fonction pour convertir des chaînes en objectifs (pour la compatibilité)
+  const convertObjectivesToQuestObjectives = (objectives?: string[]): QuestObjective[] | undefined => {
+    if (!objectives) return undefined;
+    return objectives.map(text => ({
+      text,
+      completed: false
+    }));
+  };
 
   // Fonction pour créer une quête à partir d'un préset
   const createQuestFromPreset = (presetQuest: PresetQuest): Quest => {
@@ -652,7 +661,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -703,7 +712,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -757,7 +766,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined,
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives),
                                                 deadline: presetQuest.notes && presetQuest.notes.includes("lieu le") 
                                                   ? presetQuest.notes.split("lieu le ")[1] : undefined
                                               };
