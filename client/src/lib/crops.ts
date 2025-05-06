@@ -32,7 +32,30 @@ export type Crop = {
 
 // Liste des cultures
 export const crops: Crop[] = [
-  // Ajoutez vos cultures ici
+  {
+    id: "navet",
+    name: "Navet",
+    category: "Légumes",
+    description: "Un légume-racine légèrement épicé.",
+    imagePath: "/attached_assets/navet.jpg",
+    seedName: "Graines de navet",
+    seedPrice: 15,
+    seedSource: "Bazar de Sam",
+    townRank: "F",
+    season: "Printemps",
+    growthTime: 4,
+    size: "1x1",
+    sellPrice: 40,
+    harvestYield: 1,
+    energy: 20,
+    preferences: [
+      { name: "Aaliyah", preference: "aime" },
+      { name: "Eva", preference: "aime" },
+      { name: "Scott", preference: "aime" },
+    ],
+    isGoddessOffering: true,
+    goddessOfferingNote: "Requis pour le Temple de la Déesse",
+  }
 ];
 
 // Récupérer toutes les cultures
