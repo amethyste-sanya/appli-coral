@@ -37,7 +37,7 @@ export const crops: Crop[] = [
     name: "Navet",
     category: "Légumes",
     description: "Un légume-racine légèrement épicé.",
-    imagePath: "/images/crops/navet.jpg",
+    imagePath: "/attached_assets/navet.jpg",
     seedName: "Graines de navet",
     seedPrice: 15,
     seedSource: "Bazar de Sam",
