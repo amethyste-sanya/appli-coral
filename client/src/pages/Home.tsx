@@ -9,6 +9,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
+import { Crop, getAllCrops } from "@/lib/crops";
 
 // Task type definition
 type Task = {
@@ -836,17 +837,144 @@ export default function Home() {
                   
                   {/* Contenu de l'onglet Cultures */}
                   {journalTab === "items" && (
-                    <div className="text-center py-10">
-                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
-                        <p className="text-gray-600">
-                          Cette section du journal qui contiendra toutes les cultures et graines du jeu sera bientôt disponible.
-                        </p>
-                        <p className="text-gray-600 mt-2">
-                          Informations incluses pour chaque culture : saison, temps de pousse, prix d'achat, prix de vente, 
-                          rentabilité, effets spéciaux, et conditions particulières.
-                        </p>
+                    <div className="space-y-6">
+                      {/* Barre de recherche et filtres */}
+                      <div className="relative flex gap-2">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                          <Input 
+                            className="pl-10" 
+                            placeholder="Rechercher une culture..." 
+                          />
+                        </div>
+                        <Button variant="outline" className="bg-green-50 border-green-200 text-green-800">
+                          Filtrer
+                        </Button>
+                      </div>
+                      
+                      {/* Section des saisons */}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 text-center cursor-pointer hover:bg-pink-100">
+                          <div className="text-2xl mb-1">🌸</div>
+                          <h3 className="font-medium text-pink-800">Printemps</h3>
+                          <p className="text-xs text-pink-600 mt-1">{getAllCrops().filter(crop => crop.season === "Printemps").length} cultures</p>
+                        </div>
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center cursor-pointer hover:bg-yellow-100">
+                          <div className="text-2xl mb-1">☀️</div>
+                          <h3 className="font-medium text-yellow-800">Été</h3>
+                          <p className="text-xs text-yellow-600 mt-1">0 cultures</p>
+                        </div>
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center cursor-pointer hover:bg-orange-100">
+                          <div className="text-2xl mb-1">🍁</div>
+                          <h3 className="font-medium text-orange-800">Automne</h3>
+                          <p className="text-xs text-orange-600 mt-1">0 cultures</p>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center cursor-pointer hover:bg-blue-100">
+                          <div className="text-2xl mb-1">❄️</div>
+                          <h3 className="font-medium text-blue-800">Hiver</h3>
+                          <p className="text-xs text-blue-600 mt-1">0 cultures</p>
+                        </div>
+                      </div>
+                      
+                      {/* Liste des cultures */}
+                      <div className="mt-4">
+                        <h3 className="font-medium text-gray-700 mb-3">Toutes les cultures</h3>
+                        
+                        <div className="space-y-3">
+                          {getAllCrops().map((crop) => (
+                            <div key={crop.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                              <div className="flex gap-4">
+                                {/* Image et nom */}
+                                <div className="flex-shrink-0">
+                                  <div className="w-16 h-16 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
+                                    <img 
+                                      src={crop.imagePath} 
+                                      alt={crop.name} 
+                                      className="max-w-full max-h-full object-contain" 
+                                      onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.style.display = 'none';
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                
+                                {/* Informations principales */}
+                                <div className="flex-1">
+                                  <div className="flex justify-between">
+                                    <div>
+                                      <h4 className="font-medium text-gray-900">{crop.name}</h4>
+                                      <p className="text-sm text-gray-500">{crop.category}</p>
+                                    </div>
+                                    <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+                                      {crop.season}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-sm text-gray-600 mt-1">{crop.description}</p>
+                                  
+                                  {/* Détails de croissance */}
+                                  <div className="grid grid-cols-3 gap-2 mt-3 text-xs text-gray-600">
+                                    <div>
+                                      <span className="font-medium">Graine:</span> {crop.seedName}
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">Prix:</span> {crop.seedPrice} pièces
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">Maturation:</span> {crop.growthTime} jours
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* Informations supplémentaires */}
+                              <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-600 grid grid-cols-3 gap-x-2 gap-y-1">
+                                <div>
+                                  <span className="font-medium">Taille:</span> {crop.size}
+                                </div>
+                                {crop.sellPrice && (
+                                  <div>
+                                    <span className="font-medium">Prix de vente:</span> {crop.sellPrice} pièces
+                                  </div>
+                                )}
+                                {crop.harvestYield && (
+                                  <div>
+                                    <span className="font-medium">Récolte:</span> {crop.harvestYield} par plante
+                                  </div>
+                                )}
+                                {crop.regrowth && (
+                                  <div>
+                                    <span className="font-medium">Repousse:</span> {crop.regrowth} jours
+                                  </div>
+                                )}
+                                {crop.energy && (
+                                  <div>
+                                    <span className="font-medium">Énergie:</span> +{crop.energy}
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {/* Afficher la rentabilité */}
+                              {crop.sellPrice && (
+                                <div className="mt-3 flex justify-between items-center">
+                                  <div className="text-sm">
+                                    <span className="font-medium text-green-600">Profit:</span> 
+                                    <span className="ml-1 text-green-700">+{crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice} pièces</span>
+                                  </div>
+                                  <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                    Détails
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        
+                        {/* Bouton Ajouter plus de cultures */}
+                        <Button className="w-full mt-4 bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors flex items-center justify-center gap-2">
+                          <Plus className="h-4 w-4" />
+                          <span>Ajouter plus de cultures</span>
+                        </Button>
                       </div>
                     </div>
                   )}
