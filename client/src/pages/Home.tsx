@@ -310,10 +310,10 @@ export default function Home() {
                         variant="outline" 
                         className="bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100"
                         onClick={() => {
-                          addTaskMutation.mutate("Visiter le marché (dimanche)");
+                          addTaskMutation.mutate("Visiter la Reine des Sauces (dimanche)");
                         }}
                       >
-                        🛒 Marché (dimanche)
+                        🛒 Reine des Sauces (dimanche)
                       </Button>
                       <Button 
                         variant="outline" 
