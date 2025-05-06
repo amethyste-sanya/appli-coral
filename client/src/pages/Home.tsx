@@ -1001,10 +1001,11 @@ export default function Home() {
                                         );
                                       }
                                       
+                                      // Note: nous gardons l'information sur les villageois qui n'aiment pas dans le résumé
                                       if (dislikes > 0) {
                                         badges.push(
                                           <div key="dislikes" className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
-                                            {dislikes} villageois {dislikes > 1 ? "détestent" : "déteste"} 👎
+                                            Certains villageois n'aiment pas 👎
                                           </div>
                                         );
                                       }
