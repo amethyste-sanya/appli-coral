@@ -75,7 +75,7 @@ export const presetQuests: PresetQuest[] = [
   // Autres quêtes secondaires
   {
     id: "corbeaux-partis",
-    title: "Les corbeaux sont partis",
+    title: "Sus aux corbeaux",
     description: "Les corbeaux volent vos récoltes ! Pour remédier à ce problème, fabriquez un épouvantail et placez-le près de vos cultures. Vous ne savez pas comment en fabriquer un ? En maîtrisant les activités, vous découvrirez différentes façons de faciliter le travail ou de gagner plus de pièces grâce aux recettes d'artisanat.",
     category: "secondary",
     total: 1,
