@@ -161,6 +161,64 @@ export const presetQuests: PresetQuest[] = [
     notes: "Début de la partie 1 de l'accompagnement des sirènes"
   },
   {
+    id: "plus-de-vide",
+    title: "Plus de vide",
+    description: "Donnez un coup de pouce à la collection du Musée en lui faisant un don !",
+    category: "main",
+    total: 1,
+    giver: "Scott (lorsqu'il est entré au musée pour la première fois dès le 3e printemps)",
+    objectives: [
+      "Faire don d'un objet au Musée"
+    ],
+    prerequisite: "Entrer au musée pour la première fois",
+    reward: "150 pièces",
+    notes: "Première quête du musée"
+  },
+  {
+    id: "agrandissement-musee",
+    title: "Agrandissement du musée",
+    description: "Avec votre aide, Scott pense que la ville pourrait financer un musée agrandi sur Pickstarter. Pensez à donner davantage d'objets pour donner vie à ce projet.",
+    category: "main",
+    total: 2,
+    giver: "Scott (la cinématique sera jouée après 10 dons au musée)",
+    objectives: [
+      "Faire un don d'objets au Musée (10/10)",
+      "Faire un don d'objets au Musée (50/50)"
+    ],
+    prerequisite: "Plus de vide",
+    reward: "150 pièces",
+    notes: "Progression des quêtes du musée"
+  },
+  {
+    id: "lancement-pickstarter",
+    title: "Lancement de Pickstarter",
+    description: "Vous avez reçu une lettre de Scott. Il vous informe qu'ils sont prêts à lancer la campagne Pickstarter, mais qu'ils ne peuvent pas le faire sans vous. Rendez-vous au musée !",
+    category: "main",
+    total: 2,
+    giver: "Scott (courrier 2 jours après avoir terminé l'extension du musée)",
+    objectives: [
+      "Aller au musée",
+      "Attendre le financement de Pickstarter pendant une semaine"
+    ],
+    prerequisite: "Agrandissement du musée",
+    reward: "Brosse à poils doux + 50 points du musée + 70 points d'amitié avec tous les habitants",
+    notes: "Point de cheminement déverrouillé"
+  },
+  {
+    id: "empreintes-dinosaures",
+    title: "Empreintes de dinosaures",
+    description: "Aidez à compléter l'exposition d'hologrammes de dinosaures pour élever le rang du musée, en présentant les merveilles de la vie préhistorique.",
+    category: "main",
+    total: 1,
+    giver: "Après avoir fait don de tous les fossiles et atteint le rang A de la ville",
+    objectives: [
+      "Hologrammes de dinosaures complets (10/10)"
+    ],
+    prerequisite: "Tous les fossiles donnés et rang A de la ville",
+    reward: "Amélioration du rang du musée",
+    notes: "Quête avancée du musée"
+  },
+  {
     id: "debuter",
     title: "Débuter",
     description: "Apprenons à cultiver ! Commencez par labourer la terre avec une houe, puis utilisez un sac de semences pour cultiver. Arrosez quotidiennement jusqu'à la récolte. Une fois prêt, rendez-vous au magasin général de Sam en ville pour acheter des semences.",
