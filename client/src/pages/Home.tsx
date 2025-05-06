@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
+import { CropCard } from "@/components/CropCard";
 import { getAllVillagers, getVillagersBySeason, getVillagersByLove, Villager, villagers } from "@/lib/villagers";
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
 
@@ -1784,7 +1785,26 @@ export default function Home() {
               </div>
               
               <div className="space-y-4">
-                {selectedCraftingCategory === "tools" ? (
+                {selectedCraftingCategory === "crops" ? (
+                  // Affichage des cultures
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {getAllCrops().map(crop => {
+                      const profit = calculateProfitability(crop);
+                      const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                      const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                      
+                      return (
+                        <CropCard 
+                          key={crop.id} 
+                          crop={crop} 
+                          profit={profit} 
+                          likesCount={likesCount} 
+                          lovesCount={lovesCount} 
+                        />
+                      );
+                    })}
+                  </div>
+                ) : selectedCraftingCategory === "tools" ? (
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
