@@ -577,7 +577,17 @@ export default function Home() {
                     <div className="space-y-5">
                       {/* Cultures les plus rentables */}
                       <div>
-                        <h3 className="font-medium text-gray-700 mb-3">Cultures les plus rentables</h3>
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-medium text-gray-700">Cultures les plus rentables</h3>
+                          <div className="relative group">
+                            <Info className="h-4 w-4 text-gray-400 cursor-help" />
+                            <div className="absolute z-10 right-0 mt-2 w-64 px-4 py-3 text-xs bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity">
+                              <p>
+                                La rentabilité est calculée sur une saison complète de 28 jours, en tenant compte des repousses pour les cultures qui repoussent après la première récolte.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {getAllCrops()
                             .filter(crop => crop.sellPrice)
@@ -630,9 +640,8 @@ export default function Home() {
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Printemps").map((crop) => {
-                              // Calcul du profit par jour
-                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
-                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDay = calculateProfitability(crop);
                               
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
@@ -659,9 +668,8 @@ export default function Home() {
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Été").map((crop) => {
-                              // Calcul du profit par jour
-                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
-                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDay = calculateProfitability(crop);
                               
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
@@ -693,9 +701,8 @@ export default function Home() {
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Automne").map((crop) => {
-                              // Calcul du profit par jour
-                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
-                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDay = calculateProfitability(crop);
                               
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
@@ -727,9 +734,8 @@ export default function Home() {
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Hiver").map((crop) => {
-                              // Calcul du profit par jour
-                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
-                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDay = calculateProfitability(crop);
                               
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;

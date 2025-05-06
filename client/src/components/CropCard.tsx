@@ -68,11 +68,16 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
             </div>
           </div>
           
-          {/* Badges résumés des préférences - uniquement ceux qui adorent */}
+          {/* Badges résumés des préférences et caractéristiques spéciales */}
           <div className="flex flex-wrap gap-2 mt-1">
             {lovesCount > 0 && (
               <div className="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded-full">
                 {lovesCount}❤️
+              </div>
+            )}
+            {crop.regrowth && (
+              <div className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
+                ♻️ Repousse
               </div>
             )}
           </div>
@@ -170,14 +175,26 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
           
           {/* Rentabilité détaillée */}
           {crop.sellPrice && (
-            <div className="mt-3 flex justify-between items-center pt-2 border-t border-gray-100">
-              <div className="text-sm">
-                <span className="font-medium text-green-600">Profit par jour:</span> 
-                <span className="ml-1 text-green-700">+{profit} pièces/jour</span>
+            <div className="mt-3 pt-2 border-t border-gray-100">
+              <div className="flex justify-between items-center">
+                <div className="text-sm">
+                  <span className="font-medium text-green-600">Profit par jour:</span> 
+                  <span className="ml-1 text-green-700">+{profit} pièces/jour</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  (sur une saison de 28 jours)
+                </div>
               </div>
-              <div className="text-xs text-gray-500">
-                ({crop.sellPrice} vente - {crop.seedPrice} achat)
-              </div>
+              
+              {/* Explication supplémentaire pour les cultures avec repousse */}
+              {crop.regrowth && (
+                <div className="mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-md">
+                  <p>
+                    <span className="font-medium">Calcul de rentabilité:</span> Cette culture repousse tous les {crop.regrowth} jours après sa première récolte 
+                    qui prend {crop.growthTime} jours. Le profit prend en compte toutes les récoltes possibles sur une saison complète.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
