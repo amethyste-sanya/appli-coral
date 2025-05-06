@@ -1788,22 +1788,164 @@ export default function Home() {
               <div className="space-y-4">
                 {selectedCraftingCategory === "crops" ? (
                   // Affichage des cultures
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {getAllCrops().map(crop => {
-                      const profit = calculateProfitability(crop);
-                      const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                      const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                  <div>
+                    {/* Filtres supplémentaires */}
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <Badge className="cursor-pointer bg-amber-100 text-amber-800 hover:bg-amber-200 text-xs px-3 py-1">
+                        Arbre fruitier
+                      </Badge>
+                      <Badge className="cursor-pointer bg-yellow-100 text-yellow-800 hover:bg-yellow-200 text-xs px-3 py-1">
+                        Plante fruitière
+                      </Badge>
+                      <Badge className="cursor-pointer bg-green-100 text-green-800 hover:bg-green-200 text-xs px-3 py-1">
+                        Légume
+                      </Badge>
+                      <Badge className="cursor-pointer bg-red-100 text-red-800 hover:bg-red-200 text-xs px-3 py-1">
+                        Fruit
+                      </Badge>
+                      <Badge className="cursor-pointer bg-orange-100 text-orange-800 hover:bg-orange-200 text-xs px-3 py-1">
+                        Céréale
+                      </Badge>
+                      <Badge className="cursor-pointer bg-lime-100 text-lime-800 hover:bg-lime-200 text-xs px-3 py-1">
+                        Légumineuse
+                      </Badge>
+                      <Badge className="cursor-pointer bg-emerald-100 text-emerald-800 hover:bg-emerald-200 text-xs px-3 py-1">
+                        Plante
+                      </Badge>
+                    </div>
+                    
+                    {/* Tri par groupes */}
+                    <div className="space-y-6">
+                      {/* Arbres fruitiers */}
+                      <div>
+                        <h3 className="text-lg font-medium text-amber-800 mb-3">Arbres fruitiers</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getAllCrops()
+                            .filter(crop => crop.category === "Arbre fruitier")
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map(crop => {
+                              const profit = calculateProfitability(crop);
+                              const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id} 
+                                  crop={crop} 
+                                  profit={profit} 
+                                  likesCount={likesCount} 
+                                  lovesCount={lovesCount} 
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
                       
-                      return (
-                        <CropCard 
-                          key={crop.id} 
-                          crop={crop} 
-                          profit={profit} 
-                          likesCount={likesCount} 
-                          lovesCount={lovesCount} 
-                        />
-                      );
-                    })}
+                      {/* Plantes fruitières */}
+                      <div>
+                        <h3 className="text-lg font-medium text-yellow-800 mb-3">Plantes fruitières</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getAllCrops()
+                            .filter(crop => crop.category === "Plante fruitière")
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map(crop => {
+                              const profit = calculateProfitability(crop);
+                              const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id} 
+                                  crop={crop} 
+                                  profit={profit} 
+                                  likesCount={likesCount} 
+                                  lovesCount={lovesCount} 
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
+                      
+                      {/* Légumes */}
+                      <div>
+                        <h3 className="text-lg font-medium text-green-800 mb-3">Légumes</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getAllCrops()
+                            .filter(crop => crop.category === "Légume")
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map(crop => {
+                              const profit = calculateProfitability(crop);
+                              const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id} 
+                                  crop={crop} 
+                                  profit={profit} 
+                                  likesCount={likesCount} 
+                                  lovesCount={lovesCount} 
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
+                      
+                      {/* Fruits */}
+                      <div>
+                        <h3 className="text-lg font-medium text-red-800 mb-3">Fruits</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getAllCrops()
+                            .filter(crop => crop.category === "Fruit")
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map(crop => {
+                              const profit = calculateProfitability(crop);
+                              const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id} 
+                                  crop={crop} 
+                                  profit={profit} 
+                                  likesCount={likesCount} 
+                                  lovesCount={lovesCount} 
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
+                      
+                      {/* Céréales et autres */}
+                      <div>
+                        <h3 className="text-lg font-medium text-orange-800 mb-3">Céréales et autres</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getAllCrops()
+                            .filter(crop => ["Céréale", "Légumineuse", "Plante"].includes(crop.category))
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map(crop => {
+                              const profit = calculateProfitability(crop);
+                              const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id} 
+                                  crop={crop} 
+                                  profit={profit} 
+                                  likesCount={likesCount} 
+                                  lovesCount={lovesCount} 
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ) : selectedCraftingCategory === "tools" ? (
                   <div className="overflow-x-auto">

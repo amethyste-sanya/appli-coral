@@ -1,0 +1,105 @@
+Banane
+Type : Plante fruitière
+Saisons : Printemps, Été
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 800 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 68 Po
+
+Prune
+Type : Plante fruitière
+Saisons : Printemps, Été
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 350 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 68 Po
+
+Ramboutan
+Type : Plante fruitière
+Saisons : Printemps, Été
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 350 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 68 Po
+
+Fruit du dragon
+Type : Plante fruitière
+Saisons : Été, Automne
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 350 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 68 Po
+
+Jacquier
+Type : Plante fruitière
+Saisons : Été, Automne
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 500 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 74 Po
+
+Papaye
+Type : Plante fruitière
+Saisons : Été, Automne
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 350 Po
+Source : Bazar de Sam
+Rang de ville : E
+Prix de vente de base : 68 Po
+
+Cacao
+Type : Plante fruitière
+Saisons : Automne, Hiver
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 500 Po
+Source : Bazar de Sam
+Rang de ville : C
+Prix de vente de base : 85 Po
+
+Citron
+Type : Plante fruitière
+Saisons : Automne, Hiver
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 200 Po
+Source : Bazar de Sam
+Rang de ville : C
+Prix de vente de base : 61 Po
+
+Poire
+Type : Plante fruitière
+Saisons : Automne, Hiver
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 350 Po
+Source : Bazar de Sam
+Rang de ville : C
+Prix de vente de base : 68 Po
+
+Salak (fruit du serpent)
+Type : Plante fruitière
+Saisons : Hiver, Printemps
+Temps de maturation : 10 jours
+Repousse : 4 jours
+Prix du semis : 1 200 Po
+Source : Bazar de Sam
+Rang de ville : C
+Prix de vente de base : 67 Po
+
+Litchi
+Type : Plante fruitière
+Saisons : Hiver, Printemps
+Temps de maturation : 10 jours
+Rep

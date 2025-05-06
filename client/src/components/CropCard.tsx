@@ -12,8 +12,52 @@ type CropCardProps = {
 export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   
+  // Déterminer la couleur en fonction de la catégorie de culture
+  const getBgColor = () => {
+    switch(crop.category) {
+      case "Arbre fruitier":
+        return "bg-amber-50 border-amber-200";
+      case "Plante fruitière":
+        return "bg-yellow-50 border-yellow-200";
+      case "Légume":
+        return "bg-green-50 border-green-200";
+      case "Fruit":
+        return "bg-red-50 border-red-200";
+      case "Céréale":
+        return "bg-orange-50 border-orange-200";
+      case "Légumineuse":
+        return "bg-lime-50 border-lime-200";
+      case "Plante":
+        return "bg-emerald-50 border-emerald-200";
+      default:
+        return "bg-white border-gray-200";
+    }
+  };
+  
+  // Déterminer la couleur de la catégorie pour le badge
+  const getCategoryColor = () => {
+    switch(crop.category) {
+      case "Arbre fruitier":
+        return "bg-amber-100 text-amber-800";
+      case "Plante fruitière":
+        return "bg-yellow-100 text-yellow-800";
+      case "Légume":
+        return "bg-green-100 text-green-800";
+      case "Fruit":
+        return "bg-red-100 text-red-800";
+      case "Céréale":
+        return "bg-orange-100 text-orange-800";
+      case "Légumineuse":
+        return "bg-lime-100 text-lime-800";
+      case "Plante":
+        return "bg-emerald-100 text-emerald-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+  
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+    <div className={`${getBgColor()} border rounded-lg p-4 shadow-sm`}>
       {/* Vue condensée (toujours visible) */}
       <div 
         className="flex gap-4 cursor-pointer" 
@@ -58,7 +102,11 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
           <div className="flex justify-between">
             <div>
               <h4 className="font-medium text-gray-900">{crop.name}</h4>
-              <p className="text-sm text-gray-500">{crop.category}</p>
+              <div className="flex items-center gap-1">
+                <Badge className={`${getCategoryColor()} text-xs`}>
+                  {crop.category}
+                </Badge>
+              </div>
             </div>
             <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
               {crop.season}
