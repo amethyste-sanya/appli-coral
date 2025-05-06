@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,8 +16,19 @@ type Task = {
   done: boolean;
 };
 
+// Type pour les catégories d'artisanat
+type CraftingCategory = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  color: string;
+  count: number;
+};
+
 export default function Home() {
   const [newTask, setNewTask] = useState("");
+  const [craftingSearch, setCraftingSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Fetch tasks
   const { data: tasks = [], refetch } = useQuery<Task[]>({
@@ -45,6 +56,52 @@ export default function Home() {
     }
   });
 
+  // Catégories d'artisanat
+  const craftingCategories: CraftingCategory[] = [
+    {
+      id: "tools",
+      name: "Outils",
+      icon: <Hammer className="h-8 w-8 mb-2 text-amber-600" />,
+      color: "amber",
+      count: 8
+    },
+    {
+      id: "fabrics",
+      name: "Tissus",
+      icon: <div className="h-8 w-8 mb-2 text-blue-600 flex items-center justify-center text-xl">🧵</div>,
+      color: "blue",
+      count: 12
+    },
+    {
+      id: "farming",
+      name: "Agriculture",
+      icon: <div className="h-8 w-8 mb-2 text-green-600 flex items-center justify-center text-xl">🌱</div>,
+      color: "green",
+      count: 10
+    },
+    {
+      id: "alchemy",
+      name: "Alchimie",
+      icon: <div className="h-8 w-8 mb-2 text-purple-600 flex items-center justify-center text-xl">🧪</div>,
+      color: "purple",
+      count: 15
+    },
+    {
+      id: "cooking",
+      name: "Cuisine",
+      icon: <div className="h-8 w-8 mb-2 text-red-600 flex items-center justify-center text-xl">🍲</div>,
+      color: "red",
+      count: 24
+    },
+    {
+      id: "furniture",
+      name: "Meubles",
+      icon: <div className="h-8 w-8 mb-2 text-gray-600 flex items-center justify-center text-xl">🪑</div>,
+      color: "gray",
+      count: 18
+    }
+  ];
+
   const addTask = () => {
     if (newTask.trim() !== "") {
       addTaskMutation.mutate(newTask);
@@ -59,6 +116,61 @@ export default function Home() {
     if (e.key === 'Enter') {
       addTask();
     }
+  };
+  
+  // Gérer la sélection de catégorie d'artisanat
+  const handleCategorySelect = (categoryId: string) => {
+    if (selectedCategory === categoryId) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(categoryId);
+    }
+  };
+  
+  // Fonction pour générer les classes CSS basées sur la couleur
+  const getCategoryClasses = (category: CraftingCategory) => {
+    const isSelected = selectedCategory === category.id;
+    
+    let classes = {
+      container: "",
+      title: "",
+      text: ""
+    };
+    
+    switch (category.color) {
+      case "amber":
+        classes.container = `bg-amber-50 border-amber-200 ${isSelected ? "ring-2 ring-amber-500 bg-amber-100" : "hover:bg-amber-100"}`;
+        classes.title = "text-amber-800";
+        classes.text = "text-amber-600";
+        break;
+      case "blue":
+        classes.container = `bg-blue-50 border-blue-200 ${isSelected ? "ring-2 ring-blue-500 bg-blue-100" : "hover:bg-blue-100"}`;
+        classes.title = "text-blue-800";
+        classes.text = "text-blue-600";
+        break;
+      case "green":
+        classes.container = `bg-green-50 border-green-200 ${isSelected ? "ring-2 ring-green-500 bg-green-100" : "hover:bg-green-100"}`;
+        classes.title = "text-green-800";
+        classes.text = "text-green-600";
+        break;
+      case "purple":
+        classes.container = `bg-purple-50 border-purple-200 ${isSelected ? "ring-2 ring-purple-500 bg-purple-100" : "hover:bg-purple-100"}`;
+        classes.title = "text-purple-800";
+        classes.text = "text-purple-600";
+        break;
+      case "red":
+        classes.container = `bg-red-50 border-red-200 ${isSelected ? "ring-2 ring-red-500 bg-red-100" : "hover:bg-red-100"}`;
+        classes.title = "text-red-800";
+        classes.text = "text-red-600";
+        break;
+      case "gray":
+        classes.container = `bg-gray-50 border-gray-200 ${isSelected ? "ring-2 ring-gray-500 bg-gray-100" : "hover:bg-gray-100"}`;
+        classes.title = "text-gray-800";
+        classes.text = "text-gray-600";
+        break;
+    }
+    
+    return classes;
   };
 
   return (
@@ -329,42 +441,41 @@ export default function Home() {
                         <span className="text-sm text-gray-500">Jour 15</span>
                       </div>
                       <p className="text-sm text-gray-600 mt-1">Décorez le village avec des fleurs et participez au concours floral.</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="text-xs text-gray-500">Récompense: Graines rares + 500 pièces</span>
-                      </div>
                     </div>
                     
                     {/* Event 2 */}
                     <div className="border-l-4 border-blue-500 pl-3 py-2">
                       <div className="flex justify-between">
-                        <h4 className="font-medium">Tournoi de Pêche</h4>
-                        <span className="text-sm text-gray-500">Jour 24</span>
+                        <h4 className="font-medium">Course aux œufs</h4>
+                        <span className="text-sm text-gray-500">Jour 28</span>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">Attrapez le plus gros poisson pour remporter le tournoi annuel.</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="text-xs text-gray-500">Récompense: Canne à pêche spéciale + Trophée</span>
-                      </div>
+                      <p className="text-sm text-gray-600 mt-1">Cherchez des œufs cachés partout dans le village et gagnez des prix.</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center mt-6">
+                  <div className="flex items-center justify-between mt-8">
                     <h3 className="font-medium">Été</h3>
+                    <div className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">À venir</div>
                   </div>
                   
-                  <div className="space-y-4">
-                    {/* Event 3 */}
-                    <div className="border-l-4 border-yellow-500 pl-3 py-2 opacity-75">
+                  {/* Summer events */}
+                  <div className="space-y-4 opacity-75">
+                    {/* Event 1 */}
+                    <div className="border-l-4 border-yellow-500 pl-3 py-2">
                       <div className="flex justify-between">
                         <h4 className="font-medium">Festival de la Plage</h4>
                         <span className="text-sm text-gray-500">Jour 12</span>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">Profitez des activités sur la plage et du grand feu d'artifice nocturne.</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="text-xs text-gray-500">Récompense: Vêtements d'été + Recettes</span>
+                      <p className="text-sm text-gray-600 mt-1">Profitez de jeux de plage et d'un feu d'artifice nocturne.</p>
+                    </div>
+                    
+                    {/* Event 2 */}
+                    <div className="border-l-4 border-green-500 pl-3 py-2">
+                      <div className="flex justify-between">
+                        <h4 className="font-medium">Foire Agricole</h4>
+                        <span className="text-sm text-gray-500">Jour 25</span>
                       </div>
+                      <p className="text-sm text-gray-600 mt-1">Présentez vos meilleures récoltes et animaux pour remporter des récompenses.</p>
                     </div>
                   </div>
                   
@@ -391,6 +502,8 @@ export default function Home() {
                       <Input 
                         className="pl-10" 
                         placeholder="Rechercher une recette..." 
+                        value={craftingSearch}
+                        onChange={(e) => setCraftingSearch(e.target.value)}
                       />
                     </div>
                     <Button variant="outline" className="bg-amber-50 border-amber-200 text-amber-800">
@@ -400,114 +513,252 @@ export default function Home() {
                   
                   {/* Crafting Categories */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <div className="bg-amber-50 rounded-lg border border-amber-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-amber-100 transition-colors">
-                      <Hammer className="h-8 w-8 mb-2 text-amber-600" />
-                      <h3 className="font-medium text-amber-800">Outils</h3>
-                      <p className="text-xs text-amber-600 mt-1">8 recettes</p>
-                    </div>
-                    
-                    <div className="bg-blue-50 rounded-lg border border-blue-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-100 transition-colors">
-                      <div className="h-8 w-8 mb-2 text-blue-600 flex items-center justify-center text-xl">🧵</div>
-                      <h3 className="font-medium text-blue-800">Tissus</h3>
-                      <p className="text-xs text-blue-600 mt-1">12 recettes</p>
-                    </div>
-                    
-                    <div className="bg-green-50 rounded-lg border border-green-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-green-100 transition-colors">
-                      <div className="h-8 w-8 mb-2 text-green-600 flex items-center justify-center text-xl">🌱</div>
-                      <h3 className="font-medium text-green-800">Agriculture</h3>
-                      <p className="text-xs text-green-600 mt-1">10 recettes</p>
-                    </div>
-                    
-                    <div className="bg-purple-50 rounded-lg border border-purple-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-purple-100 transition-colors">
-                      <div className="h-8 w-8 mb-2 text-purple-600 flex items-center justify-center text-xl">🧪</div>
-                      <h3 className="font-medium text-purple-800">Alchimie</h3>
-                      <p className="text-xs text-purple-600 mt-1">15 recettes</p>
-                    </div>
-                    
-                    <div className="bg-red-50 rounded-lg border border-red-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-red-100 transition-colors">
-                      <div className="h-8 w-8 mb-2 text-red-600 flex items-center justify-center text-xl">🍲</div>
-                      <h3 className="font-medium text-red-800">Cuisine</h3>
-                      <p className="text-xs text-red-600 mt-1">24 recettes</p>
-                    </div>
-                    
-                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-100 transition-colors">
-                      <div className="h-8 w-8 mb-2 text-gray-600 flex items-center justify-center text-xl">🪑</div>
-                      <h3 className="font-medium text-gray-800">Meubles</h3>
-                      <p className="text-xs text-gray-600 mt-1">18 recettes</p>
-                    </div>
+                    {craftingCategories.map((category) => {
+                      const classes = getCategoryClasses(category);
+                      return (
+                        <div 
+                          key={category.id}
+                          onClick={() => handleCategorySelect(category.id)}
+                          className={`${classes.container} rounded-lg border p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors`}
+                        >
+                          {category.icon}
+                          <h3 className={`font-medium ${classes.title}`}>
+                            {category.name}
+                          </h3>
+                          <p className={`text-xs ${classes.text} mt-1`}>
+                            {category.count} recettes
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                   
+                  {/* Selected Category Content */}
+                  {selectedCategory && (
+                    <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold">
+                          {craftingCategories.find(c => c.id === selectedCategory)?.name}
+                        </h3>
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          onClick={() => setSelectedCategory(null)}
+                          className="h-7 text-gray-500 hover:text-gray-700"
+                        >
+                          Fermer
+                        </Button>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        {selectedCategory === "tools" && (
+                          <>
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
+                                <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Arrosoir</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>5 × Minerai de cuivre</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Barre de fer</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Pioche en cuivre</h4>
+                                <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Pioche en bois</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>10 × Minerai de cuivre</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>5 × Bûches</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 2 de mineur</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        
+                        {selectedCategory === "cooking" && (
+                          <>
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
+                                <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Bocal vide</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>3 × Légumes au choix</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Sel</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Soupe de poisson</h4>
+                                <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>2 × Poisson (n'importe quel type)</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Pomme de terre</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Herbes</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 3 de cuisine</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        
+                        {selectedCategory !== "tools" && selectedCategory !== "cooking" && (
+                          <div className="text-center py-6">
+                            <p className="text-gray-500">
+                              Les recettes pour {craftingCategories.find(c => c.id === selectedCategory)?.name.toLowerCase()} seront bientôt disponibles.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Recent Recipes */}
-                  <div>
-                    <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
-                    
-                    <div className="space-y-3">
-                      {/* Recipe 1 */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                        <div className="flex justify-between">
-                          <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
-                          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                  {!selectedCategory && (
+                    <div>
+                      <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
+                      
+                      <div className="space-y-3">
+                        {/* Recipe 1 */}
+                        <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                          <div className="flex justify-between">
+                            <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
+                            <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                          </div>
+                          
+                          <div className="mt-2 text-sm text-gray-600">
+                            <div className="flex gap-1 items-center mb-1">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>1 × Arrosoir</span>
+                            </div>
+                            <div className="flex gap-1 items-center mb-1">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>5 × Minerai de cuivre</span>
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>1 × Barre de fer</span>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-2 flex justify-between items-center text-xs">
+                            <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
+                            <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                              Détails
+                            </Button>
+                          </div>
                         </div>
                         
-                        <div className="mt-2 text-sm text-gray-600">
-                          <div className="flex gap-1 items-center mb-1">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>1 × Arrosoir</span>
+                        {/* Recipe 2 */}
+                        <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                          <div className="flex justify-between">
+                            <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
+                            <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
                           </div>
-                          <div className="flex gap-1 items-center mb-1">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>5 × Minerai de cuivre</span>
+                          
+                          <div className="mt-2 text-sm text-gray-600">
+                            <div className="flex gap-1 items-center mb-1">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>1 × Bocal vide</span>
+                            </div>
+                            <div className="flex gap-1 items-center mb-1">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>3 × Légumes au choix</span>
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              <ArrowRight className="h-3 w-3 text-gray-400" />
+                              <span>1 × Sel</span>
+                            </div>
                           </div>
-                          <div className="flex gap-1 items-center">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>1 × Barre de fer</span>
+                          
+                          <div className="mt-2 flex justify-between items-center text-xs">
+                            <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
+                            <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                              Détails
+                            </Button>
                           </div>
-                        </div>
-                        
-                        <div className="mt-2 flex justify-between items-center text-xs">
-                          <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
-                          <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                            Détails
-                          </Button>
                         </div>
                       </div>
                       
-                      {/* Recipe 2 */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                        <div className="flex justify-between">
-                          <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
-                          <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
-                        </div>
-                        
-                        <div className="mt-2 text-sm text-gray-600">
-                          <div className="flex gap-1 items-center mb-1">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>1 × Bocal vide</span>
-                          </div>
-                          <div className="flex gap-1 items-center mb-1">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>3 × Légumes au choix</span>
-                          </div>
-                          <div className="flex gap-1 items-center">
-                            <ArrowRight className="h-3 w-3 text-gray-400" />
-                            <span>1 × Sel</span>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-2 flex justify-between items-center text-xs">
-                          <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
-                          <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                            Détails
-                          </Button>
-                        </div>
-                      </div>
+                      <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
+                        <Hammer className="h-4 w-4" />
+                        <span>Toutes les recettes</span>
+                      </Button>
                     </div>
-                    
-                    <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                      <Hammer className="h-4 w-4" />
-                      <span>Toutes les recettes</span>
-                    </Button>
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
