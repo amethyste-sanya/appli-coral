@@ -25,7 +25,7 @@ type Task = {
   done: boolean;
 };
 
-// Type pour un objectif individuel
+// Type pour un objectif de quête
 type QuestObjective = {
   text: string;
   completed: boolean;
@@ -199,31 +199,27 @@ export default function Home() {
     }
   };
 
-  // Fonction utilitaire pour convertir les objectifs en format avec état
-  const convertObjectivesToQuestObjectives = (objectives?: string[]): QuestObjective[] | undefined => {
+  // Fonction pour initialiser les états des objectifs
+  const initializeObjectiveStatuses = (objectives?: string[]): boolean[] | undefined => {
     if (!objectives || objectives.length === 0) return undefined;
-    return objectives.map(obj => ({
-      text: obj,
-      completed: false
-    }));
+    return objectives.map(() => false);
   };
 
   // Fonction pour basculer l'état d'un objectif individuel
   const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
     setQuests(quests.map(quest => {
-      if (quest.id === questId && quest.objectives) {
-        const newObjectives = [...quest.objectives];
-        newObjectives[objectiveIndex] = {
-          ...newObjectives[objectiveIndex],
-          completed: !newObjectives[objectiveIndex].completed
-        };
-
+      if (quest.id === questId && quest.objectives && quest.objectivesStatus) {
+        // Créer une copie du tableau d'états des objectifs
+        const newObjectivesStatus = [...quest.objectivesStatus];
+        // Inverser l'état de l'objectif sélectionné
+        newObjectivesStatus[objectiveIndex] = !newObjectivesStatus[objectiveIndex];
+        
         // Vérifier si tous les objectifs sont complétés pour mettre à jour l'état global de la quête
-        const allObjectivesCompleted = newObjectives.every(obj => obj.completed);
-
+        const allObjectivesCompleted = newObjectivesStatus.every(status => status);
+        
         return {
           ...quest,
-          objectives: newObjectives,
+          objectivesStatus: newObjectivesStatus,
           completed: allObjectivesCompleted
         };
       }
@@ -232,8 +228,28 @@ export default function Home() {
   };
 
   // Fonctions pour la gestion des quêtes
-  const addQuest = (newQuestItem:Quest) => {
-    setQuests([...quests, newQuestItem]);
+  const addQuest = () => {
+    if (newQuest.title.trim() === "") return;
+    
+    const quest: Quest = {
+      id: Date.now(), // Utiliser un timestamp comme id temporaire
+      title: newQuest.title,
+      description: newQuest.description,
+      category: newQuest.category,
+      completed: false,
+      current: 0,
+      total: newQuest.total,
+      deadline: newQuest.deadline
+    };
+    
+    setQuests([...quests, quest]);
+    setNewQuest({
+      title: "",
+      description: "",
+      category: "secondary",
+      total: 1
+    });
+    setIsAddingQuest(false);
   };
 
   const updateQuestProgress = (id: number, increment: number) => {
