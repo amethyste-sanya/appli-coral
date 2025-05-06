@@ -2091,20 +2091,7 @@ export default function Home() {
                         </div>
                         
                         <div className="space-y-3">
-                          <div className="bg-white p-3 rounded-md border border-orange-100">
-                            <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
-                            <p className="text-sm text-gray-600">
-                              {selectedCookingSubcategory === "frying_pan" && "Essentiel pour faire sauter et frire les aliments."}
-                              {selectedCookingSubcategory === "chef_knife" && "Un couteau de qualité pour découper les ingrédients avec précision."}
-                              {selectedCookingSubcategory === "oven" && "Permet de cuire au four et de faire des pâtisseries."}
-                              {selectedCookingSubcategory === "pot" && "Idéale pour les soupes, les ragoûts et les cuissons à l'eau."}
-                              {selectedCookingSubcategory === "ceramic_bowl" && "Un bol durable et élégant pour la préparation et le service."}
-                              {selectedCookingSubcategory === "blender" && "Parfait pour les smoothies, les purées et les sauces."}
-                              {selectedCookingSubcategory === "grill" && "Pour griller viandes, poissons et légumes avec une saveur fumée."}
-                              {selectedCookingSubcategory === "seasoning_set" && "Une collection d'épices et herbes pour rehausser vos plats."}
-                              {selectedCookingSubcategory === "skillet" && "Une poêle profonde en fonte, excellente pour la cuisine à haute température."}
-                            </p>
-                          </div>
+
                           
                           <div className="bg-white p-3 rounded-md border border-orange-100">
                             <h4 className="text-sm font-medium text-gray-700 mb-2">Recettes ({cookingRecipes[selectedCookingSubcategory as keyof typeof cookingRecipes].length})</h4>
