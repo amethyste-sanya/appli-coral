@@ -549,6 +549,70 @@ export default function Home() {
 
                       <TabsContent value="secondary">
                         <div className="space-y-6">
+                          {/* Sous-catégorie: Quêtes Cœurs */}
+                          <div className="bg-pink-50 rounded-lg p-4 border border-pink-200">
+                            <h4 className="font-medium text-pink-800 mb-3 flex items-center">
+                              <div className="h-4 w-4 mr-2 text-center">❤️</div>
+                              Quêtes Cœurs
+                            </h4>
+                            <div className="space-y-4">
+                              {getPresetQuestsByCategory("secondary")
+                                .filter(quest => quest.notes && quest.notes.toLowerCase().includes("cœurs"))
+                                .map((presetQuest) => (
+                                  <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-pink-100">
+                                    <div className="flex justify-between mb-2">
+                                      <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                      <Button
+                                        onClick={() => {
+                                          const newQuestItem: Quest = {
+                                            id: Date.now(),
+                                            title: presetQuest.title,
+                                            description: presetQuest.description,
+                                            category: presetQuest.category,
+                                            completed: false,
+                                            current: 0,
+                                            total: presetQuest.total,
+                                            objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                          };
+                                          setQuests([...quests, newQuestItem]);
+                                        }}
+                                        variant="outline"
+                                        size="sm"
+                                        className="add-button-blue"
+                                        disabled={quests.some(q => q.title === presetQuest.title)}
+                                      >
+                                        {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                      </Button>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                                    <div className="bg-pink-50 px-2 py-1 mb-2 rounded inline-block text-xs text-pink-800 font-medium">
+                                      {presetQuest.giver}
+                                    </div>
+                                    {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                      <div className="mt-2">
+                                        <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                        <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                          {presetQuest.objectives.map((obj, idx) => (
+                                            <li key={idx}>{obj}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {presetQuest.prerequisite && (
+                                      <div className="mt-2 text-xs text-gray-500">
+                                        <span className="font-medium">Prérequis:</span> {presetQuest.prerequisite}
+                                      </div>
+                                    )}
+                                    {presetQuest.reward && (
+                                      <div className="mt-2 text-xs text-amber-600">
+                                        <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+
                           {/* Sous-catégorie: Quêtes Courrier (Printemps) */}
                           <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                             <h4 className="font-medium text-green-800 mb-3 flex items-center">

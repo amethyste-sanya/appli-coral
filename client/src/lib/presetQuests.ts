@@ -13,6 +13,107 @@ export type PresetQuest = {
 };
 
 export const presetQuests: PresetQuest[] = [
+  // Quêtes Cœurs
+  {
+    id: "saumon-pour-jim",
+    title: "Saumon pour Jim",
+    description: "Apportez 1 saumon à Jim entre 17h et 20h.",
+    category: "secondary",
+    total: 1,
+    giver: "Jim (5 cœurs)",
+    objectives: [
+      "Apportez 1 saumon au Beach Shack entre 17h et 20h"
+    ],
+    prerequisite: "Avoir terminé l'événement cardiaque à 3 cœurs de Jim",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "fleur-svp",
+    title: "Fleur s'il vous plaît",
+    description: "Léa a besoin de deux fleurs pour confectionner un cadeau spécial pour sa mère. Elle vous a demandé de l'aide.",
+    category: "secondary",
+    total: 1,
+    giver: "Léa (2 cœurs)",
+    objectives: [
+      "Livrer 2 fleurs à Leah"
+    ],
+    prerequisite: "Avoir 2 cœurs d'amitié avec Léa",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "fleur-de-poisson",
+    title: "Fleur de poisson",
+    description: "La taverne a besoin de quelques fleurs fraîches. Votre ferme pourrait-elle en fournir ? Si oui, merci de les faire livrer au plus vite.",
+    category: "secondary",
+    total: 1,
+    giver: "Noé (3 cœurs)",
+    objectives: [
+      "Apportez 2 fleurs à la taverne entre 10h et 13h"
+    ],
+    prerequisite: "Avoir terminé l'événement cardiaque à 1 cœur de Noé",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "feux-de-joie",
+    title: "Feux de joie",
+    description: "Viendras-tu à Garden Lane demain matin et m'aideras-tu à couper du bois ?",
+    category: "secondary",
+    total: 1,
+    giver: "Noé (6 cœurs)",
+    objectives: [
+      "Apportez 4 bois à Garden Lane entre 10h et 13h"
+    ],
+    prerequisite: "Avoir terminé les événements cardiaques à 1, 3, 4 et 5 cœurs de Noé",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "aidez-paul",
+    title: "Aidez Paul",
+    description: "Apportez du thé vert à Paul.",
+    category: "secondary",
+    total: 1,
+    giver: "Paul (cœur inconnu)",
+    objectives: [
+      "Livrer du thé vert à Paul"
+    ],
+    prerequisite: "Niveau d'amitié spécifique avec Paul ou Anne",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "bois-pour-theo",
+    title: "Du bois pour Théo",
+    description: "Apportez Théo 3 Bois.",
+    category: "secondary",
+    total: 1,
+    giver: "Théo (5 cœurs)",
+    objectives: [
+      "Livrer 3 bois à Théo"
+    ],
+    prerequisite: "Avoir terminé les événements cardiaques à 2, 3 et 4 cœurs de Théo",
+    reward: "Points d'amitié",
+    notes: "Quête cœurs"
+  },
+  {
+    id: "tresor-legendaire",
+    title: "Trésor légendaire",
+    description: "Rejoignez Zarah dans sa quête pour découvrir les pièces manquantes d'un indice mystérieux. Résolvez le mystère : ce trésor légendaire est-il réel ou un simple mythe ?",
+    category: "secondary",
+    total: 3,
+    giver: "Zarah (6 cœurs)",
+    objectives: [
+      "Trouver un indice dans l'océan",
+      "Trouver un indice dans la caverne",
+      "Rencontrer Zarah chez elle"
+    ],
+    prerequisite: "Avoir terminé les événements cardiaques à 2, 4 et 6 cœurs de Zarah",
+    reward: "Points d'amitié + récompense spéciale",
+    notes: "Quête cœurs"
+  },
   {
     id: "dans-locean",
     title: "Dans l'océan",
