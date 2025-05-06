@@ -1920,7 +1920,92 @@ export default function Home() {
               </div>
               
               <div className="space-y-4">
-                {selectedCraftingCategory === "crops" ? (
+                {selectedCraftingCategory === "cooking" ? (
+                  // Affichage des ustensiles de cuisine
+                  <div>
+                    <h3 className="text-lg font-medium text-orange-800 mb-3">Équipement de cuisine</h3>
+                    
+                    {/* Sous-catégories d'ustensiles de cuisine */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                      {cookingSubcategories.map((subcategory) => (
+                        <button
+                          key={subcategory.id}
+                          className={`flex items-center gap-2 p-3 rounded-lg ${subcategory.color} hover:bg-opacity-80 transition-all ${
+                            selectedCookingSubcategory === subcategory.id ? "ring-2 ring-orange-500" : ""
+                          }`}
+                          onClick={() => setSelectedCookingSubcategory(subcategory.id)}
+                        >
+                          <div className="text-xl">{subcategory.icon}</div>
+                          <div className="flex-1 text-sm font-medium">{subcategory.name}</div>
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Détails de l'ustensile sélectionné */}
+                    {selectedCookingSubcategory && (
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="text-3xl">
+                            {cookingSubcategories.find(s => s.id === selectedCookingSubcategory)?.icon}
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-medium text-orange-800">
+                              {cookingSubcategories.find(s => s.id === selectedCookingSubcategory)?.name}
+                            </h3>
+                            <p className="text-sm text-orange-600">Équipement de cuisine</p>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div className="bg-white p-3 rounded-md border border-orange-100">
+                            <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
+                            <p className="text-sm text-gray-600">
+                              {selectedCookingSubcategory === "frying_pan" && "Essentiel pour faire sauter et frire les aliments."}
+                              {selectedCookingSubcategory === "chef_knife" && "Un couteau de qualité pour découper les ingrédients avec précision."}
+                              {selectedCookingSubcategory === "oven" && "Permet de cuire au four et de faire des pâtisseries."}
+                              {selectedCookingSubcategory === "pot" && "Idéale pour les soupes, les ragoûts et les cuissons à l'eau."}
+                              {selectedCookingSubcategory === "ceramic_bowl" && "Un bol durable et élégant pour la préparation et le service."}
+                              {selectedCookingSubcategory === "blender" && "Parfait pour les smoothies, les purées et les sauces."}
+                              {selectedCookingSubcategory === "grill" && "Pour griller viandes, poissons et légumes avec une saveur fumée."}
+                              {selectedCookingSubcategory === "seasoning_set" && "Une collection d'épices et herbes pour rehausser vos plats."}
+                              {selectedCookingSubcategory === "skillet" && "Une poêle profonde en fonte, excellente pour la cuisine à haute température."}
+                            </p>
+                          </div>
+                          
+                          <div className="bg-white p-3 rounded-md border border-orange-100">
+                            <h4 className="text-sm font-medium text-gray-700 mb-2">Utilisation</h4>
+                            <p className="text-sm text-gray-600">
+                              {selectedCookingSubcategory === "frying_pan" && "Idéal pour faire frire des œufs, sauter des légumes ou cuire des crêpes."}
+                              {selectedCookingSubcategory === "chef_knife" && "Parfait pour trancher, hacher et découper tous types d'ingrédients avec précision."}
+                              {selectedCookingSubcategory === "oven" && "Utilisé pour la cuisson au four des pains, gâteaux, viandes et plats mijotés."}
+                              {selectedCookingSubcategory === "pot" && "Excellent pour les soupes, les pâtes, ou pour faire bouillir des légumes."}
+                              {selectedCookingSubcategory === "ceramic_bowl" && "Utile pour mélanger les ingrédients, mariner ou servir les salades et desserts."}
+                              {selectedCookingSubcategory === "blender" && "Permet de réaliser des smoothies, soupes crémeuses et sauces homogènes."}
+                              {selectedCookingSubcategory === "grill" && "Pour les barbecues, la cuisson de viandes, poissons et légumes grillés."}
+                              {selectedCookingSubcategory === "seasoning_set" && "Permet d'ajouter saveurs et arômes à tous vos plats cuisinés."}
+                              {selectedCookingSubcategory === "skillet" && "Idéal pour la cuisson à haute température, les sautés et les plats mijotés."}
+                            </p>
+                          </div>
+                          
+                          <div className="bg-white p-3 rounded-md border border-orange-100">
+                            <h4 className="text-sm font-medium text-gray-700 mb-2">Entretien</h4>
+                            <p className="text-sm text-gray-600">
+                              {selectedCookingSubcategory === "frying_pan" && "Laver à la main avec un savon doux, éviter les éponges abrasives."}
+                              {selectedCookingSubcategory === "chef_knife" && "Affûter régulièrement, laver à la main et essuyer immédiatement."}
+                              {selectedCookingSubcategory === "oven" && "Nettoyer les résidus après chaque utilisation, dégraisser périodiquement."}
+                              {selectedCookingSubcategory === "pot" && "Laver à l'eau chaude savonneuse, faire tremper si nécessaire."}
+                              {selectedCookingSubcategory === "ceramic_bowl" && "Laver à la main ou au lave-vaisselle, éviter les chocs thermiques."}
+                              {selectedCookingSubcategory === "blender" && "Rincer immédiatement après usage, démonter pour un nettoyage complet."}
+                              {selectedCookingSubcategory === "grill" && "Nettoyer à chaud avec une brosse métallique, vider les cendres régulièrement."}
+                              {selectedCookingSubcategory === "seasoning_set" && "Garder au sec et à l'abri de la lumière pour préserver les arômes."}
+                              {selectedCookingSubcategory === "skillet" && "Culotter régulièrement, ne jamais tremper dans l'eau, sécher après lavage."}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : selectedCraftingCategory === "crops" ? (
                   // Affichage des cultures
                   <div>
                     {/* Filtres supplémentaires */}
