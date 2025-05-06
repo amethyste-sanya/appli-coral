@@ -438,7 +438,7 @@ export default function Home() {
                             <div className="space-y-4">
                               {getPresetQuestsByCategory("main")
                                 .filter(quest => 
-                                  ["mysteres-ocean"]
+                                  ["mysteres-ocean", "tresor-sirenes"]
                                   .includes(quest.id))
                                 .map((presetQuest) => (
                                   <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-blue-200">
