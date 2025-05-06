@@ -328,7 +328,7 @@ export default function Home() {
                               {getPresetQuestsByCategory("main")
                                 .filter(quest => 
                                   ["geant-petrifie-1", "village-geants", "geant-petrifie-2", "geant-petrifie-3", 
-                                   "geant-petrifie-4", "coupable-petrifie", "dernier-geant"]
+                                   "geant-petrifie-4", "coupable-petrifie", "dernier-geant", "peinture-murale-gardien"]
                                   .includes(quest.id))
                                 .map((presetQuest) => (
                                   <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-amber-200">
@@ -444,7 +444,7 @@ export default function Home() {
                             <div className="space-y-4">
                               {getPresetQuestsByCategory("main")
                                 .filter(quest => 
-                                  ["peinture-murale-gardien"]
+                                  []
                                   .includes(quest.id))
                                 .map((presetQuest) => (
                                   <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-purple-200">
