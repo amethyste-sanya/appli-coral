@@ -841,7 +841,11 @@ export default function Home() {
                         <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
                         <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
                         <p className="text-gray-600">
-                          Cette section du journal qui contiendra toutes les cultures et graines sera bientôt disponible.
+                          Cette section du journal qui contiendra toutes les cultures et graines du jeu sera bientôt disponible.
+                        </p>
+                        <p className="text-gray-600 mt-2">
+                          Informations incluses pour chaque culture : saison, temps de pousse, prix d'achat, prix de vente, 
+                          rentabilité, effets spéciaux, et conditions particulières.
                         </p>
                       </div>
                     </div>
@@ -856,6 +860,10 @@ export default function Home() {
                         <p className="text-gray-600">
                           Cette section du journal qui contiendra tous les poissons pêchés sera bientôt disponible.
                         </p>
+                        <p className="text-gray-600 mt-2">
+                          Informations incluses pour chaque poisson : saison, météo favorable, lieu, 
+                          horaire, technique, prix de vente, et utilisations possibles.
+                        </p>
                       </div>
                     </div>
                   )}
@@ -868,6 +876,10 @@ export default function Home() {
                         <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
                         <p className="text-gray-600">
                           Cette section du journal qui contiendra tous les animaux de la ferme sera bientôt disponible.
+                        </p>
+                        <p className="text-gray-600 mt-2">
+                          Informations incluses pour chaque animal : type, coût, nourriture préférée, 
+                          produits générés, fréquence de production et valeur des produits.
                         </p>
                       </div>
                     </div>
