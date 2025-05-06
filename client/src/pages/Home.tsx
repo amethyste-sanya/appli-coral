@@ -7,10 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus, Mail } from "lucide-react";
+import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar as CalendarIcon, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus, Mail } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
 import { getAllVillagers, getVillagersBySeason, getVillagersByLove } from "@/lib/villagers";
@@ -33,6 +38,8 @@ export default function Home() {
   const [filterSaison, setFilterSaison] = useState<string>("all");
   const [expandedVillagers, setExpandedVillagers] = useState<{[key: string]: boolean}>({});
   const [villagerHearts, setVillagerHearts] = useState<{[key: string]: number}>({});
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [gameDate, setGameDate] = useState<{season: string; day: number}>({season: "Printemps", day: 1});
   
   const addTask = () => {
     if (newTask.trim()) {
@@ -222,6 +229,29 @@ export default function Home() {
   
   // État pour la catégorie d'artisanat sélectionnée
   const [selectedCraftingCategory, setSelectedCraftingCategory] = useState(craftingCategories[0].id);
+  
+  // Fonction pour mettre à jour la saison et le jour dans le jeu
+  const updateGameDate = (newDate: Date) => {
+    setDate(newDate);
+    
+    // Déterminer la saison en fonction du mois
+    let season = "Printemps";
+    const month = newDate.getMonth();
+    if (month >= 2 && month <= 4) {
+      season = "Printemps";
+    } else if (month >= 5 && month <= 7) {
+      season = "Été";
+    } else if (month >= 8 && month <= 10) {
+      season = "Automne";
+    } else {
+      season = "Hiver";
+    }
+    
+    // Le jour est limité entre 1 et 28 dans le jeu
+    const day = Math.min(28, newDate.getDate());
+    
+    setGameDate({ season, day });
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -1521,6 +1551,128 @@ export default function Home() {
               <p className="text-gray-600 mt-1">Calendrier des événements de l'année</p>
             </div>
             
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <Card className="border-blue-200">
+                <CardContent className="p-4">
+                  <h3 className="font-medium text-lg mb-3 flex items-center gap-2">
+                    <CalendarIcon className="h-5 w-5 text-blue-600" />
+                    <span>Sélectionner une date</span>
+                  </h3>
+                  
+                  <div className="flex flex-col space-y-2">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "PPP", { locale: fr }) : "Sélectionner une date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={(date) => date && updateGameDate(date)}
+                          initialFocus
+                          locale={fr}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    
+                    <div className="p-3 border rounded-md bg-blue-50">
+                      <h4 className="font-medium mb-1">Date du jeu:</h4>
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-semibold">{gameDate.season}</span>
+                        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                          Jour {gameDate.day}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className={cn(
+                "border",
+                gameDate.season === "Printemps" ? "border-green-200" : 
+                gameDate.season === "Été" ? "border-amber-200" : 
+                gameDate.season === "Automne" ? "border-orange-200" : 
+                "border-blue-200"
+              )}>
+                <CardContent className="p-4">
+                  <h3 className={cn(
+                    "font-medium text-lg mb-3",
+                    gameDate.season === "Printemps" ? "text-green-700" : 
+                    gameDate.season === "Été" ? "text-amber-700" : 
+                    gameDate.season === "Automne" ? "text-orange-700" : 
+                    "text-blue-700"
+                  )}>
+                    Événements du jour
+                  </h3>
+                  
+                  <div className="p-3 border rounded-md bg-gray-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium">
+                        {gameDate.season} - Jour {gameDate.day}
+                      </h4>
+                    </div>
+                    
+                    {/* Affichage des événements par jour et saison */}
+                    {gameDate.season === "Printemps" && gameDate.day === 1 && (
+                      <div className="py-2 border-b border-gray-100">
+                        <h4 className="font-medium">Nouvel An</h4>
+                        <p className="text-sm text-gray-600">Célébrez le nouvel an avec les villageois à la plage.</p>
+                      </div>
+                    )}
+                    
+                    {gameDate.season === "Printemps" && gameDate.day === 14 && (
+                      <div className="py-2 border-b border-gray-100">
+                        <h4 className="font-medium">Festival de l'œuf</h4>
+                        <p className="text-sm text-gray-600">Participez à la chasse aux œufs dans le village.</p>
+                      </div>
+                    )}
+                    
+                    {gameDate.season === "Été" && gameDate.day === 7 && (
+                      <div className="py-2 border-b border-gray-100">
+                        <h4 className="font-medium">Festival de la plage</h4>
+                        <p className="text-sm text-gray-600">Concours de natation et stands de jeux sur la plage.</p>
+                      </div>
+                    )}
+                    
+                    {gameDate.season === "Automne" && gameDate.day === 21 && (
+                      <div className="py-2 border-b border-gray-100">
+                        <h4 className="font-medium">Festival des récoltes</h4>
+                        <p className="text-sm text-gray-600">Célébrez l'abondance de l'automne avec un festin et des jeux.</p>
+                      </div>
+                    )}
+                    
+                    {gameDate.season === "Hiver" && gameDate.day === 25 && (
+                      <div className="py-2 border-b border-gray-100">
+                        <h4 className="font-medium">Festival de la neige</h4>
+                        <p className="text-sm text-gray-600">Participez à des jeux d'hiver et à un concours de sculpture sur glace.</p>
+                      </div>
+                    )}
+                    
+                    {((gameDate.season === "Printemps" && gameDate.day !== 1 && gameDate.day !== 14) ||
+                      (gameDate.season === "Été" && gameDate.day !== 7) ||
+                      (gameDate.season === "Automne" && gameDate.day !== 21) ||
+                      (gameDate.season === "Hiver" && gameDate.day !== 25)) && (
+                      <div className="py-2">
+                        <p className="text-sm text-gray-600">Aucun événement spécial aujourd'hui.</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <h3 className="font-medium text-lg mb-2">Tous les événements</h3>
+            
             <Card className="border-green-200">
               <CardContent className="p-4">
                 <h3 className="font-medium text-lg text-green-700 mb-1">Printemps</h3>
@@ -1558,6 +1710,40 @@ export default function Home() {
                     <div>
                       <h4 className="font-medium">Festival de la plage</h4>
                       <p className="text-sm text-gray-600">Concours de natation et stands de jeux sur la plage.</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-orange-200">
+              <CardContent className="p-4">
+                <h3 className="font-medium text-lg text-orange-700 mb-1">Automne</h3>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3 py-2 border-b border-gray-100">
+                    <div className="text-center">
+                      <span className="inline-block bg-orange-100 text-orange-700 rounded px-2 py-1 font-medium">Jour 21</span>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Festival des récoltes</h4>
+                      <p className="text-sm text-gray-600">Célébrez l'abondance de l'automne avec un festin et des jeux.</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-blue-200">
+              <CardContent className="p-4">
+                <h3 className="font-medium text-lg text-blue-700 mb-1">Hiver</h3>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3 py-2 border-b border-gray-100">
+                    <div className="text-center">
+                      <span className="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-medium">Jour 25</span>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Festival de la neige</h4>
+                      <p className="text-sm text-gray-600">Participez à des jeux d'hiver et à un concours de sculpture sur glace.</p>
                     </div>
                   </div>
                 </div>
