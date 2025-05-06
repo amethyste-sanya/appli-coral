@@ -142,14 +142,15 @@ export default function Home() {
             completed: !updatedObjectives[objectiveIndex].completed
           };
           
-          // Vérifie si tous les objectifs sont complétés
-          const allCompleted = updatedObjectives.every(obj => obj.completed);
+          // Calcule le nombre d'objectifs complétés
+          const completedCount = updatedObjectives.filter(obj => obj.completed).length;
+          const allCompleted = completedCount === updatedObjectives.length;
           
           return {
             ...quest,
             objectives: updatedObjectives,
             completed: allCompleted,
-            current: allCompleted ? quest.total : quest.current
+            current: completedCount
           };
         }
         return quest;
