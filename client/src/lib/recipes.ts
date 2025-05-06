@@ -224,36 +224,7 @@ export const recipes: Recipe[] = [
     sellPrice: 10000
   },
   
-  // Cuisine
-  {
-    id: "veggie_preserve",
-    name: "Conserves de légumes",
-    category: "cooking",
-    materials: [
-      { name: "Bocal vide", quantity: 1 },
-      { name: "Légumes au choix", quantity: 3 },
-      { name: "Sel", quantity: 1 }
-    ],
-    level: "Cuisine niveau 2",
-    description: "Des légumes conservés dans un bocal pour une utilisation future.",
-    imagePath: "/images/cooking/veggie_preserve.png", // Chemin d'exemple
-    energy: 35
-  },
-  {
-    id: "fish_soup",
-    name: "Soupe de poisson",
-    category: "cooking",
-    materials: [
-      { name: "Poisson (n'importe quel type)", quantity: 2 },
-      { name: "Pomme de terre", quantity: 1 },
-      { name: "Herbes", quantity: 1 }
-    ],
-    level: "Cuisine niveau 3",
-    description: "Une soupe chaude et nourrissante à base de poisson frais.",
-    imagePath: "/images/cooking/fish_soup.png", // Chemin d'exemple
-    energy: 50,
-    effects: ["Augmente l'endurance pendant 60 min"]
-  }
+  // Emplacement réservé pour les recettes futures
 ];
 
 // Fonction pour récupérer toutes les recettes

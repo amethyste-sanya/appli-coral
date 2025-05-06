@@ -240,7 +240,6 @@ export default function Home() {
     { id: "fish", name: "Poissons", icon: <div className="text-blue-600">🐟</div>, color: "bg-blue-100 text-blue-800", count: 0 },
     { id: "farming", name: "Agriculture", icon: <div className="text-lime-600">🌱</div>, color: "bg-lime-100 text-lime-800", count: getRecipesByCategory("farming").length },
     { id: "furniture", name: "Meubles", icon: <div className="text-amber-600">🪑</div>, color: "bg-amber-100 text-amber-800", count: getRecipesByCategory("furniture").length },
-    { id: "cooking", name: "Cuisine", icon: <div className="text-orange-600">🍲</div>, color: "bg-orange-100 text-orange-800", count: getRecipesByCategory("cooking").length },
   ];
 
   // Fonction pour obtenir les classes CSS en fonction de la catégorie
