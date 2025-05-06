@@ -31,6 +31,7 @@ export default function Home() {
   const [isQuestLibraryOpen, setIsQuestLibraryOpen] = useState(false);
   const [currentQuestForEdit, setCurrentQuestForEdit] = useState<Quest | null>(null);
   const [filterSaison, setFilterSaison] = useState<string>("all");
+  const [expandedVillagers, setExpandedVillagers] = useState<{[key: string]: boolean}>({});
   
   const addTask = () => {
     if (newTask.trim()) {
@@ -444,7 +445,7 @@ export default function Home() {
                             <div className="space-y-4">
                               {getPresetQuestsByCategory("main")
                                 .filter(quest => 
-                                  []
+                                  [""]
                                   .includes(quest.id))
                                 .map((presetQuest) => (
                                   <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-purple-200">
@@ -1079,20 +1080,33 @@ export default function Home() {
                       
                       {villager.gifts.love.length > 0 && (
                         <div className="mt-3">
-                          <div className="flex items-center text-sm text-rose-600 font-medium">
-                            <Heart className="h-3.5 w-3.5 mr-1 fill-rose-500" />
-                            Cadeaux préférés
-                          </div>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {villager.gifts.love.map((gift, index) => (
-                              <Badge 
-                                key={index} 
-                                className="bg-rose-50 text-rose-700 hover:bg-rose-100 border-rose-200"
-                              >
-                                {gift.item}
-                              </Badge>
-                            ))}
-                          </div>
+                          <button 
+                            onClick={() => setExpandedVillagers({...expandedVillagers, [villager.id]: !expandedVillagers[villager.id]})} 
+                            className="flex items-center text-sm text-rose-600 font-medium w-full justify-between bg-rose-50 px-2 py-1 rounded hover:bg-rose-100 transition-colors"
+                          >
+                            <span className="flex items-center">
+                              <Heart className="h-3.5 w-3.5 mr-1 fill-rose-500" />
+                              Cadeaux préférés ({villager.gifts.love.length})
+                            </span>
+                            {expandedVillagers[villager.id] ? (
+                              <span className="text-xs">▼</span>
+                            ) : (
+                              <span className="text-xs">▶</span>
+                            )}
+                          </button>
+                          
+                          {expandedVillagers[villager.id] && (
+                            <div className="flex flex-wrap gap-1 mt-1 animate-fadeIn">
+                              {villager.gifts.love.map((gift, index) => (
+                                <Badge 
+                                  key={index} 
+                                  className="bg-rose-50 text-rose-700 hover:bg-rose-100 border-rose-200"
+                                >
+                                  {gift.item}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
