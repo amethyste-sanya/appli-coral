@@ -552,7 +552,7 @@ export default function Home() {
                           {/* Sous-catégorie: Quêtes Courrier (Printemps) */}
                           <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                             <h4 className="font-medium text-green-800 mb-3 flex items-center">
-                              <Mail className="h-4 w-4 mr-2" />
+                              <div className="h-4 w-4 mr-2 text-center">📩</div>
                               Courrier (Printemps)
                             </h4>
                             <div className="space-y-4">
@@ -608,7 +608,7 @@ export default function Home() {
                           {/* Sous-catégorie: Quêtes Courrier (Été) */}
                           <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
                             <h4 className="font-medium text-yellow-800 mb-3 flex items-center">
-                              <Mail className="h-4 w-4 mr-2" />
+                              <div className="h-4 w-4 mr-2 text-center">📩</div>
                               Courrier (Été)
                             </h4>
                             <div className="space-y-4">
@@ -664,7 +664,7 @@ export default function Home() {
                           {/* Sous-catégorie: Quêtes Courrier (Automne) */}
                           <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                             <h4 className="font-medium text-amber-800 mb-3 flex items-center">
-                              <Mail className="h-4 w-4 mr-2" />
+                              <div className="h-4 w-4 mr-2 text-center">📩</div>
                               Courrier (Automne)
                             </h4>
                             <div className="space-y-4">
@@ -720,7 +720,7 @@ export default function Home() {
                           {/* Sous-catégorie: Quêtes Courrier (Hiver) */}
                           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
                             <h4 className="font-medium text-blue-800 mb-3 flex items-center">
-                              <Mail className="h-4 w-4 mr-2" />
+                              <div className="h-4 w-4 mr-2 text-center">📩</div>
                               Courrier (Hiver)
                             </h4>
                             <div className="space-y-4">
