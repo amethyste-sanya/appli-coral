@@ -9,7 +9,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
-import { Crop, getAllCrops } from "@/lib/crops";
+import { Crop, getAllCrops, getCropsBySeason } from "@/lib/crops";
 import { CropCard } from "@/components/CropCard";
 
 // Task type definition
@@ -619,32 +619,141 @@ export default function Home() {
                         </div>
                       </div>
                       
-                      {/* Liste des cultures */}
+                      {/* Liste des cultures par saison */}
                       <div className="mt-4">
-                        <h3 className="font-medium text-gray-700 mb-3">Toutes les cultures</h3>
+                        <h3 className="font-medium text-gray-700 mb-3">Cultures par saison</h3>
                         
-                        <div className="space-y-3">
-                          {getAllCrops().map((crop) => {
-                            // Calcul du profit par jour
-                            const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
-                            const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
-                            
-                            // Comptage des préférences
-                            const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                            const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-                            
-                            return (
-                              <CropCard 
-                                key={crop.id}
-                                crop={crop}
-                                profit={profitPerDay}
-                                likesCount={likes}
-                                lovesCount={loves}
-                              />
-                            );
-                          })}
+                        {/* Printemps */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-green-100 text-green-800">🌱</span>
+                            <h4 className="font-medium text-green-800">Printemps</h4>
+                          </div>
+                          <div className="space-y-3">
+                            {getCropsBySeason("Printemps").map((crop) => {
+                              // Calcul du profit par jour
+                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              
+                              // Comptage des préférences
+                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id}
+                                  crop={crop}
+                                  profit={profitPerDay}
+                                  likesCount={likes}
+                                  lovesCount={loves}
+                                />
+                              );
+                            })}
+                          </div>
                         </div>
                         
+                        {/* Été */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-800">☀️</span>
+                            <h4 className="font-medium text-yellow-800">Été</h4>
+                          </div>
+                          <div className="space-y-3">
+                            {getCropsBySeason("Été").map((crop) => {
+                              // Calcul du profit par jour
+                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              
+                              // Comptage des préférences
+                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id}
+                                  crop={crop}
+                                  profit={profitPerDay}
+                                  likesCount={likes}
+                                  lovesCount={loves}
+                                />
+                              );
+                            })}
+                            {getCropsBySeason("Été").length === 0 && (
+                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <p className="text-sm text-gray-500">Aucune culture d'été ajoutée pour le moment.</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Automne */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span>
+                            <h4 className="font-medium text-orange-800">Automne</h4>
+                          </div>
+                          <div className="space-y-3">
+                            {getCropsBySeason("Automne").map((crop) => {
+                              // Calcul du profit par jour
+                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              
+                              // Comptage des préférences
+                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id}
+                                  crop={crop}
+                                  profit={profitPerDay}
+                                  likesCount={likes}
+                                  lovesCount={loves}
+                                />
+                              );
+                            })}
+                            {getCropsBySeason("Automne").length === 0 && (
+                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <p className="text-sm text-gray-500">Aucune culture d'automne ajoutée pour le moment.</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Hiver */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-800">❄️</span>
+                            <h4 className="font-medium text-blue-800">Hiver</h4>
+                          </div>
+                          <div className="space-y-3">
+                            {getCropsBySeason("Hiver").map((crop) => {
+                              // Calcul du profit par jour
+                              const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                              const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
+                              
+                              // Comptage des préférences
+                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                              
+                              return (
+                                <CropCard 
+                                  key={crop.id}
+                                  crop={crop}
+                                  profit={profitPerDay}
+                                  likesCount={likes}
+                                  lovesCount={loves}
+                                />
+                              );
+                            })}
+                            {getCropsBySeason("Hiver").length === 0 && (
+                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <p className="text-sm text-gray-500">Aucune culture d'hiver ajoutée pour le moment.</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      
                         {/* Bouton Ajouter plus de cultures */}
                         <Button className="w-full mt-4 bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors flex items-center justify-center gap-2">
                           <Plus className="h-4 w-4" />
