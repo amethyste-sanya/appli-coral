@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
 import { CropCard } from "@/components/CropCard";
+import { Villager, getAllVillagers, getVillagersBySeason } from "@/lib/villagers";
+import { VillagerCard } from "@/components/VillagerCard";
 
 // Task type definition
 type Task = {
@@ -33,6 +35,8 @@ export default function Home() {
   const [craftingSearch, setCraftingSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [journalTab, setJournalTab] = useState<string>("crafting");
+  const [searchVillager, setSearchVillager] = useState("");
+  const [selectedSeason, setSelectedSeason] = useState<string>("all");
 
   // Fetch tasks
   const { data: tasks = [], refetch } = useQuery<Task[]>({
@@ -184,26 +188,23 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-green-800">Coral Island Companion</h1>
         </div>
         
-        {/* Menu de navigation principal */}
-        <div className="flex justify-center gap-3 mt-2">
-          <a 
-            href="/relations" 
-            className="flex items-center gap-1 px-4 py-2 bg-pink-100 text-pink-800 rounded-full hover:bg-pink-200 transition-colors"
-          >
-            <Heart className="h-4 w-4" />
-            <span>Relations</span>
-          </a>
-        </div>
+        {/* Nous n'utiliserons plus ce menu de navigation, nous mettrons Relations dans les onglets */}
       </header>
 
       <div className="w-full max-w-3xl mx-auto">
         <Tabs defaultValue="checklist" className="w-full">
-          <TabsList className="grid grid-cols-4 bg-green-200 rounded-t-lg overflow-hidden">
+          <TabsList className="grid grid-cols-5 bg-green-200 rounded-t-lg overflow-hidden">
             <TabsTrigger value="checklist" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Check-list
             </TabsTrigger>
             <TabsTrigger value="quests" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Quêtes
+            </TabsTrigger>
+            <TabsTrigger value="relations" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
+              <div className="flex items-center justify-center gap-1">
+                <Heart className="h-3 w-3" />
+                <span>Relations</span>
+              </div>
             </TabsTrigger>
             <TabsTrigger value="events" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Événements
