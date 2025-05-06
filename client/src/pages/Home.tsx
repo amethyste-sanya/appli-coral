@@ -2508,6 +2508,18 @@ export default function Home() {
                             <span className="text-green-600 mt-0.5">✓</span>
                             <div className="text-sm">Abri adéquat selon le type d'animal</div>
                           </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">✓</span>
+                            <div className="text-sm">Chauffage pendant l'hiver pour maintenir leur santé</div>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">✓</span>
+                            <div className="text-sm">Fermer les portes la nuit pour protéger des prédateurs</div>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5">✓</span>
+                            <div className="text-sm">Protection contre la pluie (les animaux n'aiment pas être mouillés)</div>
+                          </li>
                         </ul>
                       </div>
                     </div>
