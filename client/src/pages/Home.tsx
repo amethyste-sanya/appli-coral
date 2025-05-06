@@ -1464,7 +1464,8 @@ export default function Home() {
                         {/* Automne */}
                         <div className="mb-6">
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span<h4 className="font-medium text-orange-800">Automne</h4>
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span>
+                            <h4 className="font-medium text-orange-800">Automne</h4>
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Automne").map((crop) => {
