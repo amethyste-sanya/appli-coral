@@ -25,6 +25,12 @@ type Task = {
   done: boolean;
 };
 
+// Type pour un objectif individuel
+type QuestObjective = {
+  text: string;
+  completed: boolean;
+};
+
 // Type pour les quêtes
 type Quest = {
   id: number;
@@ -35,7 +41,7 @@ type Quest = {
   current: number;
   total: number; // Pour les quêtes avec progression comme "3/10 items collectés"
   deadline?: string; // Pour les quêtes saisonnières avec une date limite
-  objectives?: string[]; // Liste des objectifs spécifiques de la quête
+  objectives?: QuestObjective[]; // Liste des objectifs spécifiques de la quête avec leur état
 };
 
 // Type pour les catégories d'artisanat
@@ -185,6 +191,38 @@ export default function Home() {
     if (e.key === 'Enter') {
       addTask();
     }
+  };
+  
+  // Fonction utilitaire pour convertir les objectifs en format avec état
+  const convertObjectivesToQuestObjectives = (objectives?: string[]): QuestObjective[] | undefined => {
+    if (!objectives || objectives.length === 0) return undefined;
+    return objectives.map(obj => ({
+      text: obj,
+      completed: false
+    }));
+  };
+  
+  // Fonction pour basculer l'état d'un objectif individuel
+  const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
+    setQuests(quests.map(quest => {
+      if (quest.id === questId && quest.objectives) {
+        const newObjectives = [...quest.objectives];
+        newObjectives[objectiveIndex] = {
+          ...newObjectives[objectiveIndex],
+          completed: !newObjectives[objectiveIndex].completed
+        };
+        
+        // Vérifier si tous les objectifs sont complétés pour mettre à jour l'état global de la quête
+        const allObjectivesCompleted = newObjectives.every(obj => obj.completed);
+        
+        return {
+          ...quest,
+          objectives: newObjectives,
+          completed: allObjectivesCompleted
+        };
+      }
+      return quest;
+    }));
   };
   
   // Fonctions pour la gestion des quêtes
