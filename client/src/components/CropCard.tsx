@@ -68,16 +68,11 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
             </div>
           </div>
           
-          {/* Badges résumés des préférences */}
+          {/* Badges résumés des préférences - uniquement ceux qui adorent */}
           <div className="flex flex-wrap gap-2 mt-1">
             {lovesCount > 0 && (
               <div className="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded-full">
                 {lovesCount}❤️
-              </div>
-            )}
-            {likesCount > 0 && (
-              <div className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
-                {likesCount}👍
               </div>
             )}
           </div>
@@ -100,9 +95,7 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
             <div>
               <span className="font-medium">Rang ville:</span> {crop.townRank}
             </div>
-            <div>
-              <span className="font-medium">Taille:</span> {crop.size}
-            </div>
+{/* Suppression de l'affichage de la taille */}
             {crop.sellPrice && (
               <div>
                 <span className="font-medium">Vente:</span> {crop.sellPrice} pièces
@@ -145,14 +138,8 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
             <div className="mt-3">
               <h5 className="text-xs font-medium text-gray-700 mb-2">Préférences des villageois:</h5>
               
-              {/* Résumé des préférences */}
+              {/* Résumé des préférences - uniquement ceux qui adorent */}
               <div className="mb-2 flex flex-wrap gap-2">
-                {likesCount > 0 && (
-                  <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                    {likesCount} villageois {likesCount > 1 ? "aiment" : "aime"} 👍
-                  </div>
-                )}
-                
                 {lovesCount > 0 && (
                   <div className="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">
                     {lovesCount} villageois {lovesCount > 1 ? "adorent" : "adore"} ❤️
@@ -163,26 +150,19 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
               {/* Détail des préférences (afficher/masquer) */}
               <details className="text-sm">
                 <summary className="cursor-pointer text-xs text-blue-600 hover:text-blue-800 mb-2">
-                  Voir tous les villageois ({crop.preferences.length})
+                  Voir les villageois qui adorent ❤️
                 </summary>
                 <div className="flex flex-wrap gap-2 mt-2 max-h-32 overflow-y-auto">
-                  {crop.preferences.map((pref, index) => (
-                    <div 
-                      key={index} 
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        pref.preference === "adore" ? "bg-pink-100 text-pink-800" :
-                        pref.preference === "aime" ? "bg-green-100 text-green-800" :
-                        pref.preference === "déteste" ? "bg-red-100 text-red-800" :
-                        "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {pref.name} {
-                        pref.preference === "adore" ? "❤️" :
-                        pref.preference === "aime" ? "👍" :
-                        pref.preference === "déteste" ? "👎" : ""
-                      }
-                    </div>
-                  ))}
+                  {crop.preferences
+                    .filter(pref => pref.preference === "adore")
+                    .map((pref, index) => (
+                      <div 
+                        key={index} 
+                        className="text-xs px-2 py-1 rounded-full bg-pink-100 text-pink-800"
+                      >
+                        {pref.name} ❤️
+                      </div>
+                    ))}
                 </div>
               </details>
             </div>
