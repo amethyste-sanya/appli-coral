@@ -205,6 +205,7 @@ export default function Home() {
             <Card className="rounded-b-lg shadow-md mt-1">
               <CardContent className="p-5">
                 <div className="space-y-4">
+                  {/* Liste des tâches */}
                   {tasks.map((task) => (
                     <div key={task.id} className="flex items-center gap-3">
                       <label className="flex items-center cursor-pointer">
@@ -220,6 +221,7 @@ export default function Home() {
                     </div>
                   ))}
                   
+                  {/* Formulaire d'ajout manuel */}
                   <div className="add-task-form pt-4 mt-2 border-t border-gray-100">
                     <div className="flex gap-2">
                       <Input
@@ -235,6 +237,101 @@ export default function Home() {
                         onClick={addTask}
                       >
                         Ajouter
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Tâches récurrentes */}
+                  <div className="mt-6">
+                    <h3 className="font-medium text-gray-700 mb-3">Tâches quotidiennes</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Arroser les cultures");
+                        }}
+                      >
+                        🌱 Arroser les cultures
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Nourrir les animaux");
+                        }}
+                      >
+                        🐔 Nourrir les animaux
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100" 
+                        onClick={() => {
+                          addTaskMutation.mutate("Récolter les légumes mûrs");
+                        }}
+                      >
+                        🥕 Récolter
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Collecter les œufs");
+                        }}
+                      >
+                        🥚 Collecter les œufs
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Vérifier la boîte aux lettres");
+                        }}
+                      >
+                        📫 Boîte aux lettres
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Parler aux villageois");
+                        }}
+                      >
+                        👋 Parler aux villageois
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Tâches hebdomadaires */}
+                  <div className="mt-4">
+                    <h3 className="font-medium text-gray-700 mb-3">Tâches hebdomadaires</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Visiter le marché (dimanche)");
+                        }}
+                      >
+                        🛒 Marché (dimanche)
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Vérifier les nouveaux objets en magasin");
+                        }}
+                      >
+                        🏪 Nouveaux objets
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
+                        onClick={() => {
+                          addTaskMutation.mutate("Explorer la mine");
+                        }}
+                      >
+                        ⛏️ Explorer la mine
                       </Button>
                     </div>
                   </div>
