@@ -13,6 +13,65 @@ export type PresetQuest = {
 };
 
 export const presetQuests: PresetQuest[] = [
+  // Quêtes principales de la catégorie Géant
+  {
+    id: "dans-les-mines",
+    title: "Dans les mines",
+    description: "Vous pouvez pénétrer dans les puits souterrains des cavernes pour extraire des minerais et des gemmes précieux. N'oubliez pas d'emporter l'épée que Kira vous a donnée au cas où vous rencontreriez des monstres.",
+    category: "main",
+    total: 2,
+    giver: "Kira (en entrant dans la mine pour la première fois après que Mark a informé que la mine était ouverte (le 5 printemps))",
+    objectives: [
+      "Atteindre le niveau 5 (puits de terre)",
+      "Remettre l'ascenseur en marche"
+    ],
+    reward: "Épée émoussée",
+    notes: "Géant"
+  },
+  {
+    id: "examen-entree",
+    title: "Examen d'entrée",
+    description: "Les petits monstres deviennent plus faciles à gérer. Cependant, un défi plus grand et plus frétillant vous attend, au plus profond de la mine.",
+    category: "main",
+    total: 2,
+    giver: "Kira (courrier après avoir atteint le niveau 10 dans la mine terrestre)",
+    objectives: [
+      "Vaincre 30 ennemis",
+      "Visiter la Bande des Sourires"
+    ],
+    reward: "Insigne BOS",
+    notes: "Géant"
+  },
+  {
+    id: "reve-mythique",
+    title: "Rêve mythique",
+    description: "Tu as fait un rêve étrange la nuit dernière. Pour t'assurer que ce n'était pas autre chose, tu devrais examiner l'un des arbres sacrés de l'île.",
+    category: "main",
+    total: 4,
+    giver: "Chef (rêvant pendant son sommeil après avoir déclenché le rang de ville F)",
+    objectives: [
+      "Inspecter une tablette sur un arbre sacré",
+      "Recevoir une lettre le lendemain matin",
+      "Rencontrer le chef à gauche de votre ferme",
+      "Rencontrer la déesse au temple du lac"
+    ],
+    reward: "Troisième œil",
+    notes: "Géant"
+  },
+  {
+    id: "offrande-temple",
+    title: "Offrande au temple",
+    description: "Un être vous a demandé d'accomplir une offrande au temple. Il vous a demandé une bénédiction et comment cela restaurerait son pouvoir.",
+    category: "main",
+    total: 1,
+    prerequisite: "Rêve mythique complet",
+    objectives: [
+      "Compléter une offrande au temple"
+    ],
+    reward: "Bénédiction de la déesse, Les points de cheminement sont débloqués",
+    notes: "Géant"
+  },
+  
   // Autres quêtes secondaires
   {
     id: "corbeaux-partis",

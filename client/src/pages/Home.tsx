@@ -481,7 +481,8 @@ export default function Home() {
                             <div className="space-y-4">
                               {getPresetQuestsByCategory("main")
                                 .filter(quest => 
-                                  ["geant-petrifie-1", "village-geants", "geant-petrifie-2", "geant-petrifie-3", 
+                                  ["dans-les-mines", "examen-entree", "reve-mythique", "offrande-temple", 
+                                   "geant-petrifie-1", "village-geants", "geant-petrifie-2", "geant-petrifie-3", 
                                    "geant-petrifie-4", "coupable-petrifie", "dernier-geant", "peinture-murale-gardien"]
                                   .includes(quest.id))
                                 .map((presetQuest) => (
