@@ -241,6 +241,8 @@ export default function Home() {
     { id: "farming", name: "Agriculture", icon: <div className="text-lime-600">🌱</div>, color: "bg-lime-100 text-lime-800", count: getRecipesByCategory("farming").length },
     { id: "furniture", name: "Meubles", icon: <div className="text-amber-600">🪑</div>, color: "bg-amber-100 text-amber-800", count: getRecipesByCategory("furniture").length },
     { id: "cooking", name: "Cuisine", icon: <div className="text-orange-600">🍲</div>, color: "bg-orange-100 text-orange-800", count: getRecipesByCategory("cooking").length },
+    { id: "temple", name: "Temple", icon: <div className="text-amber-600">🏛️</div>, color: "bg-amber-50 text-amber-800", count: 0 },
+    { id: "museum", name: "Musée", icon: <div className="text-blue-600">🏛️</div>, color: "bg-blue-50 text-blue-800", count: 0 },
   ];
 
   // Fonction pour obtenir les classes CSS en fonction de la catégorie
@@ -455,84 +457,7 @@ export default function Home() {
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-6 text-amber-700">Coral Island Companion</h1>
       
-      {/* Sections spéciales Temple et Musée */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Section Temple */}
-        <Card className="overflow-hidden border-amber-200">
-          <div className="bg-amber-50 border-b border-amber-100 p-4">
-            <div className="flex items-center gap-2">
-              <div className="text-2xl">🏛️</div>
-              <h3 className="text-lg font-semibold text-amber-800">Temple</h3>
-            </div>
-          </div>
-          <CardContent className="p-4 space-y-3">
-            <div className="text-sm text-gray-600">
-              Le Temple est un lieu spirituel où vous pouvez faire des offrandes pour obtenir des faveurs et des bénédictions.
-            </div>
-            <div className="bg-amber-50 p-3 rounded-md border border-amber-100">
-              <h4 className="text-sm font-medium text-amber-800 mb-2">Offrandes recommandées</h4>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-600">🌸</span>
-                  <span className="text-sm text-gray-700">Fleurs (Qualité ★★★)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-600">💎</span>
-                  <span className="text-sm text-gray-700">Gemmes et minéraux précieux</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-600">🍯</span>
-                  <span className="text-sm text-gray-700">Miel</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        {/* Section Musée */}
-        <Card className="overflow-hidden border-blue-200">
-          <div className="bg-blue-50 border-b border-blue-100 p-4">
-            <div className="flex items-center gap-2">
-              <div className="text-2xl">🏛️</div>
-              <h3 className="text-lg font-semibold text-blue-800">Musée</h3>
-            </div>
-          </div>
-          <CardContent className="p-4 space-y-3">
-            <div className="text-sm text-gray-600">
-              Le Musée est l'endroit où vous pouvez faire don de fossiles, d'artéfacts et de spécimens pour enrichir la collection de Coral Island.
-            </div>
-            <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
-              <h4 className="text-sm font-medium text-blue-800 mb-2">Collections</h4>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="bg-white p-2 rounded-md border border-blue-100">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-600">🦴</span>
-                    <span className="text-sm font-medium text-gray-700">Fossiles</span>
-                  </div>
-                </div>
-                <div className="bg-white p-2 rounded-md border border-blue-100">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-600">🏺</span>
-                    <span className="text-sm font-medium text-gray-700">Artéfacts</span>
-                  </div>
-                </div>
-                <div className="bg-white p-2 rounded-md border border-blue-100">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-600">🐚</span>
-                    <span className="text-sm font-medium text-gray-700">Coquillages</span>
-                  </div>
-                </div>
-                <div className="bg-white p-2 rounded-md border border-blue-100">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-600">🪨</span>
-                    <span className="text-sm font-medium text-gray-700">Minéraux</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+
       
       <Tabs value={tab} onValueChange={setTab} className="bg-white p-6 rounded-xl border shadow">
         <TabsList className="grid grid-cols-5 mb-6">
@@ -2198,6 +2123,144 @@ export default function Home() {
                         </div>
                       </div>
                     )}
+                  </div>
+                ) : selectedCraftingCategory === "temple" ? (
+                  // Affichage des informations du Temple
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-medium text-amber-800">Temple</h3>
+                        <p className="text-sm text-amber-600">Lieu de prière et d'offrandes</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <h4 className="font-medium text-amber-800 mb-3">Offrandes recommandées</h4>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 bg-white p-2 rounded-md border border-amber-100">
+                            <span className="text-amber-600 text-xl">🌸</span>
+                            <div>
+                              <span className="text-sm font-medium">Fleurs (Qualité ★★★)</span>
+                              <div className="text-xs text-gray-600 mt-0.5">Plus la qualité est haute, meilleure est la bénédiction</div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white p-2 rounded-md border border-amber-100">
+                            <span className="text-amber-600 text-xl">💎</span>
+                            <div>
+                              <span className="text-sm font-medium">Gemmes et minéraux précieux</span>
+                              <div className="text-xs text-gray-600 mt-0.5">Diamant, améthyste, topaze, émeraude, etc.</div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white p-2 rounded-md border border-amber-100">
+                            <span className="text-amber-600 text-xl">🍯</span>
+                            <div>
+                              <span className="text-sm font-medium">Miel</span>
+                              <div className="text-xs text-gray-600 mt-0.5">Particulièrement apprécié lors des offrandes</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <h4 className="font-medium text-amber-800 mb-3">Bénédictions possibles</h4>
+                        <div className="space-y-2">
+                          <div className="bg-white p-3 rounded-md border border-amber-100">
+                            <div className="text-sm font-medium text-amber-800">Bénédiction de la récolte</div>
+                            <div className="text-xs text-gray-600 mt-1">Augmente la qualité des cultures pour une durée limitée</div>
+                          </div>
+                          <div className="bg-white p-3 rounded-md border border-amber-100">
+                            <div className="text-sm font-medium text-amber-800">Bénédiction de l'énergie</div>
+                            <div className="text-xs text-gray-600 mt-1">Augmente temporairement la barre d'énergie maximale</div>
+                          </div>
+                          <div className="bg-white p-3 rounded-md border border-amber-100">
+                            <div className="text-sm font-medium text-amber-800">Bénédiction de la chance</div>
+                            <div className="text-xs text-gray-600 mt-1">Augmente la chance de trouver des objets rares pour la journée</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : selectedCraftingCategory === "museum" ? (
+                  // Affichage des informations du Musée
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-medium text-blue-800">Musée</h3>
+                        <p className="text-sm text-blue-600">Collection d'artéfacts et de spécimens</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 className="font-medium text-blue-800 mb-3">Collections</h4>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-white p-3 rounded-md border border-blue-100">
+                            <div className="flex items-center gap-2">
+                              <span className="text-blue-600 text-xl">🦴</span>
+                              <div>
+                                <span className="text-sm font-medium">Fossiles</span>
+                                <div className="text-xs text-gray-600 mt-0.5">Restes préservés d'organismes anciens</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="bg-white p-3 rounded-md border border-blue-100">
+                            <div className="flex items-center gap-2">
+                              <span className="text-blue-600 text-xl">🏺</span>
+                              <div>
+                                <span className="text-sm font-medium">Artéfacts</span>
+                                <div className="text-xs text-gray-600 mt-0.5">Objets anciens fabriqués par d'anciennes civilisations</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="bg-white p-3 rounded-md border border-blue-100">
+                            <div className="flex items-center gap-2">
+                              <span className="text-blue-600 text-xl">🐚</span>
+                              <div>
+                                <span className="text-sm font-medium">Coquillages</span>
+                                <div className="text-xs text-gray-600 mt-0.5">Coquilles marines de diverses formes et couleurs</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="bg-white p-3 rounded-md border border-blue-100">
+                            <div className="flex items-center gap-2">
+                              <span className="text-blue-600 text-xl">🪨</span>
+                              <div>
+                                <span className="text-sm font-medium">Minéraux</span>
+                                <div className="text-xs text-gray-600 mt-0.5">Cristaux, gemmes et roches précieuses</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 className="font-medium text-blue-800 mb-3">Avantages</h4>
+                        <ul className="space-y-2">
+                          <li className="bg-white p-2 rounded-md border border-blue-100 flex items-start gap-2">
+                            <span className="text-blue-500 mt-0.5">✓</span>
+                            <div>
+                              <span className="text-sm font-medium">Mérites pour chaque don</span>
+                              <div className="text-xs text-gray-600">Recevez des points de mérite à chaque nouvel artefact</div>
+                            </div>
+                          </li>
+                          <li className="bg-white p-2 rounded-md border border-blue-100 flex items-start gap-2">
+                            <span className="text-blue-500 mt-0.5">✓</span>
+                            <div>
+                              <span className="text-sm font-medium">Récompenses pour collections</span>
+                              <div className="text-xs text-gray-600">Débloquez des récompenses en complétant des collections</div>
+                            </div>
+                          </li>
+                          <li className="bg-white p-2 rounded-md border border-blue-100 flex items-start gap-2">
+                            <span className="text-blue-500 mt-0.5">✓</span>
+                            <div>
+                              <span className="text-sm font-medium">Événements spéciaux</span>
+                              <div className="text-xs text-gray-600">Accédez à des événements exclusifs</div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 ) : selectedCraftingCategory === "crops" ? (
                   // Affichage des cultures
