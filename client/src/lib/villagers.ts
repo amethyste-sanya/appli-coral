@@ -42,7 +42,11 @@ export const villagers: Villager[] = [
     romanceable: false,
     gifts: {
       love: [
-        { item: "Café" }
+        { item: "Gâteau renversé à l'ananas" },
+        { item: "Bok choy" },
+        { item: "Saké" },
+        { item: "Huile de truffe blanche" },
+        { item: "Rose noire" }
       ]
     }
   },
