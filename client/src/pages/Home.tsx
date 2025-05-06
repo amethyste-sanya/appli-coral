@@ -13,25 +13,1339 @@ import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar, 
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
-import { CropCard } from "@/components/CropCard";
-import { Villager, getAllVillagers, getVillagersBySeason } from "@/lib/villagers";
-import { VillagerCard } from "@/components/VillagerCard";
+import { getAllVillagers, getVillagersBySeason, getVillagersByLove } from "@/lib/villagers";
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
 
-// Task type definition
+export default function Home() {
+  // States pour les données
+  const [tab, setTab] = useState("checklist");
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState("");
+  const [isAddingQuest, setIsAddingQuest] = useState(false);
+  const [newQuestTitle, setNewQuestTitle] = useState("");
+  const [newQuestDescription, setNewQuestDescription] = useState("");
+  const [newQuestCategory, setNewQuestCategory] = useState<"main" | "secondary" | "seasonal">("secondary");
+  const [newQuestTotal, setNewQuestTotal] = useState(1);
+  const [newQuestObjectives, setNewQuestObjectives] = useState("");
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [isQuestLibraryOpen, setIsQuestLibraryOpen] = useState(false);
+  const [currentQuestForEdit, setCurrentQuestForEdit] = useState<Quest | null>(null);
+  const [filterSaison, setFilterSaison] = useState<string>("all");
+  
+  const addTask = () => {
+    if (newTask.trim()) {
+      const task = {
+        id: Date.now(),
+        text: newTask,
+        done: false,
+      };
+      setTasks([...tasks, task]);
+      setNewTask("");
+    }
+  };
+
+  const toggleTask = (id: number) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
+      )
+    );
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter(quest => quest.id !== id));
+  };
+
+  const addQuest = () => {
+    if (newQuestTitle.trim()) {
+      const objectives = newQuestObjectives
+        .split('\n')
+        .filter(objective => objective.trim() !== '')
+        .map(objective => ({
+          text: objective,
+          completed: false
+        }));
+
+      const newQuestItem: Quest = {
+        id: Date.now(),
+        title: newQuestTitle,
+        description: newQuestDescription,
+        category: newQuestCategory,
+        completed: false,
+        current: 0,
+        total: newQuestTotal,
+        objectives: objectives.length > 0 ? objectives : undefined
+      };
+
+      setQuests([...quests, newQuestItem]);
+      setNewQuestTitle("");
+      setNewQuestDescription("");
+      setNewQuestCategory("secondary");
+      setNewQuestTotal(1);
+      setNewQuestObjectives("");
+      setIsAddingQuest(false);
+    }
+  };
+
+  const updateQuest = (quest: Quest) => {
+    setQuests(quests.map(q => q.id === quest.id ? quest : q));
+  };
+
+  const incrementQuestProgress = (id: number) => {
+    setQuests(
+      quests.map((quest) =>
+        quest.id === id ? 
+          { 
+            ...quest, 
+            current: quest.current < quest.total ? quest.current + 1 : quest.total,
+            completed: quest.current + 1 >= quest.total
+          } : quest
+      )
+    );
+  };
+
+  const decrementQuestProgress = (id: number) => {
+    setQuests(
+      quests.map((quest) =>
+        quest.id === id ? 
+          { 
+            ...quest, 
+            current: quest.current > 0 ? quest.current - 1 : 0,
+            completed: false
+          } : quest
+      )
+    );
+  };
+
+  const toggleQuestStatus = (id: number) => {
+    setQuests(
+      quests.map((quest) =>
+        quest.id === id ? 
+          { 
+            ...quest, 
+            completed: !quest.completed,
+            current: !quest.completed ? quest.total : quest.current
+          } : quest
+      )
+    );
+  };
+
+  const toggleQuestObjective = (questId: number, objectiveIndex: number) => {
+    setQuests(
+      quests.map((quest) => {
+        if (quest.id === questId && quest.objectives) {
+          const updatedObjectives = [...quest.objectives];
+          updatedObjectives[objectiveIndex] = {
+            ...updatedObjectives[objectiveIndex],
+            completed: !updatedObjectives[objectiveIndex].completed
+          };
+          
+          // Vérifie si tous les objectifs sont complétés
+          const allCompleted = updatedObjectives.every(obj => obj.completed);
+          
+          return {
+            ...quest,
+            objectives: updatedObjectives,
+            completed: allCompleted,
+            current: allCompleted ? quest.total : quest.current
+          };
+        }
+        return quest;
+      })
+    );
+  };
+
+  const deleteQuest = (id: number) => {
+    setQuests(quests.filter(quest => quest.id !== id));
+  };
+
+  const startEditQuest = (quest: Quest) => {
+    setCurrentQuestForEdit(quest);
+  };
+
+  const saveEditQuest = () => {
+    if (currentQuestForEdit) {
+      updateQuest(currentQuestForEdit);
+      setCurrentQuestForEdit(null);
+    }
+  };
+
+  const cancelEditQuest = () => {
+    setCurrentQuestForEdit(null);
+  };
+
+  // Fonction pour convertir un tableau de strings en tableau d'objectifs
+  const convertStringsToObjectives = (objectives: string[]): QuestObjective[] => {
+    return objectives.map(obj => ({ text: obj, completed: false }));
+  };
+
+  // Fonction pour créer une quête à partir d'un préréglage
+  const createQuestFromPreset = (presetQuest: PresetQuest): Quest => {
+    // Convertit les objectifs si présents
+    const objectives = presetQuest.objectives 
+      ? convertStringsToObjectives(presetQuest.objectives)
+      : undefined;
+
+    // Crée l'objet quête
+    const quest: Quest = {
+      id: Date.now(),
+      title: presetQuest.title,
+      description: presetQuest.description,
+      category: presetQuest.category,
+      completed: false,
+      current: 0,
+      total: presetQuest.total,
+      objectives
+    };
+
+    return quest;
+  };
+
+  // Catégories d'artisanat
+  const craftingCategories: CraftingCategory[] = [
+    { id: "tools", name: "Outils", icon: <Hammer className="h-5 w-5" />, color: "bg-zinc-100 text-zinc-800", count: getRecipesByCategory("tools").length },
+    { id: "farming", name: "Agriculture", icon: <div className="text-lime-600">🌱</div>, color: "bg-lime-100 text-lime-800", count: getRecipesByCategory("farming").length },
+    { id: "furniture", name: "Meubles", icon: <div className="text-amber-600">🪑</div>, color: "bg-amber-100 text-amber-800", count: getRecipesByCategory("furniture").length },
+    { id: "fabrics", name: "Tissus", icon: <div className="text-indigo-600">🧵</div>, color: "bg-indigo-100 text-indigo-800", count: getRecipesByCategory("fabrics").length },
+    { id: "cooking", name: "Cuisine", icon: <div className="text-orange-600">🍲</div>, color: "bg-orange-100 text-orange-800", count: getRecipesByCategory("cooking").length },
+    { id: "alchemy", name: "Alchimie", icon: <div className="text-purple-600">⚗️</div>, color: "bg-purple-100 text-purple-800", count: getRecipesByCategory("alchemy").length },
+  ];
+
+  // Fonction pour obtenir les classes CSS en fonction de la catégorie
+  const getCategoryClasses = (category: CraftingCategory) => {
+    return `flex items-center gap-2 p-2 rounded-lg ${category.color} hover:bg-opacity-80 transition-all`;
+  };
+  
+  // État pour la catégorie d'artisanat sélectionnée
+  const [selectedCraftingCategory, setSelectedCraftingCategory] = useState(craftingCategories[0].id);
+
+  return (
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-6 text-amber-700">Coral Island Companion</h1>
+      
+      <Tabs value={tab} onValueChange={setTab} className="bg-white p-6 rounded-xl border shadow">
+        <TabsList className="grid grid-cols-5 mb-6">
+          <TabsTrigger value="checklist">Liste</TabsTrigger>
+          <TabsTrigger value="quests">Quêtes</TabsTrigger>
+          <TabsTrigger value="relations">Relations</TabsTrigger>
+          <TabsTrigger value="events">Événements</TabsTrigger>
+          <TabsTrigger value="journal">Journal</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="checklist">
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Ajouter une tâche..."
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addTask()}
+              />
+              <Button onClick={addTask}>Ajouter</Button>
+            </div>
+            
+            <div className="space-y-2">
+              {tasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="flex items-center justify-between border rounded p-3 bg-gray-50"
+                >
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={task.done}
+                      onCheckedChange={() => toggleTask(task.id)}
+                    />
+                    <span className={task.done ? "line-through text-gray-500" : ""}>
+                      {task.text}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => deleteTask(task.id)}
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              {tasks.length === 0 && (
+                <div className="text-center py-6 text-gray-500">
+                  Aucune tâche pour le moment
+                </div>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="quests">
+          <div className="mb-4 flex justify-between items-center">
+            <h2 className="text-xl font-semibold">Quêtes en cours</h2>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsQuestLibraryOpen(true)}
+              >
+                <Search className="h-4 w-4 mr-1" /> Bibliothèque de quêtes
+              </Button>
+              
+              <Dialog open={isQuestLibraryOpen} onOpenChange={setIsQuestLibraryOpen}>
+                <DialogContent className="max-w-3xl h-[80vh] flex flex-col">
+                  <DialogHeader>
+                    <DialogTitle>Bibliothèque de quêtes</DialogTitle>
+                    <DialogDescription>
+                      Parcourez les quêtes disponibles et ajoutez-les à votre suivi.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="flex-1 overflow-y-auto pr-2">
+                    <Tabs defaultValue="main">
+                      <TabsList className="grid grid-cols-3 mb-4">
+                        <TabsTrigger value="main">Quêtes principales</TabsTrigger>
+                        <TabsTrigger value="secondary">Quêtes secondaires</TabsTrigger>
+                        <TabsTrigger value="seasonal">Quêtes saisonnières</TabsTrigger>
+                      </TabsList>
+
+                      <TabsContent value="main">
+                        <div className="space-y-4">
+                          {/* Section Ville - Vide, les quêtes ont été supprimées comme demandé */}
+                          <div className="bg-gray-100 rounded-lg p-4 border border-gray-200">
+                            <h4 className="font-medium text-gray-800 mb-3 flex items-center">
+                              <Building2 className="h-4 w-4 mr-2" />
+                              Ville
+                            </h4>
+                            <div className="text-sm text-gray-500 italic py-2">
+                              Les quêtes Ville ont été supprimées.
+                            </div>
+                          </div>
+                          
+                          {/* Section Géants */}
+                          <div className="bg-amber-100 rounded-lg p-4 border border-amber-200">
+                            <h4 className="font-medium text-amber-800 mb-3 flex items-center">
+                              <div className="h-4 w-4 mr-2 flex items-center justify-center text-amber-600">🏔️</div>
+                              Géants
+                            </h4>
+                            <div className="space-y-4">
+                              {getPresetQuestsByCategory("main")
+                                .filter(quest => 
+                                  ["geant-petrifie-1", "village-geants", "geant-petrifie-2", "geant-petrifie-3", 
+                                   "geant-petrifie-4", "coupable-petrifie", "dernier-geant"]
+                                  .includes(quest.id))
+                                .map((presetQuest) => (
+                                  <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-amber-200">
+                                    <div className="flex justify-between mb-2">
+                                      <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                      <Button
+                                        onClick={() => {
+                                          const newQuestItem: Quest = {
+                                            id: Date.now(),
+                                            title: presetQuest.title,
+                                            description: presetQuest.description,
+                                            category: presetQuest.category,
+                                            completed: false,
+                                            current: 0,
+                                            total: presetQuest.total,
+                                            objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                          };
+                                          setQuests([...quests, newQuestItem]);
+                                        }}
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-amber-600 border-amber-200 hover:bg-amber-50"
+                                        disabled={quests.some(q => q.title === presetQuest.title)}
+                                      >
+                                        {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                      </Button>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                                    {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                      <div className="mt-2">
+                                        <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                        <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                          {presetQuest.objectives.map((obj, idx) => (
+                                            <li key={idx}>{obj}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {presetQuest.reward && (
+                                      <div className="mt-2 text-xs text-amber-600">
+                                        <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          
+                          {/* Section Océan */}
+                          <div className="bg-blue-100 rounded-lg p-4 border border-blue-200">
+                            <h4 className="font-medium text-blue-800 mb-3 flex items-center">
+                              <Anchor className="h-4 w-4 mr-2" />
+                              Océan
+                            </h4>
+                            <div className="space-y-4">
+                              {getPresetQuestsByCategory("main")
+                                .filter(quest => 
+                                  ["mysteres-ocean", "tresor-sirenes"]
+                                  .includes(quest.id))
+                                .map((presetQuest) => (
+                                  <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-blue-200">
+                                    <div className="flex justify-between mb-2">
+                                      <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                      <Button
+                                        onClick={() => {
+                                          const newQuestItem: Quest = {
+                                            id: Date.now(),
+                                            title: presetQuest.title,
+                                            description: presetQuest.description,
+                                            category: presetQuest.category,
+                                            completed: false,
+                                            current: 0,
+                                            total: presetQuest.total,
+                                            objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                          };
+                                          setQuests([...quests, newQuestItem]);
+                                        }}
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                        disabled={quests.some(q => q.title === presetQuest.title)}
+                                      >
+                                        {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                      </Button>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                                    {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                      <div className="mt-2">
+                                        <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                        <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                          {presetQuest.objectives.map((obj, idx) => (
+                                            <li key={idx}>{obj}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {presetQuest.reward && (
+                                      <div className="mt-2 text-xs text-amber-600">
+                                        <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          
+                          {/* Section Musée */}
+                          <div className="bg-purple-100 rounded-lg p-4 border border-purple-200">
+                            <h4 className="font-medium text-purple-800 mb-3 flex items-center">
+                              <div className="h-4 w-4 mr-2 flex items-center justify-center text-purple-600">🏛️</div>
+                              Musée
+                            </h4>
+                            <div className="space-y-4">
+                              {getPresetQuestsByCategory("main")
+                                .filter(quest => 
+                                  ["peinture-murale-gardien"]
+                                  .includes(quest.id))
+                                .map((presetQuest) => (
+                                  <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-purple-200">
+                                    <div className="flex justify-between mb-2">
+                                      <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                      <Button
+                                        onClick={() => {
+                                          const newQuestItem: Quest = {
+                                            id: Date.now(),
+                                            title: presetQuest.title,
+                                            description: presetQuest.description,
+                                            category: presetQuest.category,
+                                            completed: false,
+                                            current: 0,
+                                            total: presetQuest.total,
+                                            objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                          };
+                                          setQuests([...quests, newQuestItem]);
+                                        }}
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-purple-600 border-purple-200 hover:bg-purple-50"
+                                        disabled={quests.some(q => q.title === presetQuest.title)}
+                                      >
+                                        {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                      </Button>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                                    {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                      <div className="mt-2">
+                                        <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                        <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                          {presetQuest.objectives.map((obj, idx) => (
+                                            <li key={idx}>{obj}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {presetQuest.reward && (
+                                      <div className="mt-2 text-xs text-amber-600">
+                                        <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="secondary">
+                        <div className="space-y-4">
+                          {getPresetQuestsByCategory("secondary").map((presetQuest) => (
+                            <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
+                              <div className="flex justify-between mb-2">
+                                <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                <Button
+                                  onClick={() => {
+                                    const newQuestItem: Quest = {
+                                      id: Date.now(),
+                                      title: presetQuest.title,
+                                      description: presetQuest.description,
+                                      category: presetQuest.category,
+                                      completed: false,
+                                      current: 0,
+                                      total: presetQuest.total,
+                                      objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                    };
+                                    setQuests([...quests, newQuestItem]);
+                                  }}
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                  disabled={quests.some(q => q.title === presetQuest.title)}
+                                >
+                                  {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                </Button>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                              {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                <div className="mt-2">
+                                  <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                  <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                    {presetQuest.objectives.map((obj, idx) => (
+                                      <li key={idx}>{obj}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                              {presetQuest.reward && (
+                                <div className="mt-2 text-xs text-amber-600">
+                                  <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="seasonal">
+                        <div className="space-y-4">
+                          {getPresetQuestsByCategory("seasonal").map((presetQuest) => (
+                            <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
+                              <div className="flex justify-between mb-2">
+                                <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                <Button
+                                  onClick={() => {
+                                    const newQuestItem: Quest = {
+                                      id: Date.now(),
+                                      title: presetQuest.title,
+                                      description: presetQuest.description,
+                                      category: presetQuest.category,
+                                      completed: false,
+                                      current: 0,
+                                      total: presetQuest.total,
+                                      objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                    };
+                                    setQuests([...quests, newQuestItem]);
+                                  }}
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                  disabled={quests.some(q => q.title === presetQuest.title)}
+                                >
+                                  {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
+                                </Button>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
+                              {presetQuest.objectives && presetQuest.objectives.length > 0 && (
+                                <div className="mt-2">
+                                  <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                  <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                    {presetQuest.objectives.map((obj, idx) => (
+                                      <li key={idx}>{obj}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                              {presetQuest.reward && (
+                                <div className="mt-2 text-xs text-amber-600">
+                                  <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Button 
+                onClick={() => setIsAddingQuest(true)}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Plus className="h-4 w-4 mr-1" /> Nouvelle quête
+              </Button>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <div>
+              <h3 className="font-medium text-lg mb-2 flex items-center text-amber-700">
+                <Star className="h-5 w-5 mr-1 text-amber-500" /> Quêtes principales
+              </h3>
+              {quests.filter(quest => quest.category === "main" && !quest.completed).length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {quests
+                    .filter(quest => quest.category === "main" && !quest.completed)
+                    .map(quest => (
+                      <Card key={quest.id} className="border-amber-200">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center mb-1">
+                                <h4 className="font-medium mr-2">{quest.title}</h4>
+                                {quest.current === quest.total ? (
+                                  <Badge className="bg-green-500">Terminé</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-amber-600 border-amber-200">
+                                    {quest.current}/{quest.total}
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600 mb-2">{quest.description}</p>
+                            </div>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => decrementQuestProgress(quest.id)}
+                                disabled={quest.current === 0}
+                              >
+                                <Minus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => incrementQuestProgress(quest.id)}
+                                disabled={quest.current === quest.total}
+                              >
+                                <Plus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => deleteQuest(quest.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {quest.objectives && quest.objectives.length > 0 && (
+                            <div className="mt-3 space-y-1">
+                              {quest.objectives.map((objective, index) => (
+                                <div key={index} className="flex items-center">
+                                  <Checkbox 
+                                    checked={objective.completed}
+                                    onCheckedChange={() => toggleQuestObjective(quest.id, index)}
+                                    className="mr-2"
+                                  />
+                                  <span className={`text-sm ${objective.completed ? "line-through text-gray-400" : "text-gray-600"}`}>
+                                    {objective.text}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              )}
+              {quests.filter(quest => quest.category === "main" && !quest.completed).length === 0 && (
+                <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-lg border border-gray-100">
+                  Aucune quête principale en cours
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <h3 className="font-medium text-lg mb-2 flex items-center text-green-700">
+                <Circle className="h-5 w-5 mr-1 text-green-500" /> Quêtes secondaires
+              </h3>
+              {quests.filter(quest => quest.category === "secondary" && !quest.completed).length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {quests
+                    .filter(quest => quest.category === "secondary" && !quest.completed)
+                    .map(quest => (
+                      <Card key={quest.id} className="border-green-200">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center mb-1">
+                                <h4 className="font-medium mr-2">{quest.title}</h4>
+                                {quest.current === quest.total ? (
+                                  <Badge className="bg-green-500">Terminé</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-green-600 border-green-200">
+                                    {quest.current}/{quest.total}
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600 mb-2">{quest.description}</p>
+                            </div>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => decrementQuestProgress(quest.id)}
+                                disabled={quest.current === 0}
+                              >
+                                <Minus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => incrementQuestProgress(quest.id)}
+                                disabled={quest.current === quest.total}
+                              >
+                                <Plus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => deleteQuest(quest.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {quest.objectives && quest.objectives.length > 0 && (
+                            <div className="mt-3 space-y-1">
+                              {quest.objectives.map((objective, index) => (
+                                <div key={index} className="flex items-center">
+                                  <Checkbox 
+                                    checked={objective.completed}
+                                    onCheckedChange={() => toggleQuestObjective(quest.id, index)}
+                                    className="mr-2"
+                                  />
+                                  <span className={`text-sm ${objective.completed ? "line-through text-gray-400" : "text-gray-600"}`}>
+                                    {objective.text}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              )}
+              {quests.filter(quest => quest.category === "secondary" && !quest.completed).length === 0 && (
+                <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-lg border border-gray-100">
+                  Aucune quête secondaire en cours
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <h3 className="font-medium text-lg mb-2 flex items-center text-blue-700">
+                <Calendar className="h-5 w-5 mr-1 text-blue-500" /> Quêtes saisonnières
+              </h3>
+              {quests.filter(quest => quest.category === "seasonal" && !quest.completed).length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {quests
+                    .filter(quest => quest.category === "seasonal" && !quest.completed)
+                    .map(quest => (
+                      <Card key={quest.id} className="border-blue-200">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center mb-1">
+                                <h4 className="font-medium mr-2">{quest.title}</h4>
+                                {quest.current === quest.total ? (
+                                  <Badge className="bg-green-500">Terminé</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-blue-600 border-blue-200">
+                                    {quest.current}/{quest.total}
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600 mb-2">{quest.description}</p>
+                            </div>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => decrementQuestProgress(quest.id)}
+                                disabled={quest.current === 0}
+                              >
+                                <Minus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => incrementQuestProgress(quest.id)}
+                                disabled={quest.current === quest.total}
+                              >
+                                <Plus className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => deleteQuest(quest.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {quest.objectives && quest.objectives.length > 0 && (
+                            <div className="mt-3 space-y-1">
+                              {quest.objectives.map((objective, index) => (
+                                <div key={index} className="flex items-center">
+                                  <Checkbox 
+                                    checked={objective.completed}
+                                    onCheckedChange={() => toggleQuestObjective(quest.id, index)}
+                                    className="mr-2"
+                                  />
+                                  <span className={`text-sm ${objective.completed ? "line-through text-gray-400" : "text-gray-600"}`}>
+                                    {objective.text}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              )}
+              {quests.filter(quest => quest.category === "seasonal" && !quest.completed).length === 0 && (
+                <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-lg border border-gray-100">
+                  Aucune quête saisonnière en cours
+                </div>
+              )}
+            </div>
+            
+            {quests.filter(quest => quest.completed).length > 0 && (
+              <div>
+                <h3 className="font-medium text-lg mb-2 flex items-center text-gray-700">
+                  <CheckCircle className="h-5 w-5 mr-1 text-green-500" /> Quêtes terminées
+                </h3>
+                <div className="space-y-3 mb-4">
+                  {quests
+                    .filter(quest => quest.completed)
+                    .map(quest => (
+                      <Card key={quest.id} className="border-gray-200 bg-gray-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center mb-1">
+                                <h4 className="font-medium mr-2 text-gray-700">{quest.title}</h4>
+                                <Badge className="bg-green-500">Terminé</Badge>
+                              </div>
+                              <p className="text-sm text-gray-500 mb-2">{quest.description}</p>
+                            </div>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => toggleQuestStatus(quest.id)}
+                              >
+                                <ArrowRight className="h-4 w-4" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => deleteQuest(quest.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <Dialog open={isAddingQuest} onOpenChange={setIsAddingQuest}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Ajouter une nouvelle quête</DialogTitle>
+                <DialogDescription>
+                  Remplissez les détails de la quête que vous souhaitez suivre
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Titre</label>
+                  <Input
+                    value={newQuestTitle}
+                    onChange={(e) => setNewQuestTitle(e.target.value)}
+                    placeholder="Nom de la quête"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Description</label>
+                  <Textarea
+                    value={newQuestDescription}
+                    onChange={(e) => setNewQuestDescription(e.target.value)}
+                    placeholder="Description de la quête"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Catégorie</label>
+                    <Select 
+                      value={newQuestCategory} 
+                      onValueChange={(value) => setNewQuestCategory(value as any)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Catégorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="main">Principale</SelectItem>
+                        <SelectItem value="secondary">Secondaire</SelectItem>
+                        <SelectItem value="seasonal">Saisonnière</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Total</label>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={newQuestTotal}
+                      onChange={(e) => setNewQuestTotal(parseInt(e.target.value))}
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Objectifs (un par ligne)</label>
+                  <Textarea
+                    value={newQuestObjectives}
+                    onChange={(e) => setNewQuestObjectives(e.target.value)}
+                    placeholder="Listez les objectifs, un par ligne"
+                    className="h-24"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsAddingQuest(false)}>
+                  Annuler
+                </Button>
+                <Button onClick={addQuest}>
+                  Ajouter la quête
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+          
+          <Dialog open={!!currentQuestForEdit} onOpenChange={(open) => !open && setCurrentQuestForEdit(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Modifier la quête</DialogTitle>
+                <DialogDescription>
+                  Modifiez les détails de cette quête
+                </DialogDescription>
+              </DialogHeader>
+              
+              {currentQuestForEdit && (
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Titre</label>
+                    <Input
+                      value={currentQuestForEdit.title}
+                      onChange={(e) => setCurrentQuestForEdit({...currentQuestForEdit, title: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Description</label>
+                    <Textarea
+                      value={currentQuestForEdit.description}
+                      onChange={(e) => setCurrentQuestForEdit({...currentQuestForEdit, description: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Catégorie</label>
+                      <Select 
+                        value={currentQuestForEdit.category} 
+                        onValueChange={(value) => setCurrentQuestForEdit({...currentQuestForEdit, category: value as any})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Catégorie" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="main">Principale</SelectItem>
+                          <SelectItem value="secondary">Secondaire</SelectItem>
+                          <SelectItem value="seasonal">Saisonnière</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Total</label>
+                      <Input
+                        type="number"
+                        min="1"
+                        value={currentQuestForEdit.total}
+                        onChange={(e) => setCurrentQuestForEdit({...currentQuestForEdit, total: parseInt(e.target.value)})}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={cancelEditQuest}>
+                  Annuler
+                </Button>
+                <Button onClick={saveEditQuest}>
+                  Enregistrer
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </TabsContent>
+        
+        <TabsContent value="relations">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Relations avec les villageois</h2>
+              <Select value={filterSaison} onValueChange={setFilterSaison}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filtrer par saison" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les villageois</SelectItem>
+                  <SelectItem value="spring">Printemps</SelectItem>
+                  <SelectItem value="summer">Été</SelectItem>
+                  <SelectItem value="fall">Automne</SelectItem>
+                  <SelectItem value="winter">Hiver</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {(filterSaison === "all" ? getAllVillagers() : getVillagersBySeason(filterSaison))
+                .map(villager => (
+                  <Card key={villager.id} className="overflow-hidden border-neutral-200">
+                    <div className="p-4">
+                      <h3 className="font-medium text-lg">{villager.name}</h3>
+                      <div className="text-sm text-gray-600 flex items-center mt-1">
+                        <CalendarDays className="h-3.5 w-3.5 mr-1" />
+                        {villager.birthday.season}, jour {villager.birthday.day}
+                      </div>
+                      <div className="text-sm text-gray-600 flex items-center mt-1">
+                        <Clock className="h-3.5 w-3.5 mr-1" />
+                        {villager.occupation}
+                      </div>
+                      
+                      {villager.gifts.love.length > 0 && (
+                        <div className="mt-3">
+                          <div className="flex items-center text-sm text-rose-600 font-medium">
+                            <Heart className="h-3.5 w-3.5 mr-1 fill-rose-500" />
+                            Cadeaux préférés
+                          </div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {villager.gifts.love.map((gift, index) => (
+                              <Badge 
+                                key={index} 
+                                className="bg-rose-50 text-rose-700 hover:bg-rose-100 border-rose-200"
+                              >
+                                {gift.item}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="events">
+          <div className="space-y-4">
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold">Événements et festivals</h2>
+              <p className="text-gray-600 mt-1">Calendrier des événements de l'année</p>
+            </div>
+            
+            <Card className="border-green-200">
+              <CardContent className="p-4">
+                <h3 className="font-medium text-lg text-green-700 mb-1">Printemps</h3>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3 py-2 border-b border-gray-100">
+                    <div className="text-center">
+                      <span className="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-medium">Jour 1</span>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Nouvel An</h4>
+                      <p className="text-sm text-gray-600">Célébrez le nouvel an avec les villageois à la plage.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 py-2 border-b border-gray-100">
+                    <div className="text-center">
+                      <span className="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-medium">Jour 14</span>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Festival de l'œuf</h4>
+                      <p className="text-sm text-gray-600">Participez à la chasse aux œufs dans le village.</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-amber-200">
+              <CardContent className="p-4">
+                <h3 className="font-medium text-lg text-amber-700 mb-1">Été</h3>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3 py-2 border-b border-gray-100">
+                    <div className="text-center">
+                      <span className="inline-block bg-amber-100 text-amber-700 rounded px-2 py-1 font-medium">Jour 7</span>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Festival de la plage</h4>
+                      <p className="text-sm text-gray-600">Concours de natation et stands de jeux sur la plage.</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="journal">
+          <div className="mb-4 flex justify-between items-center">
+            <h2 className="text-xl font-semibold">Journal du fermier</h2>
+          </div>
+          
+          <Tabs defaultValue="crafting">
+            <TabsList className="mb-4">
+              <TabsTrigger value="crafting">Artisanat</TabsTrigger>
+              <TabsTrigger value="crops">Cultures</TabsTrigger>
+              <TabsTrigger value="fish">Poissons</TabsTrigger>
+              <TabsTrigger value="animals">Animaux</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="crafting">
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {craftingCategories.map(category => (
+                  <button
+                    key={category.id}
+                    className={getCategoryClasses(category)}
+                    onClick={() => setSelectedCraftingCategory(category.id)}
+                  >
+                    {category.icon}
+                    <div className="flex-1">{category.name}</div>
+                    <span className="text-xs rounded-full px-2 py-0.5 bg-white bg-opacity-50">{category.count}</span>
+                  </button>
+                ))}
+              </div>
+              
+              <div className="space-y-4">
+                {getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => (
+                  <Card key={recipe.id} className="overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="flex justify-between">
+                        <h3 className="font-medium">{recipe.name}</h3>
+                        <Badge variant="outline" className="ml-2">
+                          Niveau {recipe.level}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {recipe.description || "Aucune description disponible"}
+                      </p>
+                      
+                      <div className="mt-3">
+                        <span className="text-sm font-medium">Matériaux requis:</span>
+                        <div className="grid grid-cols-2 gap-2 mt-1">
+                          {recipe.materials.map((material, index) => (
+                            <div key={index} className="flex items-center">
+                              <ArrowRight className="h-3 w-3 mr-1 text-gray-400" />
+                              <span className="text-sm">{material.quantity}x {material.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {recipe.sellPrice && (
+                        <div className="mt-2 text-sm">
+                          <span className="font-medium">Prix de vente:</span> {recipe.sellPrice} pièces
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="crops">
+              <div className="mb-4 flex justify-between">
+                <Select value={filterSaison} onValueChange={setFilterSaison}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filtrer par saison" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Toutes les saisons</SelectItem>
+                    <SelectItem value="Printemps">Printemps</SelectItem>
+                    <SelectItem value="Été">Été</SelectItem>
+                    <SelectItem value="Automne">Automne</SelectItem>
+                    <SelectItem value="Hiver">Hiver</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {(filterSaison === "all" ? getAllCrops() : getCropsBySeason(filterSaison))
+                  .map(crop => {
+                    const profit = calculateProfitability(crop);
+                    const likesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
+                    const lovesCount = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
+                    
+                    return (
+                      <Card key={crop.id} className="overflow-hidden">
+                        <div className="h-32 bg-gray-50 border-b flex items-center justify-center">
+                          {crop.imagePath && (
+                            <img 
+                              src={crop.imagePath} 
+                              alt={crop.name} 
+                              className="h-full w-full object-contain p-2"
+                            />
+                          )}
+                          {!crop.imagePath && (
+                            <div className="text-5xl mx-auto">🌱</div>
+                          )}
+                        </div>
+                        <CardContent className="p-4">
+                          <div className="flex justify-between">
+                            <h3 className="font-medium">{crop.name}</h3>
+                            <Badge>{crop.season}</Badge>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-1">
+                            {crop.category}
+                          </p>
+                          
+                          <div className="grid grid-cols-3 gap-2 mt-3 text-xs">
+                            <div>
+                              <span className="block text-gray-500">Croissance</span>
+                              <span className="font-medium">{crop.growthTime} jours</span>
+                            </div>
+                            <div>
+                              <span className="block text-gray-500">Prix</span>
+                              <span className="font-medium">{crop.seedPrice} pièces</span>
+                            </div>
+                            <div>
+                              <span className="block text-gray-500">Profit</span>
+                              <span className={`font-medium ${profit > 100 ? "text-green-600" : ""}`}>
+                                {profit} pièces
+                              </span>
+                            </div>
+                          </div>
+                          
+                          {(likesCount > 0 || lovesCount > 0) && (
+                            <div className="flex gap-2 mt-2 text-xs">
+                              {lovesCount > 0 && (
+                                <div className="flex items-center">
+                                  <Heart className="h-3 w-3 mr-1 fill-rose-500 text-rose-500" />
+                                  <span className="text-rose-600 font-medium">{lovesCount}</span>
+                                </div>
+                              )}
+                              {likesCount > 0 && (
+                                <div className="flex items-center">
+                                  <Sparkles className="h-3 w-3 mr-1 text-amber-500" />
+                                  <span className="text-amber-600 font-medium">{likesCount}</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="fish">
+              <div className="flex items-center justify-center py-12 px-4 border rounded-lg">
+                <div className="text-center">
+                  <div className="text-5xl mx-auto">🐟</div>
+                  <h3 className="mt-4 text-xl font-medium">Encyclopédie des poissons</h3>
+                  <p className="mt-2 text-gray-600">
+                    Cette fonctionnalité sera disponible dans une prochaine mise à jour !
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="animals">
+              <div className="flex items-center justify-center py-12 px-4 border rounded-lg">
+                <div className="text-center">
+                  <div className="text-5xl mx-auto">🐄</div>
+                  <h3 className="mt-4 text-xl font-medium">Encyclopédie des animaux</h3>
+                  <p className="mt-2 text-gray-600">
+                    Cette fonctionnalité sera disponible dans une prochaine mise à jour !
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
 type Task = {
   id: number;
   text: string;
   done: boolean;
 };
 
-// Type pour un objectif de quête
 type QuestObjective = {
   text: string;
   completed: boolean;
 };
 
-// Type pour les quêtes
 type Quest = {
   id: number;
   title: string;
@@ -44,7 +1358,6 @@ type Quest = {
   objectives?: QuestObjective[]; // Liste des objectifs spécifiques de la quête avec leur état
 };
 
-// Type pour les catégories d'artisanat
 type CraftingCategory = {
   id: string;
   name: string;
@@ -52,1598 +1365,3 @@ type CraftingCategory = {
   color: string;
   count: number;
 };
-
-export default function Home() {
-  const [newTask, setNewTask] = useState("");
-  const [craftingSearch, setCraftingSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [journalTab, setJournalTab] = useState<string>("crafting");
-  const [searchVillager, setSearchVillager] = useState("");
-  const [selectedSeason, setSelectedSeason] = useState<string>("all");
-
-  // États pour la gestion des quêtes
-  const [quests, setQuests] = useState<Quest[]>([
-    {
-      id: 1,
-      title: "Débuter",
-      description: "Apprenons à cultiver et à démarrer notre aventure agricole.",
-      completed: true,
-      category: "main",
-      current: 4,
-      total: 4
-    },
-    {
-      id: 2,
-      title: "Le nouveau fermier",
-      description: "Présentez-vous aux habitants de Coral Island.",
-      completed: false,
-      category: "main",
-      current: 18,
-      total: 30
-    },
-    {
-      id: 3,
-      title: "Home Sweet Home",
-      description: "Les charpentiers peuvent réparer votre nouvelle maison, mais vous devrez d'abord rassembler quelques ressources.",
-      completed: false,
-      category: "main",
-      current: 2,
-      total: 4,
-      objectives: [
-        { text: "Rassembler 10 planches de bois", completed: false },
-        { text: "Rassembler 5 pierres", completed: true },
-        { text: "Rassembler 20 fibres", completed: false },
-        { text: "Rassembler 10 clous", completed: false}
-      ]
-    }
-  ]);
-  const [isAddingQuest, setIsAddingQuest] = useState(false);
-  const [newQuest, setNewQuest] = useState<{
-    title: string;
-    description: string;
-    category: "main" | "secondary" | "seasonal";
-    total: number;
-    deadline?: string;
-  }>({
-    title: "",
-    description: "",
-    category: "secondary",
-    total: 1,
-  });
-
-  // Fetch tasks
-  const { data: tasks = [], refetch } = useQuery<Task[]>({
-    queryKey: ['/api/tasks'],
-  });
-
-  // Add task mutation
-  const addTaskMutation = useMutation({
-    mutationFn: (text: string) => {
-      return apiRequest('POST', '/api/tasks', { text, done: false });
-    },
-    onSuccess: () => {
-      setNewTask("");
-      refetch();
-    }
-  });
-
-  // Toggle task mutation
-  const toggleTaskMutation = useMutation({
-    mutationFn: (task: { id: number; done: boolean }) => {
-      return apiRequest('PATCH', `/api/tasks/${task.id}`, { done: task.done });
-    },
-    onSuccess: () => {
-      refetch();
-    }
-  });
-
-  // Catégories d'artisanat
-  const craftingCategories: CraftingCategory[] = [
-    {
-      id: "tools",
-      name: "Outils",
-      icon: <Hammer className="h-8 w-8 mb-2 text-amber-600" />,
-      color: "amber",
-      count: 8
-    },
-    {
-      id: "fabrics",
-      name: "Tissus",
-      icon: <div className="h-8 w-8 mb-2 text-blue-600 flex items-center justify-center text-xl">🧵</div>,
-      color: "blue",
-      count: 12
-    },
-    {
-      id: "farming",
-      name: "Agriculture",
-      icon: <div className="h-8 w-8 mb-2 text-green-600 flex items-center justify-center text-xl">🌱</div>,
-      color: "green",
-      count: 10
-    },
-    {
-      id: "alchemy",
-      name: "Alchimie",
-      icon: <div className="h-8 w-8 mb-2 text-purple-600 flex items-center justify-center text-xl">🧪</div>,
-      color: "purple",
-      count: 15
-    },
-    {
-      id: "cooking",
-      name: "Cuisine",
-      icon: <div className="h-8 w-8 mb-2 text-red-600 flex items-center justify-center text-xl">🍲</div>,
-      color: "red",
-      count: 24
-    },
-    {
-      id: "furniture",
-      name: "Meubles",
-      icon: <div className="h-8 w-8 mb-2 text-gray-600 flex items-center justify-center text-xl">🪑</div>,
-      color: "gray",
-      count: 18
-    }
-  ];
-
-  const addTask = () => {
-    if (newTask.trim() !== "") {
-      addTaskMutation.mutate(newTask);
-    }
-  };
-
-  const toggleTask = (id: number, currentDone: boolean) => {
-    toggleTaskMutation.mutate({ id, done: !currentDone });
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      addTask();
-    }
-  };
-
-  // Fonction pour convertir des chaînes de caractères en objectifs
-  const convertStringsToObjectives = (objectives: string[]): QuestObjective[] => {
-    return objectives.map(text => ({
-      text,
-      completed: false
-    }));
-  };
-  
-  // Fonction pour convertir des chaînes en objectifs (pour la compatibilité)
-  const convertObjectivesToQuestObjectives = (objectives?: string[]): QuestObjective[] | undefined => {
-    if (!objectives) return undefined;
-    return objectives.map(text => ({
-      text,
-      completed: false
-    }));
-  };
-
-  // Fonction pour créer une quête à partir d'un préset
-  const createQuestFromPreset = (presetQuest: PresetQuest): Quest => {
-    return {
-      id: Date.now(),
-      title: presetQuest.title,
-      description: presetQuest.description,
-      category: presetQuest.category,
-      completed: false,
-      current: 0,
-      total: presetQuest.total,
-      objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
-    };
-  };
-  
-  // Fonction pour basculer l'état d'un objectif individuel
-  const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
-    setQuests(quests.map(quest => {
-      if (quest.id === questId && quest.objectives) {
-        // Créer une copie du tableau d'objectifs
-        const newObjectives = [...quest.objectives];
-        // Inverser l'état de l'objectif sélectionné
-        newObjectives[objectiveIndex] = {
-          ...newObjectives[objectiveIndex],
-          completed: !newObjectives[objectiveIndex].completed
-        };
-        
-        // Vérifier si tous les objectifs sont complétés pour mettre à jour l'état global de la quête
-        const allObjectivesCompleted = newObjectives.every(obj => obj.completed);
-        
-        return {
-          ...quest,
-          objectives: newObjectives,
-          completed: allObjectivesCompleted
-        };
-      }
-      return quest;
-    }));
-  };
-
-  // Fonctions pour la gestion des quêtes
-  const addQuest = () => {
-    if (newQuest.title.trim() === "") return;
-    
-    const quest: Quest = {
-      id: Date.now(), // Utiliser un timestamp comme id temporaire
-      title: newQuest.title,
-      description: newQuest.description,
-      category: newQuest.category,
-      completed: false,
-      current: 0,
-      total: newQuest.total,
-      deadline: newQuest.deadline
-    };
-    
-    setQuests([...quests, quest]);
-    setNewQuest({
-      title: "",
-      description: "",
-      category: "secondary",
-      total: 1
-    });
-    setIsAddingQuest(false);
-  };
-
-  const updateQuestProgress = (id: number, increment: number) => {
-    setQuests(quests.map(quest => {
-      if (quest.id === id) {
-        const newCurrent = Math.min(quest.current + increment, quest.total);
-        return {
-          ...quest,
-          current: newCurrent,
-          completed: newCurrent >= quest.total
-        };
-      }
-      return quest;
-    }));
-  };
-
-  const toggleQuestCompletion = (id: number) => {
-    setQuests(quests.map(quest => {
-      if (quest.id === id) {
-        const completed = !quest.completed;
-        return {
-          ...quest,
-          completed,
-          current: completed ? quest.total : 0
-        };
-      }
-      return quest;
-    }));
-  };
-
-  const deleteQuest = (id: number) => {
-    setQuests(quests.filter(quest => quest.id !== id));
-  };
-
-  // Gérer la sélection de catégorie d'artisanat
-  const handleCategorySelect = (categoryId: string) => {
-    if (selectedCategory === categoryId) {
-      setSelectedCategory(null);
-    } else {
-      setSelectedCategory(categoryId);
-    }
-  };
-
-  // Fonction pour générer les classes CSS basées sur la couleur
-  const getCategoryClasses = (category: CraftingCategory) => {
-    const isSelected = selectedCategory === category.id;
-
-    let classes = {
-      container: "",
-      title: "",
-      text: ""
-    };
-
-    switch (category.color) {
-      case "amber":
-        classes.container = `bg-amber-50 border-amber-200 ${isSelected ? "ring-2 ring-amber-500 bg-amber-100" : "hover:bg-amber-100"}`;
-        classes.title = "text-amber-800";
-        classes.text = "text-amber-600";
-        break;
-      case "blue":
-        classes.container = `bg-blue-50 border-blue-200 ${isSelected ? "ring-2 ring-blue-500 bg-blue-100" : "hover:bg-blue-100"}`;
-        classes.title = "text-blue-800";
-        classes.text = "text-blue-600";
-        break;
-      case "green":
-        classes.container = `bg-green-50 border-green-200 ${isSelected ? "ring-2 ring-green-500 bg-green-100" : "hover:bg-green-100"}`;
-        classes.title = "text-green-800";
-        classes.text = "text-green-600";
-        break;
-      case "purple":
-        classes.container = `bg-purple-50 border-purple-200 ${isSelected ? "ring-2 ring-purple-500 bg-purple-100" : "hover:bg-purple-100"}`;
-        classes.title = "text-purple-800";
-        classes.text = "text-purple-600";
-        break;
-      case "red":
-        classes.container = `bg-red-50 border-red-200 ${isSelected ? "ring-2 ring-red-500 bg-red-100" : "hover:bg-red-100"}`;
-        classes.title = "text-red-800";
-        classes.text = "text-red-600";
-        break;
-      case "gray":
-        classes.container = `bg-gray-50 border-gray-200 ${isSelected ? "ring-2 ring-gray-500 bg-gray-100" : "hover:bg-gray-100"}`;
-        classes.title = "text-gray-800";
-        classes.text = "text-gray-600";
-        break;
-    }
-
-    return classes;
-  };
-
-  return (
-    <main className="min-h-screen bg-gradient-to-b from-green-100 to-blue-50 p-4 font-sans">
-      <header className="max-w-3xl mx-auto mb-6">
-        <div className="flex items-center justify-center mb-4">
-          <h1 className="text-3xl font-bold text-green-800">Coral Island Companion</h1>
-        </div>
-
-        {/* Nous n'utiliserons plus ce menu de navigation, nous mettrons Relations dans les onglets */}
-      </header>
-
-      <div className="w-full max-w-3xl mx-auto">
-        <Tabs defaultValue="checklist" className="w-full">
-          <TabsList className="grid grid-cols-5 bg-green-200 rounded-t-lg overflow-hidden">
-            <TabsTrigger value="checklist" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Check-list
-            </TabsTrigger>
-            <TabsTrigger value="quests" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Quêtes
-            </TabsTrigger>
-            <TabsTrigger value="relations" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              <div className="flex items-center justify-center gap-1">
-                <Heart className="h-3 w-3" />
-                <span>Relations</span>
-              </div>
-            </TabsTrigger>
-            <TabsTrigger value="events" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Événements
-            </TabsTrigger>
-            <TabsTrigger value="journal" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Journal
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Checklist Tab */}
-          <TabsContent value="checklist">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                <div className="space-y-4">
-                  {/* Liste des tâches */}
-                  {tasks.map((task) => (
-                    <div key={task.id} className="flex items-center gap-3">
-                      <label className="flex items-center cursor-pointer">
-                        <Checkbox 
-                          checked={task.done} 
-                          onCheckedChange={() => toggleTask(task.id, task.done)}
-                          className="h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
-                        />
-                        <span className={`ml-2 ${task.done ? "text-gray-500 line-through" : "text-gray-700"}`}>
-                          {task.text}
-                        </span>
-                      </label>
-                    </div>
-                  ))}
-
-                  {/* Formulaire d'ajout manuel */}
-                  <div className="add-task-form pt-4 mt-2 border-t border-gray-100">
-                    <div className="flex gap-2">
-                      <Input
-                        type="text"
-                        className="flex-1 rounded-md px-4 py-2"
-                        placeholder="Ajouter une tâche"
-                        value={newTask}
-                        onChange={(e) => setNewTask(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                      />
-                      <Button 
-                        className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-                        onClick={addTask}
-                      >
-                        Ajouter
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Tâches récurrentes */}
-                  <div className="mt-6">
-                    <h3 className="font-medium text-gray-700 mb-3">Tâches quotidiennes</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      <Button 
-                        variant="outline" 
-                        className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Arroser les cultures");
-                        }}
-                      >
-                        🌱 Arroser les cultures
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Nourrir les animaux");
-                        }}
-                      >
-                        🐔 Nourrir les animaux
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100" 
-                        onClick={() => {
-                          addTaskMutation.mutate("Récolter les légumes mûrs");
-                        }}
-                      >
-                        🥕 Récolter
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Collecter les œufs");
-                        }}
-                      >
-                        🥚 Collecter les œufs
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Vérifier la boîte aux lettres");
-                        }}
-                      >
-                        📫 Boîte aux lettres
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Parler aux villageois");
-                        }}
-                      >
-                        👋 Parler aux villageois
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Tâches hebdomadaires */}
-                  <div className="mt-4">
-                    <h3 className="font-medium text-gray-700 mb-3">Tâches hebdomadaires</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      <Button 
-                        variant="outline" 
-                        className="bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Acheter des graines pour la semaine");
-                        }}
-                      >
-                        🌾 Acheter des graines
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Offrir des cadeaux aux villageois");
-                        }}
-                      >
-                        🎁 Offrir des cadeaux
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
-                        onClick={() => {
-                          addTaskMutation.mutate("Vendre les produits accumulés");
-                        }}
-                      >
-                        💰 Vendre les produits
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Quests Tab */}
-          <TabsContent value="quests">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                <div className="space-y-6">
-                  {/* En-tête avec boutons d'ajout */}
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-semibold text-gray-800">Mes quêtes</h2>
-                    <div className="flex gap-2">
-                      {!isAddingQuest ? (
-                        <>
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button 
-                                className="bg-blue-600 hover:bg-blue-700 text-white"
-                              >
-                                <Search className="mr-1 h-4 w-4" />
-                                Quêtes du jeu
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                              <DialogHeader>
-                                <DialogTitle>Bibliothèque de quêtes</DialogTitle>
-                                <DialogDescription>
-                                  Parcourez les quêtes officielles du jeu et ajoutez-les à votre suivi.
-                                </DialogDescription>
-                              </DialogHeader>
-
-                              <Tabs defaultValue="main">
-                                <TabsList className="grid grid-cols-3 mb-4">
-                                  <TabsTrigger value="main">Quêtes principales</TabsTrigger>
-                                  <TabsTrigger value="secondary">Quêtes secondaires</TabsTrigger>
-                                  <TabsTrigger value="seasonal">Quêtes saisonnières</TabsTrigger>
-                                </TabsList>
-
-                                <TabsContent value="main">
-                                  <div className="space-y-4">
-                                    {/* La section Ville a été supprimée */}
-
-                                    {/* Autres quêtes principales */}
-                                    {getPresetQuestsByCategory("main")
-                                      .filter(quest => 
-                                        !["debuter", "nouveau-fermier", "se-faire-des-amis", "home-sweet-home", 
-                                          "visitez-beach-shack", "tout-ou-rien", "fondre-pour-progres", 
-                                          "extracteur", "extraction-essence", "produits-locaux", 
-                                          "nouvel-objectif-rang-s", "attraction-starlet-town"]
-                                        .includes(quest.id))
-                                      .map((presetQuest) => (
-                                      <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
-                                        <div className="flex justify-between mb-2">
-                                          <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="text-green-600 border-green-200 hover:bg-green-50"
-                                            onClick={() => {
-                                              const newQuestItem: Quest = {
-                                                id: Date.now(),
-                                                title: presetQuest.title,
-                                                description: presetQuest.description,
-                                                category: presetQuest.category,
-                                                completed: false,
-                                                current: 0,
-                                                total: presetQuest.total,
-                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
-                                              };
-                                              setQuests([...quests, newQuestItem]);
-                                            }}
-                                            disabled={quests.some(q => q.title === presetQuest.title)}
-                                          >
-                                            {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
-                                          </Button>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
-                                        {presetQuest.giver && (
-                                          <div className="text-xs text-gray-500 mb-1">
-                                            <span className="font-medium">Donné par:</span> {presetQuest.giver}
-                                          </div>
-                                        )}
-                                        {presetQuest.objectives && presetQuest.objectives.length > 0 && (
-                                          <div className="mt-2">
-                                            <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                            <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
-                                              {presetQuest.objectives.map((obj, idx) => (
-                                                <li key={idx}>{obj}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        {presetQuest.reward && (
-                                          <div className="mt-2 text-xs text-amber-600">
-                                            <span className="font-medium">Récompense:</span> {presetQuest.reward}
-                                          </div>
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </TabsContent>
-
-                                <TabsContent value="secondary">
-                                  <div className="space-y-4">
-                                    {getPresetQuestsByCategory("secondary").map((presetQuest) => (
-                                      <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
-                                        <div className="flex justify-between mb-2">
-                                          <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
-                                          <Button
-                                            onClick={() => {
-                                              const newQuestItem: Quest = {
-                                                id: Date.now(),
-                                                title: presetQuest.title,
-                                                description: presetQuest.description,
-                                                category: presetQuest.category,
-                                                completed: false,
-                                                current: 0,
-                                                total: presetQuest.total,
-                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
-                                              };
-                                              setQuests([...quests, newQuestItem]);
-                                            }}
-                                            variant="outline"
-                                            size="sm"
-                                            className="text-green-600 border-green-200 hover:bg-green-50"
-                                            disabled={quests.some(q => q.title === presetQuest.title)}
-                                          >
-                                            {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
-                                          </Button>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
-                                        {presetQuest.giver && (
-                                          <div className="text-xs text-gray-500 mb-1">
-                                            <span className="font-medium">Donné par:</span> {presetQuest.giver}
-                                          </div>
-                                        )}
-                                        {presetQuest.objectives && presetQuest.objectives.length > 0 && (
-                                          <div className="mt-2">
-                                            <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                            <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
-                                              {presetQuest.objectives.map((obj, idx) => (
-                                                <li key={idx}>{obj}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        {presetQuest.reward && (
-                                          <div className="mt-2 text-xs text-amber-600">
-                                            <span className="font-medium">Récompense:</span> {presetQuest.reward}
-                                          </div>
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </TabsContent>
-
-                                <TabsContent value="seasonal">
-                                  <div className="space-y-4">
-                                    {getPresetQuestsByCategory("seasonal").map((presetQuest) => (
-                                      <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
-                                        <div className="flex justify-between mb-2">
-                                          <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
-                                          <Button
-                                            onClick={() => {
-                                              const newQuestItem: Quest = {
-                                                id: Date.now(),
-                                                title: presetQuest.title,
-                                                description: presetQuest.description,
-                                                category: presetQuest.category,
-                                                completed: false,
-                                                current: 0,
-                                                total: presetQuest.total,
-                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives),
-                                                deadline: presetQuest.notes && presetQuest.notes.includes("lieu le") 
-                                                  ? presetQuest.notes.split("lieu le ")[1] : undefined
-                                              };
-                                              setQuests([...quests, newQuestItem]);
-                                            }}
-                                            variant="outline"
-                                            size="sm"
-                                            className="text-green-600 border-green-200 hover:bg-green-50"
-                                            disabled={quests.some(q => q.title === presetQuest.title)}
-                                          >
-                                            {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
-                                          </Button>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
-                                        {presetQuest.giver && (
-                                          <div className="text-xs text-gray-500 mb-1">
-                                            <span className="font-medium">Donné par:</span> {presetQuest.giver}
-                                          </div>
-                                        )}
-                                        {presetQuest.objectives && presetQuest.objectives.length > 0 && (
-                                          <div className="mt-2">
-                                            <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                            <ul className="list-discpl-5 text-xs text-gray-600 mt-1 space-y-1">
-                                              {presetQuest.objectives.map((obj, idx) => (
-                                                <li key={idx}>{obj}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        {presetQuest.reward && (
-                                          <div className="mt-2 text-xs text-amber-600">
-                                            <span className="font-medium">Récompense:</span> {presetQuest.reward}
-                                          </div>
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </TabsContent>
-                              </Tabs>
-                            </DialogContent>
-                          </Dialog>
-
-                          <Button 
-                            onClick={() => setIsAddingQuest(true)}
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            <Plus className="mr-1 h-4 w-4" />
-                            Nouvelle quête
-                          </Button>
-                        </>
-                      ) : (
-                        <Button 
-                          onClick={() => setIsAddingQuest(false)}
-                          variant="outline"
-                          className="text-gray-600"
-                        >
-                          <X className="mr-1 h-4 w-4" />
-                          Annuler
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Formulaire d'ajout de quête */}
-                  {isAddingQuest && (
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-4">
-                      <h3 className="font-medium text-gray-700">Ajouter une nouvelle quête</h3>
-                      <div className="space-y-3">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
-                          <Input
-                            type="text"
-                            placeholder="Titre de la quête"
-                            value={newQuest.title}
-                            onChange={(e) => setNewQuest({...newQuest, title: e.target.value})}
-                            className="w-full"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                          <Textarea
-                            placeholder="Description de l'objectif"
-                            value={newQuest.description}
-                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewQuest({...newQuest, description: e.target.value})}
-                            className="w-full"
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
-                            <Select 
-                              value={newQuest.category}
-                              onValueChange={(value: string) => setNewQuest({...newQuest, category: value as "main" | "secondary" | "seasonal"})}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Choisir une catégorie" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="main">Principale</SelectItem>
-                                <SelectItem value="secondary">Secondaire</SelectItem>
-                                <SelectItem value="seasonal">Saisonnière</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Quantité totale</label>
-                            <Input
-                              type="number"
-                              min="1"
-                              value={newQuest.total}
-                              onChange={(e) => setNewQuest({...newQuest, total: parseInt(e.target.value) || 1})}
-                              className="w-full"
-                            />
-                          </div>
-                        </div>
-                        {newQuest.category === "seasonal" && (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Date limite</label>
-                            <Input
-                              type="text"
-                              placeholder="Ex: Été 15"
-                              value={newQuest.deadline || ""}
-                              onChange={(e) => setNewQuest({...newQuest, deadline: e.target.value})}
-                              className="w-full"
-                            />
-                          </div>
-                        )}
-                        <Button 
-                          onClick={addQuest}
-                          className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
-                          disabled={newQuest.title.trim() === ""}
-                        >
-                          Ajouter la quête
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Quêtes principales */}
-                  <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                    <h3 className="font-medium text-amber-800 mb-3 flex items-center">
-                      <Star className="h-5 w-5 mr-2 text-amber-500" />
-                      Quêtes principales
-                    </h3>
-                    {/* La section Ville a été supprimée */}
-                    {/* Section Océan */}
-                    <div className="mb-4 p-3 bg-blue-100 rounded-lg">
-                      <h4 className="font-medium text-blue-800 mb-2 flex items-center">
-                        <Anchor className="h-4 w-4 mr-2" />
-                        Océan
-                      </h4>
-                      <div className="space-y-2">
-                        {quests
-                          .filter(quest => quest.category === "main" && (quest.title.includes("océan") || quest.title.includes("sirène")))
-                          .map(quest => (
-                            <div key={quest.id} className="bg-white rounded p-2 border border-blue-200">
-                              <div className="flex items-start gap-2">
-                                {quest.completed ? (
-                                  <CheckCircle 
-                                    className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
-                                    onClick={() => toggleQuestCompletion(quest.id)}
-                                  />
-                                ) : (
-                                  <Circle 
-                                    className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
-                                    onClick={() => toggleQuestCompletion(quest.id)}
-                                  />
-                                )}
-                                <div className="flex-1">
-                                  <h5 className="font-medium text-gray-800">{quest.title}</h5>
-                                  <p className="text-sm text-gray-600">{quest.description}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      {quests
-                        .filter(quest => quest.category === "main")
-                        .map(quest => (
-                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
-                            <div className="flex items-start gap-3">
-                              {quest.completed ? (
-                                <CheckCircle 
-                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              ) : (
-                                <Circle 
-                                  className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              )}
-                              <div className="flex-1">
-                                <div className="flex justify-between items-start">
-                                  <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
-                                    {quest.title}
-                                  </h4>
-                                  <div className="flex">
-                                    <Trash 
-                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
-                                      onClick={() => deleteQuest(quest.id)}
-                                    />
-                                  </div>
-                                </div>
-                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
-                                  {quest.description}
-                                </p>
-
-                                {quest.objectives && quest.objectives.length > 0 && (
-                                  <div className="mt-2">
-                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
-                                      {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className="flex items-center gap-2">
-                                          <Checkbox
-                                            checked={quest.objectives![idx].completed}
-                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
-                                            className="h-3 w-3"
-                                            disabled={quest.completed}
-                                          />
-                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                            {obj.text}
-                                          </span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-
-                                {quest.total > 1 && (
-                                  <div className="mt-2">
-                                    <div className="flex justify-between items-center mb-1">
-                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
-                                      <div className="flex gap-1">
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, -1)}
-                                          disabled={quest.current <= 0}
-                                        >
-                                          <Minus className="h-3 w-3" />
-                                        </Button>
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, 1)}
-                                          disabled={quest.current >= quest.total}
-                                        >
-                                          <Plus className="h-3 w-3" />
-                                        </Button>
-                                      </div>
-                                    </div>
-                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
-                                      <div 
-                                        className="bg-amber-500 h-2 rounded-full" 
-                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
-                                      ></div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      {quests.filter(quest => quest.category === "main").length === 0 && (
-                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
-                          <p className="text-sm text-gray-500">Pas de quête principale pour le moment</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Quêtes secondaires */}
-                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <h3 className="font-medium text-blue-800 mb-3 flex items-center">
-                      <Sparkles className="h-5 w-5 mr-2 text-blue-500" />
-                      Quêtes secondaires
-                    </h3>
-                    <div className="space-y-3">
-                      {quests
-                        .filter(quest => quest.category === "secondary")
-                        .map(quest => (
-                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
-                            <div className="flex items-start gap-3">
-                              {quest.completed ? (
-                                <CheckCircle 
-                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              ) : (
-                                <Circle 
-                                  className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              )}
-                              <div className="flex-1">
-                                <div className="flex justify-between items-start">
-                                  <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
-                                    {quest.title}
-                                  </h4>
-                                  <div className="flex">
-                                    <Trash 
-                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
-                                      onClick={() => deleteQuest(quest.id)}
-                                    />
-                                  </div>
-                                </div>
-                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
-                                  {quest.description}
-                                </p>
-
-                                {quest.objectives && quest.objectives.length > 0 && (
-                                  <div className="mt-2">
-                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
-                                      {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className="flex items-center gap-2">
-                                          <Checkbox
-                                            checked={quest.objectives![idx].completed}
-                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
-                                            className="h-3 w-3"
-                                            disabled={quest.completed}
-                                          />
-                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                            {obj.text}
-                                          </span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-
-                                {quest.total > 1 && (
-                                  <div className="mt-2">
-                                    <div className="flex justify-between items-center mb-1">
-                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
-                                      <div className="flex gap-1">
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, -1)}
-                                          disabled={quest.current <= 0}
-                                        >
-                                          <Minus className="h-3 w-3" />
-                                        </Button>
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, 1)}
-                                          disabled={quest.current >= quest.total}
-                                        >
-                                          <Plus className="h-3 w-3" />
-                                        </Button>
-                                      </div>
-                                    </div>
-                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
-                                      <div 
-                                        className="bg-blue-500 h-2 rounded-full" 
-                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
-                                      ></div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      {quests.filter(quest => quest.category === "secondary").length === 0 && (
-                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
-                          <p className="text-sm text-gray-500">Pas de quête secondaire pour le moment</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Quêtes saisonnières */}
-                  <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                    <h3 className="font-medium text-green-800 mb-3 flex items-center">
-                      <CalendarDays className="h-5 w-5 mr-2 text-green-500" />
-                      Quêtes saisonnières
-                    </h3>
-                    <div className="space-y-3">
-                      {quests
-                        .filter(quest => quest.category === "seasonal")
-                        .map(quest => (
-                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
-                            <div className="flex items-start gap-3">
-                              {quest.completed ? (
-                                <CheckCircle 
-                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              ) : (
-                                <Clock 
-                                  className="h-5 w-5 text-orange-500 mt-1 flex-shrink-0 cursor-pointer" 
-                                  onClick={() => toggleQuestCompletion(quest.id)}
-                                />
-                              )}
-                              <div className="flex-1">
-                                <div className="flex justify-between items-start">
-                                  <div className="flex items-center">
-                                    <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
-                                      {quest.title}
-                                    </h4>
-                                    {quest.deadline && (
-                                      <Badge className="ml-2 bg-orange-100 text-orange-800 border-orange-200">
-                                        {quest.deadline}
-                                      </Badge>
-                                    )}
-                                  </div>
-                                  <div className="flex">
-                                    <Trash 
-                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
-                                      onClick={() => deleteQuest(quest.id)}
-                                    />
-                                  </div>
-                                </div>
-                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
-                                  {quest.description}
-                                </p>
-
-                                {quest.objectives && quest.objectives.length > 0 && (
-                                  <div className="mt-2">
-                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
-                                      {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className="flex items-center gap-2">
-                                          <Checkbox
-                                            checked={quest.objectives![idx].completed}
-                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
-                                            className="h-3 w-3"
-                                            disabled={quest.completed}
-                                          />
-                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                            {obj.text}
-                                          </span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-
-                                {quest.total > 1 && (
-                                  <div className="mt-2">
-                                    <div className="flex justify-between items-center mb-1">
-                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
-                                      <div className="flex gap-1">
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, -1)}
-                                          disabled={quest.current <= 0}
-                                        >
-                                          <Minus className="h-3 w-3" />
-                                        </Button>
-                                        <Button 
-                                          variant="outline" 
-                                          size="icon" 
-                                          className="h-5 w-5 rounded-full p-0"
-                                          onClick={() => updateQuestProgress(quest.id, 1)}
-                                          disabled={quest.current >= quest.total}
-                                        >
-                                          <Plus className="h-3 w-3" />
-                                        </Button>
-                                      </div>
-                                    </div>
-                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
-                                      <div 
-                                        className="bg-green-500 h-2 rounded-full" 
-                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
-                                      ></div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      {quests.filter(quest => quest.category === "seasonal").length === 0 && (
-                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
-                          <p className="text-sm text-gray-500">Pas de quête saisonnière pour le moment</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Relations Tab */}
-          <TabsContent value="relations">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                <div className="space-y-4">
-                  {/* Barre de recherche */}
-                  <div className="relative mb-6">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      type="text"
-                      placeholder="Rechercher un villageois..."
-                      value={searchVillager}
-                      onChange={(e) => setSearchVillager(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-
-                  {/* Filtres par saison */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <Badge 
-                      variant={selectedSeason === "all" ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1"
-                      onClick={() => setSelectedSeason("all")}
-                    >
-                      Tous
-                    </Badge>
-                    <Badge 
-                      variant={selectedSeason === "Printemps" ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1 bg-green-100 text-green-800 hover:bg-green-200 border-green-200"
-                      onClick={() => setSelectedSeason("Printemps")}
-                    >
-                      🌱 Printemps ({getVillagersBySeason("Printemps").length})
-                    </Badge>
-                    <Badge 
-                      variant={selectedSeason === "Été" ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-yellow-200"
-                      onClick={() => setSelectedSeason("Été")}
-                    >
-                      ☀️ Été ({getVillagersBySeason("Été").length})
-                    </Badge>
-                    <Badge 
-                      variant={selectedSeason === "Automne" ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200"
-                      onClick={() => setSelectedSeason("Automne")}
-                    >
-                      🍂 Automne ({getVillagersBySeason("Automne").length})
-                    </Badge>
-                    <Badge 
-                      variant={selectedSeason === "Hiver" ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1 bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200"
-                      onClick={() => setSelectedSeason("Hiver")}
-                    >
-                      ❄️ Hiver ({getVillagersBySeason("Hiver").length})
-                    </Badge>
-                  </div>
-
-                  {/* Liste des villageois */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {getAllVillagers()
-                      .filter(v => 
-                        (selectedSeason === "all" || v.birthday.season === selectedSeason) &&
-                        (searchVillager === "" || 
-                          v.name.toLowerCase().includes(searchVillager.toLowerCase()) ||
-                          v.occupation.toLowerCase().includes(searchVillager.toLowerCase()) ||
-                          v.description.toLowerCase().includes(searchVillager.toLowerCase())
-                        )
-                      )
-                      .map(villager => (
-                        <VillagerCard key={villager.id} villager={villager} />
-                      ))
-                    }
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Events Tab */}
-          <TabsContent value="events">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5 text-center">
-                <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                  <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
-                  <p className="text-gray-600">
-                    Cette section du calendrier des événements sera bientôt disponible.
-                  </p>
-                  <p className="text-gray-600 mt-2">
-                    Retrouvez facilement tous les festivals, anniversaires et événements spéciaux 
-                    pour ne rien manquer des activités de Coral Island.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Journal Tab */}
-          <TabsContent value="journal">
-            <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                {/* En-tête du journal avec sous-onglets */}
-                <Tabs defaultValue={journalTab} className="w-full" onValueChange={setJournalTab}>
-                  <TabsList className="bg-gray-100 rounded-lg mb-5 grid grid-cols-4">
-                    <TabsTrigger value="crafting" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
-                      Artisanat
-                    </TabsTrigger>
-                    <TabsTrigger value="crops" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
-                      Cultures
-                    </TabsTrigger>
-                    <TabsTrigger value="fish" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
-                      Poissons
-                    </TabsTrigger>
-                    <TabsTrigger value="animals" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
-                      Animaux
-                    </TabsTrigger>
-                  </TabsList>
-
-                  {/* Contenu de l'onglet Artisanat */}
-                  <TabsContent value="crafting">
-                    <div className="mb-4">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input
-                          className="pl-9 pr-4 py-2 rounded-lg bg-gray-50 border-gray-200 w-full"
-                          placeholder="Rechercher des recettes..."
-                          value={craftingSearch}
-                          onChange={(e) => setCraftingSearch(e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Catégories d'artisanat */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-                      {craftingCategories.map((category) => {
-                        const classes = getCategoryClasses(category);
-                        return (
-                          <div
-                            key={category.id}
-                            className={`border rounded-lg p-3 transition-all cursor-pointer ${classes.container}`}
-                            onClick={() => handleCategorySelect(category.id)}
-                          >
-                            <div className="flex flex-col items-center text-center">
-                              {category.icon}
-                              <h3 className={`font-medium ${classes.title}`}>{category.name}</h3>
-                              <p className={`text-xs ${classes.text}`}>{category.count} recettes</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Liste des recettes filtrées */}
-                    <div>
-                      {selectedCategory ? (
-                        <div>
-                          <h3 className="font-medium text-gray-700 mb-3">Recettes de {craftingCategories.find(c => c.id === selectedCategory)?.name}</h3>
-                          <div className="space-y-3">
-                            {getRecipesByCategory(selectedCategory)
-                              .filter(recipe => craftingSearch ? recipe.name.toLowerCase().includes(craftingSearch.toLowerCase()) : true)
-                              .map((recipe: Recipe) => (
-                                <div key={recipe.id} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                                  <div className="flex justify-between">
-                                    <h4 className="font-medium text-gray-900">{recipe.name}</h4>
-                                    <Badge className="bg-gray-100 text-gray-800">Niv. {recipe.level}</Badge>
-                                  </div>
-                                  <div className="mt-2 text-sm text-gray-600">
-                                    <h5 className="font-medium mb-1">Matériaux requis:</h5>
-                                    <ul className="space-y-1 ml-2">
-                                      {recipe.materials.map((material, index) => (
-                                        <li key={index} className="flex items-center gap-2">
-                                          <span className="text-green-600">✓</span>
-                                          <span>{material.quantity} × {material.name}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                  {recipe.sellPrice && (
-                                    <div className="mt-2 text-sm">
-                                      <span className="font-medium text-amber-700">Prix de vente:</span>
-                                      <span className="ml-2 text-amber-600">{recipe.sellPrice} pièces</span>
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="text-gray-400 mb-2">
-                            <Info className="h-12 w-12 mx-auto mb-2" />
-                          </div>
-                          <h3 className="text-lg font-medium text-gray-700 mb-1">Sélectionnez une catégorie</h3>
-                          <p className="text-sm text-gray-500">
-                            Choisissez une catégorie d'artisanat pour voir les recettes disponibles.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </TabsContent>
-
-                  {/* Contenu de l'onglet Cultures */}
-                  <TabsContent value="crops">
-                    <div className="space-y-5">
-                      {/* Cultures les plus rentables */}
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-medium text-gray-700">Cultures les plus rentables</h3>
-                          <div className="relative group">
-                            <Info className="h-4 w-4 text-gray-400 cursor-help" />
-                            <div className="absolute z-10 right-0 mt-2 w-64 px-4 py-3 text-xs bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity">
-                              <p>
-                                La rentabilité est calculée sur une saison complète de 28 jours, en tenant compte des repousses pour les cultures qui repoussent après la première récolte.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {getAllCrops()
-                            .filter(crop => crop.sellPrice)
-                            .sort((a, b) => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDayA = calculateProfitability(a);
-                              const profitPerDayB = calculateProfitability(b);
-                              return profitPerDayB - profitPerDayA;
-                            })
-                            .slice(0, 4)
-                            .map(crop => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDay = calculateProfitability(crop);
-                              return (
-                                <div key={crop.id} className="flex items-center gap-3 border border-gray-200 rounded-lg p-3 bg-white">
-                                  <div className="w-12 h-12 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
-                                    <img 
-                                      src={crop.imagePath} 
-                                      alt={crop.name} 
-                                      className="max-w-full max-h-full object-contain" 
-                                      onError={(e) => {
-                                        const target = e.target as HTMLImageElement;
-                                        target.style.display = 'none';
-                                      }}
-                                    />
-                                  </div>
-                                  <div className="flex-1">
-                                    <h4 className="font-medium text-gray-900">{crop.name}</h4>
-                                    <div className="flex justify-between">
-                                      <div className="text-xs text-gray-500">{crop.growthTime} jours | {crop.season}</div>
-                                      <div className="text-xs font-medium text-green-600">+{profitPerDay} Po/jour</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })
-                          }
-                        </div>
-                      </div>
-
-                      {/* Liste des cultures par saison */}
-                      <div className="mt-4">
-                        <h3 className="font-medium text-gray-700 mb-3">Cultures par saison</h3>
-
-                        {/* Printemps */}
-                        <div className="mb-6">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-green-100 text-green-800">🌱</span>
-                            <h4 className="font-medium text-green-800">Printemps</h4>
-                          </div>
-                          <div className="space-y-3">
-                            {getCropsBySeason("Printemps").map((crop) => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDay = calculateProfitability(crop);
-
-                              // Comptage des préférences
-                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-
-                              return (
-                                <CropCard 
-                                  key={crop.id}
-                                  crop={crop}
-                                  profit={profitPerDay}
-                                  likesCount={likes}
-                                  lovesCount={loves}
-                                />
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Été */}
-                        <div className="mb-6">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-800">☀️</span>
-                            <h4 className="font-medium text-yellow-800">Été</h4>
-                          </div>
-                          <div className="space-y-3">
-                            {getCropsBySeason("Été").map((crop) => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDay = calculateProfitability(crop);
-
-                              // Comptage des préférences
-                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-
-                              return (
-                                <CropCard 
-                                  key={crop.id}
-                                  crop={crop}
-                                  profit={profitPerDay}
-                                  likesCount={likes}
-                                  lovesCount={loves}
-                                />
-                              );
-                            })}
-                            {getCropsBySeason("Été").length === 0 && (
-                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <p className="text-sm text-gray-500">Aucune culture d'été ajoutée pour le moment.</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Automne */}
-                        <div className="mb-6">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span>
-                            <h4 className="font-medium text-orange-800">Automne</h4>
-                          </div>
-                          <div className="space-y-3">
-                            {getCropsBySeason("Automne").map((crop) => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDay = calculateProfitability(crop);
-
-                              // Comptage des préférences
-                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-
-                              return (
-                                <CropCard 
-                                  key={crop.id}
-                                  crop={crop}
-                                  profit={profitPerDay}
-                                  likesCount={likes}
-                                  lovesCount={loves}
-                                />
-                              );
-                            })}
-                            {getCropsBySeason("Automne").length === 0 && (
-                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <p className="text-sm text-gray-500">Aucune culture d'automne ajoutée pour le moment.</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Hiver */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-800">❄️</span>
-                            <h4 className="font-medium text-blue-800">Hiver</h4>
-                          </div>
-                          <div className="space-y-3">
-                            {getCropsBySeason("Hiver").map((crop) => {
-                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
-                              const profitPerDay = calculateProfitability(crop);
-
-                              // Comptage des préférences
-                              const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
-                              const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-
-                              return (
-                                <CropCard 
-                                  key={crop.id}
-                                  crop={crop}
-                                  profit={profitPerDay}
-                                  likesCount={likes}
-                                  lovesCount={loves}
-                                />
-                              );
-                            })}
-                            {getCropsBySeason("Hiver").length === 0 && (
-                              <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <p className="text-sm text-gray-500">Aucune culture d'hiver ajoutée pour le moment.</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Bouton Ajouter plus de cultures */}
-                        <Button className="w-full mt-4 bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                          <Plus className="h-4 w-4" />
-                          <span>Ajouter plus de cultures</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  {/* Contenu de l'onglet Poissons */}
-                  <TabsContent value="fish">
-                    <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
-                      <div className="text-blue-400 mb-3">
-                        <div className="text-5xl mx-auto">🐟</div>
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">Encyclopédie de poissons</h3>
-                      <p className="text-sm text-gray-500 max-w-md mx-auto">
-                        Cette section répertoriera tous les poissons que vous pouvez attraper à Coral Island, avec leur emplacement, saison et prix de vente.
-                      </p>
-                      <Button className="mt-4 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-md py-2 px-4 transition-colors inline-flex items-center">
-                        <span>À venir prochainement</span>
-                      </Button>
-                    </div>
-                  </TabsContent>
-
-                  {/* Contenu de l'onglet Animaux */}
-                  <TabsContent value="animals">
-                    <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
-                      <div className="text-amber-400 mb-3">
-                        <div className="text-5xl mx-auto">🐄</div>
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">Animaux de la ferme</h3>
-                      <p className="text-sm text-gray-500 max-w-md mx-auto">
-                        Cette section contiendra des informations sur les animaux de la ferme, leur prix d'achat, ce qu'ils produisent et comment prendre soin d'eux.
-                      </p>
-                      <Button className="mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md py-2 px-4 transition-colors inline-flex items-center">
-                        <span>À venir prochainement</span>
-                      </Button>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      <footer className="max-w-3xl mx-auto mt-8 text-center text-gray-500 text-sm py-4">
-        <p>Coral Island Companion © {new Date().getFullYear()} - Tous droits réservés</p>
-      </footer>
-    </main>
-  );
-}
