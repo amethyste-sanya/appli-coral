@@ -199,27 +199,32 @@ export default function Home() {
     }
   };
 
-  // Fonction pour initialiser les états des objectifs
-  const initializeObjectiveStatuses = (objectives?: string[]): boolean[] | undefined => {
-    if (!objectives || objectives.length === 0) return undefined;
-    return objectives.map(() => false);
+  // Fonction pour convertir des chaînes de caractères en objectifs
+  const convertStringsToObjectives = (objectives: string[]): QuestObjective[] => {
+    return objectives.map(text => ({
+      text,
+      completed: false
+    }));
   };
-
+  
   // Fonction pour basculer l'état d'un objectif individuel
   const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
     setQuests(quests.map(quest => {
-      if (quest.id === questId && quest.objectives && quest.objectivesStatus) {
-        // Créer une copie du tableau d'états des objectifs
-        const newObjectivesStatus = [...quest.objectivesStatus];
+      if (quest.id === questId && quest.objectives) {
+        // Créer une copie du tableau d'objectifs
+        const newObjectives = [...quest.objectives];
         // Inverser l'état de l'objectif sélectionné
-        newObjectivesStatus[objectiveIndex] = !newObjectivesStatus[objectiveIndex];
+        newObjectives[objectiveIndex] = {
+          ...newObjectives[objectiveIndex],
+          completed: !newObjectives[objectiveIndex].completed
+        };
         
         // Vérifier si tous les objectifs sont complétés pour mettre à jour l'état global de la quête
-        const allObjectivesCompleted = newObjectivesStatus.every(status => status);
+        const allObjectivesCompleted = newObjectives.every(obj => obj.completed);
         
         return {
           ...quest,
-          objectivesStatus: newObjectivesStatus,
+          objectives: newObjectives,
           completed: allObjectivesCompleted
         };
       }
@@ -577,9 +582,9 @@ export default function Home() {
                                                       completed: false,
                                                       current: 0,
                                                       total: presetQuest.total,
-                                                      objectives: presetQuest.objectives
+                                                      objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
                                                     };
-                                                    addQuest(newQuestItem);
+                                                    setQuests([...quests, newQuestItem]);
                                                   }}
                                                   variant="outline"
                                                   size="sm"
