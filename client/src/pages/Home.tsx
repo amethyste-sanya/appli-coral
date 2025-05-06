@@ -227,7 +227,7 @@ export default function Home() {
       
       <Tabs value={tab} onValueChange={setTab} className="bg-white p-6 rounded-xl border shadow">
         <TabsList className="grid grid-cols-5 mb-6">
-          <TabsTrigger value="checklist">Liste</TabsTrigger>
+          <TabsTrigger value="checklist">Tâches</TabsTrigger>
           <TabsTrigger value="quests">Quêtes</TabsTrigger>
           <TabsTrigger value="relations">Relations</TabsTrigger>
           <TabsTrigger value="events">Événements</TabsTrigger>
