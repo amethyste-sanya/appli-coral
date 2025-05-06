@@ -74,7 +74,157 @@ export const recipes: Recipe[] = [
     sellPrice: 10000
   },
   
-  // Pour d'autres outils, ils seront ajoutés ici
+  // Outils - Haches
+  {
+    id: "basic_axe",
+    name: "Hache",
+    category: "tools",
+    materials: [],
+    level: "Départ",
+    description: "",
+    sellPrice: 0
+  },
+  {
+    id: "bronze_axe",
+    name: "Hache de bronze",
+    category: "tools",
+    materials: [
+      { name: "Hache", quantity: 1 },
+      { name: "Barres de bronze", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 1500
+  },
+  {
+    id: "silver_axe",
+    name: "Hache en argent",
+    category: "tools",
+    materials: [
+      { name: "Hache en bronze", quantity: 1 },
+      { name: "Lingots d'argent", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 3000
+  },
+  {
+    id: "gold_axe",
+    name: "Hache en or",
+    category: "tools",
+    materials: [
+      { name: "Hache en argent", quantity: 1 },
+      { name: "Lingots d'or", quantity: 3 },
+      { name: "Bois dur", quantity: 5 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 10000
+  },
+  
+  // Outils - Pioches
+  {
+    id: "basic_pickaxe",
+    name: "Pioche",
+    category: "tools",
+    materials: [],
+    level: "Départ",
+    description: "",
+    sellPrice: 0
+  },
+  {
+    id: "bronze_pickaxe",
+    name: "Pioche de bronze",
+    category: "tools",
+    materials: [
+      { name: "Pioche", quantity: 1 },
+      { name: "Barres de bronze", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 1500
+  },
+  {
+    id: "silver_pickaxe",
+    name: "Pioche en argent",
+    category: "tools",
+    materials: [
+      { name: "Pioche en bronze", quantity: 1 },
+      { name: "Lingots d'argent", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 3000
+  },
+  {
+    id: "gold_pickaxe",
+    name: "Pioche en or",
+    category: "tools",
+    materials: [
+      { name: "Pioche en argent", quantity: 1 },
+      { name: "Lingots d'or", quantity: 3 },
+      { name: "Bois dur", quantity: 5 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 10000
+  },
+  
+  // Outils - Arrosoirs
+  {
+    id: "basic_watering_can",
+    name: "Arrosoir",
+    category: "tools",
+    materials: [],
+    level: "Départ",
+    description: "",
+    sellPrice: 0
+  },
+  {
+    id: "bronze_watering_can",
+    name: "Arrosoir de bronze",
+    category: "tools",
+    materials: [
+      { name: "Arrosoir", quantity: 1 },
+      { name: "Barres de bronze", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 1500
+  },
+  {
+    id: "silver_watering_can",
+    name: "Arrosoir en argent",
+    category: "tools",
+    materials: [
+      { name: "Arrosoir en bronze", quantity: 1 },
+      { name: "Lingots d'argent", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 3000
+  },
+  {
+    id: "gold_watering_can",
+    name: "Arrosoir en or",
+    category: "tools",
+    materials: [
+      { name: "Arrosoir en argent", quantity: 1 },
+      { name: "Lingots d'or", quantity: 3 },
+      { name: "Bois dur", quantity: 5 }
+    ],
+    level: "Fabrication",
+    description: "",
+    sellPrice: 10000
+  },
+  
+  // Cuisine
   {
     id: "veggie_preserve",
     name: "Conserves de légumes",
