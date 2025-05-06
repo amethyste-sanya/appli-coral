@@ -1,22 +1,66 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Villager } from '@/lib/villagers';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   CalendarIcon, 
   HeartIcon, 
   MapPinIcon, 
   Users2Icon,
   ChevronDownIcon,
-  ChevronUpIcon
+  ChevronUpIcon,
+  MinusCircleIcon,
+  PlusCircleIcon,
+  XCircleIcon
 } from 'lucide-react';
 
 type VillagerCardProps = {
   villager: Villager;
 };
 
+const STORAGE_KEY_PREFIX = 'coral_island_heart_level_';
+
 export function VillagerCard({ villager }: VillagerCardProps) {
   // Caché par défaut
   const [isExpanded, setIsExpanded] = useState(false);
+  // Niveau de cœur (0-15)
+  const [heartLevel, setHeartLevel] = useState(0);
+
+  // Charger le niveau de cœur depuis le stockage local
+  useEffect(() => {
+    const storedLevel = localStorage.getItem(`${STORAGE_KEY_PREFIX}${villager.id}`);
+    if (storedLevel) {
+      setHeartLevel(parseInt(storedLevel, 10));
+    }
+  }, [villager.id]);
+
+  // Sauvegarder le niveau de cœur
+  const saveHeartLevel = (level: number) => {
+    setHeartLevel(level);
+    localStorage.setItem(`${STORAGE_KEY_PREFIX}${villager.id}`, level.toString());
+  };
+
+  // Incrémenter le niveau de cœur
+  const incrementHeartLevel = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
+    if (heartLevel < 15) {
+      saveHeartLevel(heartLevel + 1);
+    }
+  };
+
+  // Décrémenter le niveau de cœur
+  const decrementHeartLevel = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
+    if (heartLevel > 0) {
+      saveHeartLevel(heartLevel - 1);
+    }
+  };
+
+  // Réinitialiser le niveau de cœur
+  const resetHeartLevel = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
+    saveHeartLevel(0);
+  };
 
   // Génère une couleur aléatoire pastel basée sur le nom du villageois
   const generatePastelColor = (name: string) => {
@@ -86,6 +130,43 @@ export function VillagerCard({ villager }: VillagerCardProps) {
         {/* Description courte - toujours visible */}
         <div className="mt-2">
           <p className="text-sm text-gray-700 line-clamp-2">{villager.description}</p>
+        </div>
+        
+        {/* Contrôle du niveau d'amitié (cœurs) */}
+        <div className="mt-3 p-2 bg-pink-50 rounded-md border border-pink-100">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-medium text-pink-800">Niveau d'amitié:</span>
+            <div className="flex items-center space-x-1">
+              <button 
+                onClick={decrementHeartLevel} 
+                className="text-pink-600 hover:text-pink-800 p-1 rounded-full hover:bg-pink-100"
+                title="Diminuer le niveau"
+              >
+                <MinusCircleIcon size={16} />
+              </button>
+              <span className="text-pink-800 font-bold">{heartLevel}</span>
+              <button 
+                onClick={incrementHeartLevel} 
+                className="text-pink-600 hover:text-pink-800 p-1 rounded-full hover:bg-pink-100"
+                title="Augmenter le niveau"
+              >
+                <PlusCircleIcon size={16} />
+              </button>
+              <button 
+                onClick={resetHeartLevel} 
+                className="text-pink-600 hover:text-pink-800 p-1 rounded-full hover:bg-pink-100 ml-1"
+                title="Réinitialiser le niveau"
+              >
+                <XCircleIcon size={16} />
+              </button>
+            </div>
+          </div>
+          <div className="mt-1 w-full bg-pink-200 rounded-full h-2">
+            <div 
+              className="bg-pink-500 h-2 rounded-full" 
+              style={{ width: `${(heartLevel / 15) * 100}%` }}
+            ></div>
+          </div>
         </div>
         
         {/* Badges principaux - toujours visibles */}
