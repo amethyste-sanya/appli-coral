@@ -13,6 +13,154 @@ export type PresetQuest = {
 };
 
 export const presetQuests: PresetQuest[] = [
+  // Autres quêtes secondaires
+  {
+    id: "corbeaux-partis",
+    title: "Les corbeaux sont partis",
+    description: "Les corbeaux volent vos récoltes ! Pour remédier à ce problème, fabriquez un épouvantail et placez-le près de vos cultures. Vous ne savez pas comment en fabriquer un ? En maîtrisant les activités, vous découvrirez différentes façons de faciliter le travail ou de gagner plus de pièces grâce aux recettes d'artisanat.",
+    category: "secondary",
+    total: 1,
+    giver: "Initié par un événement aléatoire de corbeaux mangeant des cultures",
+    objectives: [
+      "Fabriquez un épouvantail de fortune"
+    ],
+    reward: "100 pièces",
+    notes: "Autres"
+  },
+  {
+    id: "enchantement-outil",
+    title: "Enchantement d'outil",
+    description: "Enchantez l'un de vos outils au Village Géant !",
+    category: "secondary",
+    total: 1,
+    giver: "Grog (après avoir terminé Giant Village)",
+    objectives: [
+      "Enchantez votre outil !"
+    ],
+    prerequisite: "Avoir terminé Giant Village",
+    reward: "250 pièces",
+    notes: "Autres"
+  },
+  {
+    id: "festival-arbre-1",
+    title: "Festival de plantation d'arbres I",
+    description: "Allez planter des arbres !",
+    category: "secondary",
+    total: 5,
+    giver: "Connor (automatiquement lancé au début de la journée du Festival de plantation d'arbres)",
+    objectives: [
+      "Assistez au festival de plantation d'arbres",
+      "Parlez à Connor pour démarrer l'événement",
+      "Nettoyez la zone A (114/114)",
+      "Préparez le sol dans la zone B (44/44)",
+      "Plantez le jeune arbre dans la zone C (20/20)"
+    ],
+    reward: "Plant de bananier + 150 pièces + 70 points d'amitié avec tous les habitants",
+    notes: "Autres"
+  },
+  {
+    id: "festival-arbre-2",
+    title: "Festival de plantation d'arbres II",
+    description: "Allez planter des arbres !",
+    category: "secondary",
+    total: 3,
+    giver: "Connor (lors du démarrage de l'activité principale du Festival de plantation d'arbres)",
+    objectives: [
+      "Dégagez la zone A (113/113)",
+      "Préparez le sol dans la zone B (64/64)",
+      "Plantez le jeune arbre dans la zone C (16/16)"
+    ],
+    prerequisite: "Festival de plantation d'arbres I",
+    reward: "Plant de prunier + 150 pièces + 70 points d'amitié avec tous les habitants",
+    notes: "Autres"
+  },
+  {
+    id: "festival-arbre-3",
+    title: "Festival de plantation d'arbres III",
+    description: "Allez planter des arbres !",
+    category: "secondary",
+    total: 3,
+    giver: "Connor (au début de l'activité principale du Festival de plantation d'arbres)",
+    objectives: [
+      "Dégagez la zone A (127/127)",
+      "Préparez le sol dans la zone B (80/80)",
+      "Plantez le jeune arbre dans la zone C (22/22)"
+    ],
+    prerequisite: "Festival de plantation d'arbres II",
+    reward: "Plant de ramboutan + 150 pièces + 70 points d'amitié avec tous les habitants",
+    notes: "Autres"
+  },
+  {
+    id: "chaperon-sirenes-1",
+    title: "Chaperon des sirènes, partie 1",
+    description: "Accompagnez l'équipage de l'expédition Starlet en ville. Dates d'expédition : Printemps 8-14, Été 22-28, Automne 22-28, Hiver 22-28",
+    category: "secondary",
+    total: 5,
+    giver: "À la surface",
+    objectives: [
+      "Attendez la date de l'expédition",
+      "Attendez que le temps soit clair",
+      "Attendez un jour sans festival",
+      "Dirigez-vous vers le quai de plongée",
+      "Soyez là entre 8h et 12h"
+    ],
+    prerequisite: "À la surface",
+    reward: "3 Grains de café + Warp sesajen",
+    notes: "Autres"
+  },
+  {
+    id: "chaperon-sirenes-2",
+    title: "Sirènes Chaperon Partie 2",
+    description: "Accompagnez l'équipage de l'expédition Starlet en ville. Dates d'expédition : Printemps 8-14, Été 22-28, Automne 22-28, Hiver 22-28",
+    category: "secondary",
+    total: 5,
+    giver: "Après avoir terminé Chaperon des sirènes, partie 1",
+    objectives: [
+      "Attendez la date de l'expédition",
+      "Attendez que le temps soit clair",
+      "Attendez un jour sans festival",
+      "Dirigez-vous vers le Raj Coffee Shop",
+      "Soyez là entre 8h et 12h"
+    ],
+    prerequisite: "Chaperon des sirènes, partie 1",
+    reward: "3 Géodes mystérieuses + 2 Starfruit",
+    notes: "Autres"
+  },
+  {
+    id: "chaperon-sirenes-3",
+    title: "Sirènes Chaperon Partie 3",
+    description: "Accompagnez l'équipage de l'expédition Starlet en ville. Dates d'expédition : Printemps 8-14, Été 22-28, Automne 22-28, Hiver 22-28",
+    category: "secondary",
+    total: 5,
+    giver: "Après avoir terminé Sirènes Chaperon Partie 2",
+    objectives: [
+      "Attendez la date de l'expédition",
+      "Attendez que le temps soit clair",
+      "Attendez un jour sans festival",
+      "Dirigez-vous vers le musée extérieur",
+      "Soyez là entre 8h et 12h"
+    ],
+    prerequisite: "Sirènes Chaperon Partie 2",
+    reward: "3 Coffres ornés + Panier d'intérieur pour animaux de compagnie sur le thème du renard",
+    notes: "Autres"
+  },
+  {
+    id: "chaperon-sirenes-4",
+    title: "Chaperon des sirènes, partie 4",
+    description: "Accompagnez l'équipe de l'expédition Starlet en ville. Évitez les dates d'exposition, car les Sirènes ne seront pas présentes. Dates d'expédition : Printemps 8-14, Été 22-28, Automne 22-28, Hiver 22-28",
+    category: "secondary",
+    total: 3,
+    giver: "Après avoir terminé Sirènes Chaperon Partie 3",
+    objectives: [
+      "Attendez la date de l'expédition",
+      "Dirigez-vous vers le château de Naga",
+      "Soyez là entre 8h et 18h"
+    ],
+    prerequisite: "Sirènes Chaperon Partie 3",
+    reward: "10 000 pièces + 1 cœur avec Denali, Miranjani et Semeru",
+    notes: "Autres"
+  },
+  
   // Quêtes Cœurs
   {
     id: "saumon-pour-jim",
