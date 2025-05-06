@@ -589,7 +589,176 @@ export const presetQuests: PresetQuest[] = [
     reward: "1000 points d'amitié avec Grog et Gong + Débloquez Handsome",
     notes: ""
   },
-  // Ajoutez vos nouvelles quêtes secondaires ici
+  // Quêtes secondaires (Courrier)
+  {
+    id: "smoothies-verts-suki",
+    title: "Les smoothies verts de Suki",
+    description: "Suki veut faire des smoothies, apportez-lui n'importe quel légume de printemps.",
+    category: "secondary",
+    total: 1,
+    giver: "Suki (courrier le 14 printemps)",
+    objectives: [
+      "Offrez n'importe quel légume de printemps à Suki"
+    ],
+    prerequisite: "Recevoir le courrier de Suki",
+    reward: "1 cœur d'amitié avec Suki",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "papaye-emma",
+    title: "Papaye pour Emma",
+    description: "Emma recherche des papayes et vous a proposé un prix premium en échange de 2 papayes.",
+    category: "secondary",
+    total: 1,
+    giver: "Emma (courrier le 3 été)",
+    objectives: [
+      "Offrez 2 Papayes à Emma"
+    ],
+    prerequisite: "Recevoir le courrier d'Emma",
+    reward: "1 cœur d'amitié avec Emma + 400 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "floraison-ete",
+    title: "Floraison d'été",
+    description: "Walter veut un hibiscus et vous a promis un pourboire.",
+    category: "secondary",
+    total: 1,
+    giver: "Walter (courrier le 11 été)",
+    objectives: [
+      "Offrez 1 Hibiscus à Walter"
+    ],
+    prerequisite: "Recevoir le courrier de Walter",
+    reward: "1 cœur d'amitié avec Walter + 100 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "demande-erika",
+    title: "La demande d'Erika",
+    description: "Erika a besoin d'un œuf pour préparer le plat préféré de Frank. Aidez-la à lui en offrir un !",
+    category: "secondary",
+    total: 1,
+    giver: "Erika (courrier le 20 été)",
+    objectives: [
+      "Offrez 1 œuf à Erika"
+    ],
+    prerequisite: "Recevoir le courrier d'Erika",
+    reward: "1 cœur d'amitié avec Erika + 100 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "aide-voisin",
+    title: "L'aide du voisin",
+    description: "Il y a une bûche derrière la maison de Paul qui a blessé des animaux du coin. Aidez-nous à la retirer.",
+    category: "secondary",
+    total: 1,
+    giver: "Paul (courrier le 23 été)",
+    objectives: [
+      "Coupez la bûche derrière la maison de Paul (interaction simple, aucune hache requise)"
+    ],
+    prerequisite: "Recevoir le courrier de Paul",
+    reward: "1 cœur d'amitié avec Paul",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "poisson-nuit",
+    title: "Poisson de nuit",
+    description: "Jim a besoin d'un Arapaima, on en trouve généralement par temps froid après le coucher du soleil.",
+    category: "secondary",
+    total: 1,
+    giver: "Jim (courrier le 4 automne)",
+    objectives: [
+      "Offrez 1 Arapaima à Jim"
+    ],
+    prerequisite: "Recevoir le courrier de Jim",
+    reward: "1 cœur d'amitié avec Jim + 200 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "couronne-tournesol",
+    title: "Couronne de tournesol",
+    description: "Valentina a besoin d'un tournesol pour l'anniversaire de Sunny, le 26. Ne soyez pas en retard !",
+    category: "secondary",
+    total: 1,
+    giver: "Valentina (courrier le 4 automne)",
+    objectives: [
+      "Offrez 1 Tournesol à Valentina"
+    ],
+    prerequisite: "Recevoir le courrier de Valentina",
+    reward: "1 cœur d'amitié avec Valentina",
+    notes: "Quête de courrier saisonnier, à compléter avant le 26 automne"
+  },
+  {
+    id: "saison-citrouilles",
+    title: "Saison des citrouilles",
+    description: "Bree a une recette qu'elle veut essayer, mais elle a besoin d'une citrouille. Aidez-la à lui en donner une.",
+    category: "secondary",
+    total: 1,
+    giver: "Bree (courrier le 6 automne)",
+    objectives: [
+      "Offrez 1 citrouille à Bree"
+    ],
+    prerequisite: "Recevoir le courrier de Bree",
+    reward: "1 cœur d'amitié avec Bree + 150 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "champignons-ben",
+    title: "Champignons spéciaux de Ben",
+    description: "L'ami de Ben cherche un champignon trompette noir. On en trouve autour du lac. Aidez-le à en trouver un.",
+    category: "secondary",
+    total: 1,
+    giver: "Ben (courrier le 18 automne)",
+    objectives: [
+      "Offrez 1 champignon trompette noire à Ben (quand il sera de retour sur l'île)"
+    ],
+    prerequisite: "Recevoir le courrier de Ben",
+    reward: "1 cœur d'amitié avec Ben + 200 pièces",
+    notes: "Quête de courrier saisonnier, Ben est absent pendant la deuxième moitié de l'automne"
+  },
+  {
+    id: "chapeau-maire",
+    title: "Le chapeau perdu du maire",
+    description: "Une catastrophe a frappé ! Le maire Conner a perdu un de ses chapeaux. Restez vigilants et aidez-nous à le lui rendre.",
+    category: "secondary",
+    total: 2,
+    giver: "Connor (courrier le 2 hiver)",
+    objectives: [
+      "Trouvez le chapeau perdu du maire",
+      "Restituez le chapeau perdu du maire"
+    ],
+    prerequisite: "Recevoir le courrier de Connor",
+    reward: "1 cœur d'amitié avec Connor",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "the-charles",
+    title: "Le thé de Charles",
+    description: "Charles veut envoyer des feuilles de thé à ses parents. Aidez-le à lui en donner.",
+    category: "secondary",
+    total: 1,
+    giver: "Charles (courrier le 4 hiver)",
+    objectives: [
+      "Offrez 1 Feuille de Thé à Charles"
+    ],
+    prerequisite: "Recevoir le courrier de Charles",
+    reward: "1 cœur d'amitié avec Charles + 100 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
+  {
+    id: "article-millie",
+    title: "L'article de Millie",
+    description: "Millie a besoin d'une bouteille de varech légendaire pour un article qu'elle écrit, aidez-la à en trouver une.",
+    category: "secondary",
+    total: 1,
+    giver: "Millie (courrier le 12 hiver)",
+    objectives: [
+      "Offrez 1 bouteille d'essence d'algues osmium à Millie"
+    ],
+    prerequisite: "Recevoir le courrier de Millie",
+    reward: "1 cœur d'amitié avec Millie + 600 pièces",
+    notes: "Quête de courrier saisonnier"
+  },
   {
     id: "festival-printemps",
     title: "Festival du Printemps",
@@ -613,8 +782,7 @@ export const presetQuests: PresetQuest[] = [
     prerequisite: "Saison: Automne",
     reward: "Décorations uniques pour votre ferme",
     notes: "Le festival a lieu le 14 Automne"
-  }
-,
+  },
   {
     id: "mysteres-ocean",
     title: "Mystères de l'océan",
