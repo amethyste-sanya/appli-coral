@@ -932,6 +932,12 @@ export default function Home() {
                                 <div>
                                   <span className="font-medium">Taille:</span> {crop.size}
                                 </div>
+                                <div>
+                                  <span className="font-medium">Source:</span> {crop.seedSource}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Rang de ville:</span> {crop.townRank}
+                                </div>
                                 {crop.sellPrice && (
                                   <div>
                                     <span className="font-medium">Prix de vente:</span> {crop.sellPrice} pièces
@@ -953,6 +959,32 @@ export default function Home() {
                                   </div>
                                 )}
                               </div>
+                              
+                              {/* Préférences des villageois */}
+                              {crop.preferences && crop.preferences.length > 0 && (
+                                <div className="mt-3 pt-3 border-t border-gray-100">
+                                  <h5 className="text-xs font-medium text-gray-700 mb-2">Préférences des villageois:</h5>
+                                  <div className="flex flex-wrap gap-2">
+                                    {crop.preferences.map((pref, index) => (
+                                      <div 
+                                        key={index} 
+                                        className={`text-xs px-2 py-1 rounded-full ${
+                                          pref.preference === "adore" ? "bg-pink-100 text-pink-800" :
+                                          pref.preference === "aime" ? "bg-green-100 text-green-800" :
+                                          pref.preference === "déteste" ? "bg-red-100 text-red-800" :
+                                          "bg-gray-100 text-gray-800"
+                                        }`}
+                                      >
+                                        {pref.name} {
+                                          pref.preference === "adore" ? "❤️" :
+                                          pref.preference === "aime" ? "👍" :
+                                          pref.preference === "déteste" ? "👎" : ""
+                                        }
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                               
                               {/* Afficher la rentabilité */}
                               {crop.sellPrice && (
