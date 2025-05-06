@@ -22,6 +22,21 @@ import { getAllVillagers, getVillagersBySeason, getVillagersByLove, Villager, vi
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
 
 export default function Home() {
+  // Tâches journalières régulières
+  const dailyTasks = [
+    "Arroser les cultures",
+    "Vérifier la météo du lendemain",
+    "Ramasser les œufs et le lait (si animaux)",
+    "Ramasser les produits sauvages (fleurs, champignons)",
+    "Vérifier les pièges à crabes",
+    "Aller voir les marchands (Sam, Dinda, etc.)",
+    "Parler à au moins 5 villageois",
+    "Donner un cadeau à un PNJ",
+    "Pêcher un peu (selon l'énergie)",
+    "Miner pour du minerai ou des géodes",
+    "Mettre à jour les machines (compost, four, etc.)"
+  ];
+  
   // States pour les données
   const [tab, setTab] = useState("checklist");
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -302,14 +317,35 @@ export default function Home() {
         
         <TabsContent value="checklist">
           <div className="space-y-4">
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Input
                 placeholder="Ajouter une tâche..."
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addTask()}
+                className="min-w-[200px]"
               />
               <Button onClick={addTask}>Ajouter</Button>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  // Ajouter toutes les tâches journalières qui ne sont pas déjà dans la liste
+                  const existingTexts = tasks.map(t => t.text);
+                  const newTasks = dailyTasks
+                    .filter(text => !existingTexts.includes(text))
+                    .map(text => ({
+                      id: Date.now() + dailyTasks.indexOf(text),
+                      text,
+                      done: false
+                    }));
+                  
+                  if (newTasks.length > 0) {
+                    setTasks([...tasks, ...newTasks]);
+                  }
+                }}
+              >
+                <Plus className="h-4 w-4 mr-1" /> Tâches quotidiennes
+              </Button>
             </div>
             
             <div className="space-y-2">
