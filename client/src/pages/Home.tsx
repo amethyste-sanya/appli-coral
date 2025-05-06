@@ -2128,20 +2128,7 @@ export default function Home() {
                             </div>
                           </div>
                           
-                          <div className="bg-white p-3 rounded-md border border-orange-100">
-                            <h4 className="text-sm font-medium text-gray-700 mb-2">Conseils d'utilisation</h4>
-                            <p className="text-sm text-gray-600">
-                              {selectedCookingSubcategory === "frying_pan" && "Idéal pour faire frire des œufs, sauter des légumes ou cuire des crêpes. Chauffez à température moyenne et utilisez une petite quantité d'huile."}
-                              {selectedCookingSubcategory === "chef_knife" && "Parfait pour trancher, hacher et découper tous types d'ingrédients avec précision. Tenez votre couteau avec une prise sûre et coupez avec un mouvement de balancier."}
-                              {selectedCookingSubcategory === "oven" && "Utilisé pour la cuisson au four des pains, gâteaux, viandes et plats mijotés. Préchauffez toujours le four avant d'y placer vos préparations."}
-                              {selectedCookingSubcategory === "pot" && "Excellent pour les soupes, les pâtes, ou pour faire bouillir des légumes. Utilisez un couvercle pour accélérer l'ébullition et économiser de l'énergie."}
-                              {selectedCookingSubcategory === "ceramic_bowl" && "Utile pour mélanger les ingrédients, mariner ou servir les salades et desserts. Chaque préparation nécessite un bol de taille adaptée."}
-                              {selectedCookingSubcategory === "blender" && "Permet de réaliser des smoothies, soupes crémeuses et sauces homogènes. Commencez à basse vitesse puis augmentez progressivement."}
-                              {selectedCookingSubcategory === "grill" && "Pour les barbecues, la cuisson de viandes, poissons et légumes grillés. Huilez légèrement la grille avant utilisation pour éviter que les aliments ne collent."}
-                              {selectedCookingSubcategory === "seasoning_set" && "Permet d'ajouter saveurs et arômes à tous vos plats cuisinés. Expérimentez différentes combinaisons d'herbes et d'épices pour créer des saveurs uniques."}
-                              {selectedCookingSubcategory === "skillet" && "Idéal pour la cuisson à haute température, les sautés et les plats mijotés. Sa fonte conserve et répartit uniformément la chaleur."}
-                            </p>
-                          </div>
+
                         </div>
                       </div>
                     )}
