@@ -2514,7 +2514,7 @@ export default function Home() {
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-green-600 mt-0.5">✓</span>
-                            <div className="text-sm">Fermer les portes la nuit pour protéger des prédateurs</div>
+                            <div className="text-sm">Fermer les portes la nuit pour plus de sécurité</div>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-green-600 mt-0.5">✓</span>
