@@ -342,7 +342,7 @@ export default function Home() {
                                         }}
                                         variant="outline"
                                         size="sm"
-                                        className="text-gray-600 border-gray-200 hover:bg-gray-50"
+                                        className="text-sky-600 border-sky-200 bg-sky-50 hover:bg-sky-100"
                                         disabled={quests.some(q => q.title === presetQuest.title)}
                                       >
                                         {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
@@ -401,7 +401,7 @@ export default function Home() {
                                         }}
                                         variant="outline"
                                         size="sm"
-                                        className="text-amber-600 border-amber-200 hover:bg-amber-50"
+                                        className="text-sky-600 border-sky-200 bg-sky-50 hover:bg-sky-100"
                                         disabled={quests.some(q => q.title === presetQuest.title)}
                                       >
                                         {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
@@ -568,7 +568,7 @@ export default function Home() {
                                   }}
                                   variant="outline"
                                   size="sm"
-                                  className="text-green-600 border-green-200 hover:bg-green-50"
+                                  className="text-sky-600 border-sky-200 bg-sky-50 hover:bg-sky-100"
                                   disabled={quests.some(q => q.title === presetQuest.title)}
                                 >
                                   {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
