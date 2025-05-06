@@ -25,7 +25,7 @@ export const crops: Crop[] = [
     name: "Navet",
     category: "Légumes",
     description: "Un légume-racine légèrement épicé.",
-    imagePath: "https://static.wikia.nocookie.net/coral-island/images/2/21/Navet.png/revision/latest/scale-to-width-down/75?cb=20221025170532&path-prefix=fr",
+    imagePath: "https://img.icons8.com/color/96/turnip.png",
     seedName: "Graines de navet",
     seedPrice: 15,
     season: "Printemps",
