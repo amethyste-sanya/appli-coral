@@ -606,7 +606,7 @@ export default function Home() {
                       className={`px-4 py-2 font-medium text-sm ${journalTab === "items" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
                       onClick={() => setJournalTab("items")}
                     >
-                      Objets
+                      Cultures
                     </button>
                     <button
                       className={`px-4 py-2 font-medium text-sm ${journalTab === "fish" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
@@ -618,7 +618,7 @@ export default function Home() {
                       className={`px-4 py-2 font-medium text-sm ${journalTab === "creatures" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
                       onClick={() => setJournalTab("creatures")}
                     >
-                      Créatures
+                      Animaux
                     </button>
                   </div>
                   
@@ -834,14 +834,14 @@ export default function Home() {
                     </div>
                   )}
                   
-                  {/* Contenu de l'onglet Objets */}
+                  {/* Contenu de l'onglet Cultures */}
                   {journalTab === "items" && (
                     <div className="text-center py-10">
                       <div className="bg-gray-50 rounded-lg p-6 mb-4">
                         <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
                         <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
                         <p className="text-gray-600">
-                          Cette section du journal qui contiendra tous les objets collectionnés sera bientôt disponible.
+                          Cette section du journal qui contiendra toutes les cultures et graines sera bientôt disponible.
                         </p>
                       </div>
                     </div>
@@ -860,14 +860,14 @@ export default function Home() {
                     </div>
                   )}
                   
-                  {/* Contenu de l'onglet Créatures */}
+                  {/* Contenu de l'onglet Animaux */}
                   {journalTab === "creatures" && (
                     <div className="text-center py-10">
                       <div className="bg-gray-50 rounded-lg p-6 mb-4">
                         <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
                         <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
                         <p className="text-gray-600">
-                          Cette section du journal qui contiendra toutes les créatures découvertes sera bientôt disponible.
+                          Cette section du journal qui contiendra tous les animaux de la ferme sera bientôt disponible.
                         </p>
                       </div>
                     </div>
