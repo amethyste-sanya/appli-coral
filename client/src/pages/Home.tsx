@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info } from "lucide-react";
+import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
@@ -179,8 +179,21 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-100 to-blue-50 p-4 font-sans">
-      <header className="max-w-3xl mx-auto mb-6 flex items-center justify-center">
-        <h1 className="text-3xl font-bold text-green-800">Coral Island Companion</h1>
+      <header className="max-w-3xl mx-auto mb-6">
+        <div className="flex items-center justify-center mb-4">
+          <h1 className="text-3xl font-bold text-green-800">Coral Island Companion</h1>
+        </div>
+        
+        {/* Menu de navigation principal */}
+        <div className="flex justify-center gap-3 mt-2">
+          <a 
+            href="/relations" 
+            className="flex items-center gap-1 px-4 py-2 bg-pink-100 text-pink-800 rounded-full hover:bg-pink-200 transition-colors"
+          >
+            <Heart className="h-4 w-4" />
+            <span>Relations</span>
+          </a>
+        </div>
       </header>
 
       <div className="w-full max-w-3xl mx-auto">
