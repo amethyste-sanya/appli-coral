@@ -10,6 +10,7 @@ import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight,
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops } from "@/lib/crops";
+import { CropCard } from "@/components/CropCard";
 
 // Task type definition
 type Task = {
@@ -310,30 +311,30 @@ export default function Home() {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       <Button 
                         variant="outline" 
-                        className="bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100"
+                        className="bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
                         onClick={() => {
-                          addTaskMutation.mutate("Visiter la Reine des Sauces (dimanche)");
+                          addTaskMutation.mutate("Acheter des graines pour la semaine");
                         }}
                       >
-                        🛒 Reine des Sauces (dimanche)
+                        🌾 Acheter des graines
                       </Button>
                       <Button 
                         variant="outline" 
                         className="bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-100"
                         onClick={() => {
-                          addTaskMutation.mutate("Vérifier les nouveaux objets en magasin");
+                          addTaskMutation.mutate("Offrir des cadeaux aux villageois");
                         }}
                       >
-                        🏪 Nouveaux objets
+                        🎁 Offrir des cadeaux
                       </Button>
                       <Button 
                         variant="outline" 
-                        className="bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
+                        className="bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
                         onClick={() => {
-                          addTaskMutation.mutate("Explorer la mine");
+                          addTaskMutation.mutate("Vendre les produits accumulés");
                         }}
                       >
-                        ⛏️ Explorer la mine
+                        💰 Vendre les produits
                       </Button>
                     </div>
                   </div>
@@ -347,66 +348,82 @@ export default function Home() {
             <Card className="rounded-b-lg shadow-md mt-1">
               <CardContent className="p-5">
                 <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Quêtes Actives</h2>
-                  
-                  {/* Quest 1 */}
-                  <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-medium text-blue-800">La demande du Maire</h3>
-                      <span className="bg-blue-200 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">En cours</span>
-                    </div>
-                    <p className="text-gray-600 mt-2">Aidez le maire à restaurer le centre communautaire en fournissant 5 poutres de bois et 10 pierres.</p>
-                    
-                    <div className="mt-3 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-gray-600">5/5 poutres de bois</span>
+                  <div className="bg-amber-50 rounded-lg p-4 border border-amber-200 mb-6">
+                    <h3 className="font-medium text-amber-800 mb-2 flex items-center">
+                      <Star className="h-5 w-5 mr-2 text-amber-500" />
+                      Quêtes principales
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gray-800 line-through">Rencontrer le maire</h4>
+                          <p className="text-sm text-gray-500">Présentez-vous au maire Sam pour commencer votre nouvelle vie.</p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Circle className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">6/10 pierres</span>
+                      <div className="flex items-start gap-3">
+                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gray-800">Réparer le Temple de la Déesse</h4>
+                          <p className="text-sm text-gray-500">Collectez 10 offrandes pour restaurer le Temple de la Déesse.</p>
+                          <div className="mt-1 bg-gray-100 rounded-full h-2">
+                            <div className="bg-amber-500 h-2 rounded-full" style={{ width: '30%' }}></div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">3/10 offrandes collectées</p>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div className="bg-blue-600 h-2.5 rounded-full" style={{width: "65%"}}></div>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1 text-right">65% complété</p>
                     </div>
                   </div>
                   
-                  {/* Quest 2 */}
-                  <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-medium text-green-800">Amélioration de la ferme</h3>
-                      <span className="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">En cours</span>
-                    </div>
-                    <p className="text-gray-600 mt-2">Construisez un nouveau poulailler pour accueillir plus d'animaux dans votre ferme.</p>
-                    
-                    <div className="mt-3 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-gray-600">Acheter les plans (500 pièces)</span>
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                    <h3 className="font-medium text-green-800 mb-2 flex items-center">
+                      <Ungroup className="h-5 w-5 mr-2 text-green-500" />
+                      Quêtes secondaires
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-3">
+                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gray-800">Aider Scott à la ferme</h4>
+                          <p className="text-sm text-gray-500">Apportez 5 navets frais à Scott pour l'aider avec sa commande.</p>
+                          <div className="mt-1 bg-gray-100 rounded-full h-2">
+                            <div className="bg-green-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">3/5 navets récoltés</p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Circle className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">Rassembler les matériaux</span>
+                      <div className="flex items-start gap-3">
+                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gray-800">Pêche pour Keiko</h4>
+                          <p className="text-sm text-gray-500">Attrapez un poisson-lune pour Keiko.</p>
+                          <div className="mt-1 text-xs italic text-blue-600">
+                            Disponible seulement en été
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div className="bg-green-600 h-2.5 rounded-full" style={{width: "25%"}}></div>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1 text-right">25% complété</p>
                     </div>
                   </div>
                   
-                  <Button className="w-full py-2 px-4 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                    <Plus className="h-4 w-4" />
-                    <span>Voir toutes les quêtes</span>
-                  </Button>
+                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                    <h3 className="font-medium text-purple-800 mb-2 flex items-center">
+                      <Calendar className="h-5 w-5 mr-2 text-purple-500" />
+                      Quêtes saisonnières
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-3">
+                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gray-800">Festival du Printemps</h4>
+                          <p className="text-sm text-gray-500">Cultivez une fleur primée pour le festival du printemps.</p>
+                          <div className="mt-1 text-xs italic text-purple-600 flex items-center">
+                            <ArrowRight className="h-3 w-3 mr-1" />
+                            7 jours restants
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -415,106 +432,18 @@ export default function Home() {
           {/* Relationships Tab */}
           <TabsContent value="relationships">
             <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Relations avec les villageois</h2>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Villager 1 */}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm flex gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        FR
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">François</h3>
-                        <p className="text-sm text-gray-500 mb-2">Fermier</p>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
-                          <div className="bg-green-500 h-2 rounded-full" style={{width: "75%"}}></div>
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Amitié</span>
-                          <span>★★★☆☆</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Villager 2 */}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm flex gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        SO
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">Sophie</h3>
-                        <p className="text-sm text-gray-500 mb-2">Fleuriste</p>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
-                          <div className="bg-orange-500 h-2 rounded-full" style={{width: "90%"}}></div>
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Amitié</span>
-                          <span>★★★★☆</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Villager 3 */}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm flex gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        TH
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">Thomas</h3>
-                        <p className="text-sm text-gray-500 mb-2">Pêcheur</p>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
-                          <div className="bg-blue-500 h-2 rounded-full" style={{width: "45%"}}></div>
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Amitié</span>
-                          <span>★★☆☆☆</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Villager 4 */}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm flex gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        MA
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">Marie</h3>
-                        <p className="text-sm text-gray-500 mb-2">Libraire</p>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
-                          <div className="bg-purple-500 h-2 rounded-full" style={{width: "60%"}}></div>
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Amitié</span>
-                          <span>★★★☆☆</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4">
-                    <h3 className="text-sm font-medium text-gray-700 mb-2">Conseils d'amitié</h3>
-                    <ul className="text-sm text-gray-600 space-y-1 ml-5 list-disc">
-                      <li>Parlez aux villageois quotidiennement</li>
-                      <li>Offrez des cadeaux qu'ils aiment (voir profils)</li>
-                      <li>Participez aux événements du village</li>
-                      <li>Complétez leurs quêtes personnelles</li>
-                    </ul>
-                  </div>
-                  
-                  <Button className="w-full py-2 px-4 bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                    <Ungroup className="h-4 w-4" />
-                    <span>Voir tous les villageois</span>
-                  </Button>
+              <CardContent className="p-5 text-center">
+                <div className="bg-gray-50 rounded-lg p-6 mb-4">
+                  <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
+                  <p className="text-gray-600">
+                    Cette section qui vous permettra de suivre vos relations avec les villageois
+                    sera bientôt disponible.
+                  </p>
+                  <p className="text-gray-600 mt-2">
+                    Vous pourrez suivre vos affinités, offrir les cadeaux appropriés et garder 
+                    une trace des anniversaires et événements spéciaux.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -523,66 +452,17 @@ export default function Home() {
           {/* Events Tab */}
           <TabsContent value="events">
             <Card className="rounded-b-lg shadow-md mt-1">
-              <CardContent className="p-5">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Calendrier des événements</h2>
-                  
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium">Printemps</h3>
-                    <div className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Saison actuelle</div>
-                  </div>
-                  
-                  {/* Event list */}
-                  <div className="space-y-4">
-                    {/* Event 1 */}
-                    <div className="border-l-4 border-pink-500 pl-3 py-2">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium">Festival des Fleurs</h4>
-                        <span className="text-sm text-gray-500">Jour 15</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mt-1">Décorez le village avec des fleurs et participez au concours floral.</p>
-                    </div>
-                    
-                    {/* Event 2 */}
-                    <div className="border-l-4 border-blue-500 pl-3 py-2">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium">Course aux œufs</h4>
-                        <span className="text-sm text-gray-500">Jour 28</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mt-1">Cherchez des œufs cachés partout dans le village et gagnez des prix.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mt-8">
-                    <h3 className="font-medium">Été</h3>
-                    <div className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">À venir</div>
-                  </div>
-                  
-                  {/* Summer events */}
-                  <div className="space-y-4 opacity-75">
-                    {/* Event 1 */}
-                    <div className="border-l-4 border-yellow-500 pl-3 py-2">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium">Festival de la Plage</h4>
-                        <span className="text-sm text-gray-500">Jour 12</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mt-1">Profitez de jeux de plage et d'un feu d'artifice nocturne.</p>
-                    </div>
-                    
-                    {/* Event 2 */}
-                    <div className="border-l-4 border-green-500 pl-3 py-2">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium">Foire Agricole</h4>
-                        <span className="text-sm text-gray-500">Jour 25</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mt-1">Présentez vos meilleures récoltes et animaux pour remporter des récompenses.</p>
-                    </div>
-                  </div>
-                  
-                  <Button className="w-full py-2 px-4 bg-orange-100 hover:bg-orange-200 text-orange-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>Voir toute l'année</span>
-                  </Button>
+              <CardContent className="p-5 text-center">
+                <div className="bg-gray-50 rounded-lg p-6 mb-4">
+                  <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
+                  <p className="text-gray-600">
+                    Cette section du calendrier des événements sera bientôt disponible.
+                  </p>
+                  <p className="text-gray-600 mt-2">
+                    Retrouvez facilement tous les festivals, anniversaires et événements spéciaux 
+                    pour ne rien manquer des activités de Coral Island.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -592,287 +472,147 @@ export default function Home() {
           <TabsContent value="journal">
             <Card className="rounded-b-lg shadow-md mt-1">
               <CardContent className="p-5">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Journal</h2>
-                  
-                  {/* Sous-navigation du Journal */}
-                  <div className="flex border-b border-gray-200">
-                    <button
-                      className={`px-4 py-2 font-medium text-sm ${journalTab === "crafting" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
-                      onClick={() => setJournalTab("crafting")}
-                    >
+                {/* En-tête du journal avec sous-onglets */}
+                <Tabs defaultValue={journalTab} className="w-full" onValueChange={setJournalTab}>
+                  <TabsList className="bg-gray-100 rounded-lg mb-5 grid grid-cols-4">
+                    <TabsTrigger value="crafting" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
                       Artisanat
-                    </button>
-                    <button
-                      className={`px-4 py-2 font-medium text-sm ${journalTab === "items" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
-                      onClick={() => setJournalTab("items")}
-                    >
+                    </TabsTrigger>
+                    <TabsTrigger value="crops" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
                       Cultures
-                    </button>
-                    <button
-                      className={`px-4 py-2 font-medium text-sm ${journalTab === "fish" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
-                      onClick={() => setJournalTab("fish")}
-                    >
+                    </TabsTrigger>
+                    <TabsTrigger value="fish" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
                       Poissons
-                    </button>
-                    <button
-                      className={`px-4 py-2 font-medium text-sm ${journalTab === "creatures" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
-                      onClick={() => setJournalTab("creatures")}
-                    >
+                    </TabsTrigger>
+                    <TabsTrigger value="animals" className="text-gray-700 data-[state=active]:bg-green-100 data-[state=active]:text-green-800">
                       Animaux
-                    </button>
-                  </div>
+                    </TabsTrigger>
+                  </TabsList>
                   
                   {/* Contenu de l'onglet Artisanat */}
-                  {journalTab === "crafting" && (
-                    <div className="space-y-6">
-                      {/* Search and filter */}
-                      <div className="relative flex gap-2">
-                        <div className="relative flex-1">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                          <Input 
-                            className="pl-10" 
-                            placeholder="Rechercher une recette..." 
-                            value={craftingSearch}
-                            onChange={(e) => setCraftingSearch(e.target.value)}
-                          />
-                        </div>
-                        <Button variant="outline" className="bg-amber-50 border-amber-200 text-amber-800">
-                          Filtrer
-                        </Button>
+                  <TabsContent value="crafting">
+                    <div className="mb-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input
+                          className="pl-9 pr-4 py-2 rounded-lg bg-gray-50 border-gray-200 w-full"
+                          placeholder="Rechercher des recettes..."
+                          value={craftingSearch}
+                          onChange={(e) => setCraftingSearch(e.target.value)}
+                        />
                       </div>
-                      
-                      {/* Crafting Categories */}
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {craftingCategories.map((category) => {
-                          const classes = getCategoryClasses(category);
-                          return (
-                            <div 
-                              key={category.id}
-                              onClick={() => handleCategorySelect(category.id)}
-                              className={`${classes.container} rounded-lg border p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors`}
-                            >
+                    </div>
+                    
+                    {/* Catégories d'artisanat */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+                      {craftingCategories.map((category) => {
+                        const classes = getCategoryClasses(category);
+                        return (
+                          <div
+                            key={category.id}
+                            className={`border rounded-lg p-3 transition-all cursor-pointer ${classes.container}`}
+                            onClick={() => handleCategorySelect(category.id)}
+                          >
+                            <div className="flex flex-col items-center text-center">
                               {category.icon}
-                              <h3 className={`font-medium ${classes.title}`}>
-                                {category.name}
-                              </h3>
-                              <p className={`text-xs ${classes.text} mt-1`}>
-                                {category.count} recettes
-                              </p>
+                              <h3 className={`font-medium ${classes.title}`}>{category.name}</h3>
+                              <p className={`text-xs ${classes.text}`}>{category.count} recettes</p>
                             </div>
-                          );
-                        })}
-                      </div>
-                      
-                      {/* Selected Category Content */}
-                      {selectedCategory && (
-                        <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                          <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold">
-                              {craftingCategories.find(c => c.id === selectedCategory)?.name}
-                            </h3>
-                            <Button 
-                              size="sm" 
-                              variant="ghost" 
-                              onClick={() => setSelectedCategory(null)}
-                              className="h-7 text-gray-500 hover:text-gray-700"
-                            >
-                              Fermer
-                            </Button>
                           </div>
-                          
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Liste des recettes filtrées */}
+                    <div>
+                      {selectedCategory ? (
+                        <div>
+                          <h3 className="font-medium text-gray-700 mb-3">Recettes de {craftingCategories.find(c => c.id === selectedCategory)?.name}</h3>
                           <div className="space-y-3">
-                            {getRecipesByCategory(selectedCategory).length > 0 ? (
-                              getRecipesByCategory(selectedCategory).map((recipe) => (
+                            {getRecipesByCategory(selectedCategory)
+                              .filter(recipe => craftingSearch ? recipe.name.toLowerCase().includes(craftingSearch.toLowerCase()) : true)
+                              .map((recipe: Recipe) => (
                                 <div key={recipe.id} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
                                   <div className="flex justify-between">
                                     <h4 className="font-medium text-gray-900">{recipe.name}</h4>
-                                    <Badge 
-                                      className={`
-                                        ${selectedCategory === "tools" ? "bg-amber-100 text-amber-800 hover:bg-amber-200" : ""}
-                                        ${selectedCategory === "cooking" ? "bg-red-100 text-red-800 hover:bg-red-200" : ""}
-                                        ${selectedCategory === "fabrics" ? "bg-blue-100 text-blue-800 hover:bg-blue-200" : ""}
-                                        ${selectedCategory === "farming" ? "bg-green-100 text-green-800 hover:bg-green-200" : ""}
-                                        ${selectedCategory === "alchemy" ? "bg-purple-100 text-purple-800 hover:bg-purple-200" : ""}
-                                        ${selectedCategory === "furniture" ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : ""}
-                                      `}
-                                    >
-                                      {craftingCategories.find(c => c.id === selectedCategory)?.name.slice(0, -1)}
-                                    </Badge>
+                                    <Badge className="bg-gray-100 text-gray-800">Niv. {recipe.level}</Badge>
                                   </div>
-                                  
-                                  {/* Image de la recette si disponible */}
-                                  {recipe.imagePath && (
-                                    <div className="mt-2 flex justify-center">
-                                      <div className="border border-gray-200 rounded-md p-1 w-16 h-16 flex items-center justify-center">
-                                        <img 
-                                          src={recipe.imagePath} 
-                                          alt={recipe.name} 
-                                          className="max-w-full max-h-full object-contain" 
-                                          onError={(e) => {
-                                            // Fallback en cas d'erreur de chargement d'image
-                                            const target = e.target as HTMLImageElement;
-                                            target.style.display = 'none';
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                                  
-                                  {/* Matériaux nécessaires */}
                                   <div className="mt-2 text-sm text-gray-600">
-                                    {recipe.materials.map((material, index) => (
-                                      <div key={index} className="flex gap-1 items-center mb-1">
-                                        <ArrowRight className="h-3 w-3 text-gray-400" />
-                                        <span>{material.quantity} × {material.name}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                  
-                                  {/* Description et effets */}
-                                  {(recipe.description || recipe.effects) && (
-                                    <div className="mt-2 text-xs text-gray-500 border-t border-gray-100 pt-2">
-                                      {recipe.description && <p>{recipe.description}</p>}
-                                      {recipe.effects && recipe.effects.map((effect, index) => (
-                                        <p key={index} className="text-green-600 mt-1">✦ {effect}</p>
+                                    <h5 className="font-medium mb-1">Matériaux requis:</h5>
+                                    <ul className="space-y-1 ml-2">
+                                      {recipe.materials.map((material, index) => (
+                                        <li key={index} className="flex items-center gap-2">
+                                          <span className="text-green-600">✓</span>
+                                          <span>{material.quantity} × {material.name}</span>
+                                        </li>
                                       ))}
+                                    </ul>
+                                  </div>
+                                  {recipe.sellPrice && (
+                                    <div className="mt-2 text-sm">
+                                      <span className="font-medium text-amber-700">Prix de vente:</span>
+                                      <span className="ml-2 text-amber-600">{recipe.sellPrice} pièces</span>
                                     </div>
                                   )}
-                                  
-                                  {/* Niveau requis et bouton détails */}
-                                  <div className="mt-2 flex justify-between items-center text-xs">
-                                    <span className="text-gray-500">{recipe.level}</span>
-                                    <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                                      Détails
-                                    </Button>
-                                  </div>
                                 </div>
-                              ))
-                            ) : (
-                              <div className="text-center py-6">
-                                <p className="text-gray-500">
-                                  Les recettes pour {craftingCategories.find(c => c.id === selectedCategory)?.name.toLowerCase()} seront bientôt disponibles.
-                                </p>
-                              </div>
-                            )}
+                              ))}
                           </div>
                         </div>
-                      )}
-                      
-                      {/* Recent Recipes */}
-                      {!selectedCategory && (
-                        <div>
-                          <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
-                          
-                          <div className="space-y-3">
-                            {/* Recipe 1 */}
-                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                              <div className="flex justify-between">
-                                <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
-                                <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
-                              </div>
-                              
-                              <div className="mt-2 text-sm text-gray-600">
-                                <div className="flex gap-1 items-center mb-1">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>1 × Arrosoir</span>
-                                </div>
-                                <div className="flex gap-1 items-center mb-1">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>5 × Minerai de cuivre</span>
-                                </div>
-                                <div className="flex gap-1 items-center">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>1 × Barre de fer</span>
-                                </div>
-                              </div>
-                              
-                              <div className="mt-2 flex justify-between items-center text-xs">
-                                <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
-                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                                  Détails
-                                </Button>
-                              </div>
-                            </div>
-                            
-                            {/* Recipe 2 */}
-                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                              <div className="flex justify-between">
-                                <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
-                                <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
-                              </div>
-                              
-                              <div className="mt-2 text-sm text-gray-600">
-                                <div className="flex gap-1 items-center mb-1">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>1 × Bocal vide</span>
-                                </div>
-                                <div className="flex gap-1 items-center mb-1">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>3 × Légumes au choix</span>
-                                </div>
-                                <div className="flex gap-1 items-center">
-                                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                                  <span>1 × Sel</span>
-                                </div>
-                              </div>
-                              
-                              <div className="mt-2 flex justify-between items-center text-xs">
-                                <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
-                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                                  Détails
-                                </Button>
-                              </div>
-                            </div>
+                      ) : (
+                        <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="text-gray-400 mb-2">
+                            <Info className="h-12 w-12 mx-auto mb-2" />
                           </div>
-                          
-                          <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                            <Hammer className="h-4 w-4" />
-                            <span>Toutes les recettes</span>
-                          </Button>
+                          <h3 className="text-lg font-medium text-gray-700 mb-1">Sélectionnez une catégorie</h3>
+                          <p className="text-sm text-gray-500">
+                            Choisissez une catégorie d'artisanat pour voir les recettes disponibles.
+                          </p>
                         </div>
                       )}
                     </div>
-                  )}
+                  </TabsContent>
                   
                   {/* Contenu de l'onglet Cultures */}
-                  {journalTab === "items" && (
-                    <div className="space-y-6">
-                      {/* Barre de recherche et filtres */}
-                      <div className="relative flex gap-2">
-                        <div className="relative flex-1">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                          <Input 
-                            className="pl-10" 
-                            placeholder="Rechercher une culture..." 
-                          />
-                        </div>
-                        <Button variant="outline" className="bg-green-50 border-green-200 text-green-800">
-                          Filtrer
-                        </Button>
-                      </div>
-                      
-                      {/* Section des saisons */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 text-center cursor-pointer hover:bg-pink-100">
-                          <div className="text-2xl mb-1">🌸</div>
-                          <h3 className="font-medium text-pink-800">Printemps</h3>
-                          <p className="text-xs text-pink-600 mt-1">{getAllCrops().filter(crop => crop.season === "Printemps").length} cultures</p>
-                        </div>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center cursor-pointer hover:bg-yellow-100">
-                          <div className="text-2xl mb-1">☀️</div>
-                          <h3 className="font-medium text-yellow-800">Été</h3>
-                          <p className="text-xs text-yellow-600 mt-1">0 cultures</p>
-                        </div>
-                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center cursor-pointer hover:bg-orange-100">
-                          <div className="text-2xl mb-1">🍁</div>
-                          <h3 className="font-medium text-orange-800">Automne</h3>
-                          <p className="text-xs text-orange-600 mt-1">0 cultures</p>
-                        </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center cursor-pointer hover:bg-blue-100">
-                          <div className="text-2xl mb-1">❄️</div>
-                          <h3 className="font-medium text-blue-800">Hiver</h3>
-                          <p className="text-xs text-blue-600 mt-1">0 cultures</p>
+                  <TabsContent value="crops">
+                    <div className="space-y-5">
+                      {/* Cultures les plus rentables */}
+                      <div>
+                        <h3 className="font-medium text-gray-700 mb-3">Cultures les plus rentables</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {getAllCrops()
+                            .filter(crop => crop.sellPrice)
+                            .sort((a, b) => {
+                              const profitA = a.sellPrice! * (a.harvestYield || 1) - a.seedPrice;
+                              const profitB = b.sellPrice! * (b.harvestYield || 1) - b.seedPrice;
+                              return profitB - profitA;
+                            })
+                            .slice(0, 4)
+                            .map(crop => {
+                              const profit = crop.sellPrice! * (crop.harvestYield || 1) - crop.seedPrice;
+                              return (
+                                <div key={crop.id} className="flex items-center gap-3 border border-gray-200 rounded-lg p-3 bg-white">
+                                  <div className="w-12 h-12 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
+                                    <img 
+                                      src={crop.imagePath} 
+                                      alt={crop.name} 
+                                      className="max-w-full max-h-full object-contain" 
+                                      onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.style.display = 'none';
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex-1">
+                                    <h4 className="font-medium text-gray-900">{crop.name}</h4>
+                                    <div className="flex justify-between">
+                                      <div className="text-xs text-gray-500">{crop.growthTime} jours | {crop.season}</div>
+                                      <div className="text-xs font-medium text-green-600">+{profit} Po</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })
+                          }
                         </div>
                       </div>
                       
@@ -882,8 +622,6 @@ export default function Home() {
                         
                         <div className="space-y-3">
                           {getAllCrops().map((crop) => {
-                            const [isExpanded, setIsExpanded] = React.useState(false);
-                            
                             // Calcul du profit
                             const profit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
                             
@@ -892,191 +630,13 @@ export default function Home() {
                             const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
                             
                             return (
-                              <div key={crop.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                                {/* Vue condensée (toujours visible) */}
-                                <div 
-                                  className="flex gap-4 cursor-pointer" 
-                                  onClick={() => setIsExpanded(!isExpanded)}
-                                >
-                                  {/* Image et badges */}
-                                  <div className="flex-shrink-0 relative">
-                                    <div className="w-16 h-16 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
-                                      <img 
-                                        src={crop.imagePath} 
-                                        alt={crop.name} 
-                                        className="max-w-full max-h-full object-contain" 
-                                        onError={(e) => {
-                                          const target = e.target as HTMLImageElement;
-                                          target.style.display = 'none';
-                                        }}
-                                      />
-                                    </div>
-                                    {crop.isGoddessOffering && (
-                                      <div 
-                                        className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 bg-opacity-90 rounded-full flex items-center justify-center text-white shadow-md border border-purple-300"
-                                        title={crop.goddessOfferingNote || "Requis pour le Temple de la Déesse"}
-                                      >
-                                        <div className="text-xs font-bold">💠</div>
-                                      </div>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Informations résumées */}
-                                  <div className="flex-1">
-                                    <div className="flex justify-between">
-                                      <div>
-                                        <h4 className="font-medium text-gray-900">{crop.name}</h4>
-                                        <p className="text-sm text-gray-500">{crop.category}</p>
-                                      </div>
-                                      <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
-                                        {crop.season}
-                                      </Badge>
-                                    </div>
-                                    
-                                    {/* Informations essentielles */}
-                                    <div className="flex justify-between items-center mt-1">
-                                      <div className="flex gap-2 text-xs text-gray-600">
-                                        <div className="font-medium">Jours: {crop.growthTime}</div>
-                                        <div>|</div>
-                                        <div className="font-medium">Prix: {crop.seedPrice}</div>
-                                        <div>|</div>
-                                        <div className="font-medium text-green-600">Profit: +{profit}</div>
-                                      </div>
-                                      <div className="text-blue-500 text-xs">
-                                        {isExpanded ? "Masquer ▲" : "Détails ▼"}
-                                      </div>
-                                    </div>
-                                    
-                                    {/* Badges résumés des préférences */}
-                                    <div className="flex flex-wrap gap-2 mt-1">
-                                      {loves > 0 && (
-                                        <div className="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded-full">
-                                          {loves}❤️
-                                        </div>
-                                      )}
-                                      {likes > 0 && (
-                                        <div className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
-                                          {likes}👍
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                                
-                                {/* Détails (visibles seulement quand expandé) */}
-                                {isExpanded && (
-                                  <div className="mt-4 pt-3 border-t border-gray-200">
-                                    <p className="text-sm text-gray-600 mb-3">{crop.description}</p>
-                                    
-                                    {/* Caractéristiques détaillées */}
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs text-gray-600">
-                                      <div>
-                                        <span className="font-medium">Graine:</span> {crop.seedName}
-                                      </div>
-                                      <div>
-                                        <span className="font-medium">Source:</span> {crop.seedSource}
-                                      </div>
-                                      <div>
-                                        <span className="font-medium">Rang ville:</span> {crop.townRank}
-                                      </div>
-                                      <div>
-                                        <span className="font-medium">Taille:</span> {crop.size}
-                                      </div>
-                                      {crop.sellPrice && (
-                                        <div>
-                                          <span className="font-medium">Vente:</span> {crop.sellPrice} pièces
-                                        </div>
-                                      )}
-                                      {crop.harvestYield && (
-                                        <div>
-                                          <span className="font-medium">Récolte:</span> {crop.harvestYield} par plante
-                                        </div>
-                                      )}
-                                      {crop.regrowth && (
-                                        <div>
-                                          <span className="font-medium">Repousse:</span> {crop.regrowth} jours
-                                        </div>
-                                      )}
-                                      {crop.energy && (
-                                        <div>
-                                          <span className="font-medium">Énergie:</span> +{crop.energy}
-                                        </div>
-                                      )}
-                                    </div>
-                                    
-                                    {/* Temple de la Déesse */}
-                                    {crop.isGoddessOffering && (
-                                      <div className="mt-3">
-                                        <div className="bg-purple-50 border border-purple-200 rounded-md p-2 text-sm text-purple-800 flex items-center gap-2">
-                                          <div className="text-purple-600">💠</div>
-                                          <div>{crop.goddessOfferingNote || "Requis pour le Temple de la Déesse"}</div>
-                                        </div>
-                                      </div>
-                                    )}
-                                    
-                                    {/* Préférences des villageois */}
-                                    {crop.preferences && crop.preferences.length > 0 && (
-                                      <div className="mt-3">
-                                        <h5 className="text-xs font-medium text-gray-700 mb-2">Préférences des villageois:</h5>
-                                        
-                                        {/* Résumé des préférences */}
-                                        <div className="mb-2 flex flex-wrap gap-2">
-                                          {likes > 0 && (
-                                            <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                                              {likes} villageois {likes > 1 ? "aiment" : "aime"} 👍
-                                            </div>
-                                          )}
-                                          
-                                          {loves > 0 && (
-                                            <div className="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">
-                                              {loves} villageois {loves > 1 ? "adorent" : "adore"} ❤️
-                                            </div>
-                                          )}
-                                        </div>
-                                        
-                                        {/* Détail des préférences (afficher/masquer) */}
-                                        <details className="text-sm">
-                                          <summary className="cursor-pointer text-xs text-blue-600 hover:text-blue-800 mb-2">
-                                            Voir tous les villageois ({crop.preferences.length})
-                                          </summary>
-                                          <div className="flex flex-wrap gap-2 mt-2 max-h-32 overflow-y-auto">
-                                            {crop.preferences.map((pref, index) => (
-                                              <div 
-                                                key={index} 
-                                                className={`text-xs px-2 py-1 rounded-full ${
-                                                  pref.preference === "adore" ? "bg-pink-100 text-pink-800" :
-                                                  pref.preference === "aime" ? "bg-green-100 text-green-800" :
-                                                  pref.preference === "déteste" ? "bg-red-100 text-red-800" :
-                                                  "bg-gray-100 text-gray-800"
-                                                }`}
-                                              >
-                                                {pref.name} {
-                                                  pref.preference === "adore" ? "❤️" :
-                                                  pref.preference === "aime" ? "👍" :
-                                                  pref.preference === "déteste" ? "👎" : ""
-                                                }
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </details>
-                                      </div>
-                                    )}
-                                    
-                                    {/* Rentabilité détaillée */}
-                                    {crop.sellPrice && (
-                                      <div className="mt-3 flex justify-between items-center pt-2 border-t border-gray-100">
-                                        <div className="text-sm">
-                                          <span className="font-medium text-green-600">Profit total:</span> 
-                                          <span className="ml-1 text-green-700">+{profit} pièces</span>
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                          ({crop.sellPrice} vente - {crop.seedPrice} achat)
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
+                              <CropCard 
+                                key={crop.id}
+                                crop={crop}
+                                profit={profit}
+                                likesCount={likes}
+                                lovesCount={loves}
+                              />
                             );
                           })}
                         </div>
@@ -1088,42 +648,40 @@ export default function Home() {
                         </Button>
                       </div>
                     </div>
-                  )}
+                  </TabsContent>
                   
                   {/* Contenu de l'onglet Poissons */}
-                  {journalTab === "fish" && (
-                    <div className="text-center py-10">
-                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
-                        <p className="text-gray-600">
-                          Cette section du journal qui contiendra tous les poissons pêchés sera bientôt disponible.
-                        </p>
-                        <p className="text-gray-600 mt-2">
-                          Informations incluses pour chaque poisson : saison, météo favorable, lieu, 
-                          horaire, technique, prix de vente, et utilisations possibles.
-                        </p>
+                  <TabsContent value="fish">
+                    <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
+                      <div className="text-blue-400 mb-3">
+                        <div className="text-5xl mx-auto">🐟</div>
                       </div>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">Encyclopédie de poissons</h3>
+                      <p className="text-sm text-gray-500 max-w-md mx-auto">
+                        Cette section répertoriera tous les poissons que vous pouvez attraper à Coral Island, avec leur emplacement, saison et prix de vente.
+                      </p>
+                      <Button className="mt-4 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-md py-2 px-4 transition-colors inline-flex items-center">
+                        <span>À venir prochainement</span>
+                      </Button>
                     </div>
-                  )}
+                  </TabsContent>
                   
                   {/* Contenu de l'onglet Animaux */}
-                  {journalTab === "creatures" && (
-                    <div className="text-center py-10">
-                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
-                        <p className="text-gray-600">
-                          Cette section du journal qui contiendra tous les animaux de la ferme sera bientôt disponible.
-                        </p>
-                        <p className="text-gray-600 mt-2">
-                          Informations incluses pour chaque animal : type, coût, nourriture préférée, 
-                          produits générés, fréquence de production et valeur des produits.
-                        </p>
+                  <TabsContent value="animals">
+                    <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
+                      <div className="text-amber-400 mb-3">
+                        <div className="text-5xl mx-auto">🐄</div>
                       </div>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">Animaux de la ferme</h3>
+                      <p className="text-sm text-gray-500 max-w-md mx-auto">
+                        Cette section contiendra des informations sur les animaux de la ferme, leur prix d'achat, ce qu'ils produisent et comment prendre soin d'eux.
+                      </p>
+                      <Button className="mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md py-2 px-4 transition-colors inline-flex items-center">
+                        <span>À venir prochainement</span>
+                      </Button>
                     </div>
-                  )}
-                </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
           </TabsContent>
