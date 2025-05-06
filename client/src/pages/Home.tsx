@@ -522,7 +522,8 @@ export default function Home() {
                                                 category: presetQuest.category,
                                                 completed: false,
                                                 current: 0,
-                                                total: presetQuest.total
+                                                total: presetQuest.total,
+                                                objectives: presetQuest.objectives
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -575,7 +576,8 @@ export default function Home() {
                                                 category: presetQuest.category,
                                                 completed: false,
                                                 current: 0,
-                                                total: presetQuest.total
+                                                total: presetQuest.total,
+                                                objectives: presetQuest.objectives
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -629,6 +631,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
+                                                objectives: presetQuest.objectives,
                                                 deadline: presetQuest.notes && presetQuest.notes.includes("lieu le") 
                                                   ? presetQuest.notes.split("lieu le ")[1] : undefined
                                               };
