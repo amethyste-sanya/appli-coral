@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { getAllVillagers, getVillagersBySeason, Villager } from '@/lib/villagers';
 import { VillagerCard } from '@/components/VillagerCard';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CalendarIcon, SearchIcon } from 'lucide-react';
+import { CalendarIcon, SearchIcon, ArrowLeftIcon, HomeIcon } from 'lucide-react';
 
 export default function Relations() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,6 +15,11 @@ export default function Relations() {
   const summerVillagers = getVillagersBySeason("Été");
   const fallVillagers = getVillagersBySeason("Automne");
   const winterVillagers = getVillagersBySeason("Hiver");
+  
+  // Navigation vers la page d'accueil
+  const navigateToHome = () => {
+    window.location.href = '/';
+  };
   
   // Filtrer les villageois en fonction de la recherche
   const filterVillagers = (villagersList: Villager[]) => {
@@ -35,6 +41,18 @@ export default function Relations() {
   
   return (
     <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="mb-4 flex items-center gap-2" 
+          onClick={navigateToHome}
+        >
+          <ArrowLeftIcon size={16} />
+          <span>Retour à l'accueil</span>
+        </Button>
+      </div>
+      
       <h1 className="text-2xl font-bold mb-6">Relations avec les villageois</h1>
       
       {/* Barre de recherche */}
