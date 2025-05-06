@@ -1583,49 +1583,95 @@ export default function Home() {
                 <CardContent className="p-4">
                   <h3 className="font-medium text-lg mb-3 flex items-center gap-2">
                     <CalendarIcon className="h-5 w-5 text-blue-600" />
-                    <span>Sélectionner une date</span>
+                    <span>Calendrier de Coral Island</span>
                   </h3>
                   
                   <div className="flex flex-col space-y-2">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP", { locale: fr }) : "Sélectionner une date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={(date) => date && updateGameDate(date)}
-                          initialFocus
-                          locale={fr}
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    {/* Sélection de saison */}
+                    <div className="flex flex-col gap-2 mb-4">
+                      <label className="text-sm font-medium">Saison:</label>
+                      <Select 
+                        value={gameDate.season} 
+                        onValueChange={(value) => {
+                          let monthValue = 0;
+                          switch(value) {
+                            case "Printemps": monthValue = 0; break;
+                            case "Été": monthValue = 3; break;
+                            case "Automne": monthValue = 6; break;
+                            case "Hiver": monthValue = 9; break;
+                          }
+                          const newDate = new Date();
+                          newDate.setMonth(monthValue);
+                          newDate.setDate(gameDate.day);
+                          updateGameDate(newDate);
+                        }}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Saison" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Printemps">Printemps</SelectItem>
+                          <SelectItem value="Été">Été</SelectItem>
+                          <SelectItem value="Automne">Automne</SelectItem>
+                          <SelectItem value="Hiver">Hiver</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     
-                    <div className="p-3 border rounded-md bg-blue-50">
-                      <h4 className="font-medium mb-1">Date du jeu:</h4>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-semibold">{gameDate.season}</span>
-                        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                          Jour {gameDate.day}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <span className="text-sm text-blue-700 font-medium">{gameDate.weekDay}</span>
+                    {/* Sélection du jour (1-28) */}
+                    <div className="grid grid-cols-7 gap-1 mb-2">
+                      {["L", "M", "M", "J", "V", "S", "D"].map((day, i) => (
+                        <div key={i} className="text-center text-xs font-medium text-gray-500 h-8 flex items-center justify-center">
+                          {day}
                         </div>
-                        <span className="text-xs text-gray-500">
-                          Semaine {Math.ceil(gameDate.day / 7)}
-                        </span>
+                      ))}
+                    </div>
+                        
+                    <div className="grid grid-cols-7 gap-1 mb-4">
+                      {Array.from({ length: 28 }, (_, i) => {
+                        const dayNumber = i + 1;
+                        const isSelected = gameDate.day === dayNumber;
+                        return (
+                          <button
+                            key={i}
+                            className={`h-8 w-full flex items-center justify-center rounded-md text-sm transition-colors ${
+                              isSelected 
+                                ? "bg-blue-100 text-blue-700 font-medium" 
+                                : "hover:bg-gray-100"
+                            }`}
+                            onClick={() => {
+                              let monthValue = 0;
+                              switch(gameDate.season) {
+                                case "Printemps": monthValue = 0; break;
+                                case "Été": monthValue = 3; break;
+                                case "Automne": monthValue = 6; break;
+                                case "Hiver": monthValue = 9; break;
+                              }
+                              const newDate = new Date();
+                              newDate.setMonth(monthValue);
+                              newDate.setDate(dayNumber);
+                              updateGameDate(newDate);
+                            }}
+                          >
+                            {dayNumber}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className={cn(
+                        "text-lg font-medium px-4 py-2 rounded-md",
+                        gameDate.season === "Printemps" ? "bg-green-100 text-green-800" : 
+                        gameDate.season === "Été" ? "bg-amber-100 text-amber-800" : 
+                        gameDate.season === "Automne" ? "bg-orange-100 text-orange-800" : 
+                        "bg-blue-100 text-blue-800"
+                      )}>
+                        {gameDate.season} - Jour {gameDate.day}
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-sm font-medium">{gameDate.weekDay}</span>
+                        <span className="text-xs text-gray-500">Semaine {Math.ceil(gameDate.day / 7)}</span>
                       </div>
                     </div>
                   </div>
