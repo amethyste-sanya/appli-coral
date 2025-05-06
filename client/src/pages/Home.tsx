@@ -206,15 +206,13 @@ export default function Home() {
 
   // Catégories d'artisanat
   const craftingCategories: CraftingCategory[] = [
+    { id: "crops", name: "Cultures", icon: <div className="text-green-600">🌾</div>, color: "bg-green-100 text-green-800", count: getAllCrops().length },
     { id: "tools", name: "Outils", icon: <Hammer className="h-5 w-5" />, color: "bg-zinc-100 text-zinc-800", count: getRecipesByCategory("tools").length },
+    { id: "animals", name: "Animaux", icon: <div className="text-yellow-600">🐄</div>, color: "bg-yellow-100 text-yellow-800", count: 0 },
+    { id: "fish", name: "Poissons", icon: <div className="text-blue-600">🐟</div>, color: "bg-blue-100 text-blue-800", count: 0 },
     { id: "farming", name: "Agriculture", icon: <div className="text-lime-600">🌱</div>, color: "bg-lime-100 text-lime-800", count: getRecipesByCategory("farming").length },
     { id: "furniture", name: "Meubles", icon: <div className="text-amber-600">🪑</div>, color: "bg-amber-100 text-amber-800", count: getRecipesByCategory("furniture").length },
-    { id: "fabrics", name: "Tissus", icon: <div className="text-indigo-600">🧵</div>, color: "bg-indigo-100 text-indigo-800", count: getRecipesByCategory("fabrics").length },
     { id: "cooking", name: "Cuisine", icon: <div className="text-orange-600">🍲</div>, color: "bg-orange-100 text-orange-800", count: getRecipesByCategory("cooking").length },
-    { id: "alchemy", name: "Alchimie", icon: <div className="text-purple-600">⚗️</div>, color: "bg-purple-100 text-purple-800", count: getRecipesByCategory("alchemy").length },
-    { id: "crops", name: "Cultures", icon: <div className="text-green-600">🌾</div>, color: "bg-green-100 text-green-800", count: getAllCrops().length },
-    { id: "fish", name: "Poissons", icon: <div className="text-blue-600">🐟</div>, color: "bg-blue-100 text-blue-800", count: 0 },
-    { id: "animals", name: "Animaux", icon: <div className="text-yellow-600">🐄</div>, color: "bg-yellow-100 text-yellow-800", count: 0 },
   ];
 
   // Fonction pour obtenir les classes CSS en fonction de la catégorie
