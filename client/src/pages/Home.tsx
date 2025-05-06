@@ -1231,7 +1231,7 @@ export default function Home() {
             
             <div>
               <h3 className="font-medium text-lg mb-2 flex items-center text-blue-700">
-                <Calendar className="h-5 w-5 mr-1 text-blue-500" /> Quêtes saisonnières
+                <CalendarIcon className="h-5 w-5 mr-1 text-blue-500" /> Quêtes saisonnières
               </h3>
               {quests.filter(quest => quest.category === "seasonal" && !quest.completed).length > 0 && (
                 <div className="space-y-3 mb-4">
