@@ -395,7 +395,10 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Herbes aromatiques" }
+        { item: "Salade fraîche" },
+        { item: "Bouquet de fleurs" },
+        { item: "Melon" },
+        { item: "Perle" }
       ]
     }
   },
@@ -417,7 +420,10 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Peinture" }
+        { item: "Taco de poisson" },
+        { item: "Hot-dog aux champignons" },
+        { item: "Quiche aux champignons et poireaux" },
+        { item: "Rubis" }
       ]
     }
   },
@@ -443,7 +449,10 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Produit capillaire" }
+        { item: "Sandwich aux légumes" },
+        { item: "Limonade" },
+        { item: "Guimauve" },
+        { item: "Chou-fleur" }
       ]
     }
   },
@@ -465,7 +474,11 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Tacos" }
+        { item: "Burrito" },
+        { item: "Taco de poisson" },
+        { item: "Avocat" },
+        { item: "Crème glacée" },
+        { item: "Amarante" }
       ]
     }
   },
@@ -495,7 +508,11 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Produit capillaire" }
+        { item: "Limonade" },
+        { item: "Quiche aux légumes" },
+        { item: "Myrtille" },
+        { item: "Topaze" },
+        { item: "Fraise" }
       ]
     }
   },
@@ -631,7 +648,11 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Échantillon de corail" }
+        { item: "Échantillon de corail" },
+        { item: "Combinaison de plongée" },
+        { item: "Miel" },
+        { item: "Émeraude" },
+        { item: "Algue marine rare" }
       ]
     }
   },
@@ -715,7 +736,12 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Poisson rare" }
+        { item: "Poisson rare" },
+        { item: "Café" },
+        { item: "Huile d'olive" },
+        { item: "Miel" },
+        { item: "Burrito" },
+        { item: "Tarte à la citrouille" }
       ]
     }
   },
