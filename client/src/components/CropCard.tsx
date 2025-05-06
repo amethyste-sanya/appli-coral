@@ -172,8 +172,8 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
           {crop.sellPrice && (
             <div className="mt-3 flex justify-between items-center pt-2 border-t border-gray-100">
               <div className="text-sm">
-                <span className="font-medium text-green-600">Profit total:</span> 
-                <span className="ml-1 text-green-700">+{profit} pièces</span>
+                <span className="font-medium text-green-600">Profit par jour:</span> 
+                <span className="ml-1 text-green-700">+{profit} pièces/jour</span>
               </div>
               <div className="text-xs text-gray-500">
                 ({crop.sellPrice} vente - {crop.seedPrice} achat)

@@ -584,11 +584,14 @@ export default function Home() {
                             .sort((a, b) => {
                               const profitA = a.sellPrice! * (a.harvestYield || 1) - a.seedPrice;
                               const profitB = b.sellPrice! * (b.harvestYield || 1) - b.seedPrice;
-                              return profitB - profitA;
+                              const profitPerDayA = Math.round((profitA / a.growthTime) * 10) / 10;
+                              const profitPerDayB = Math.round((profitB / b.growthTime) * 10) / 10;
+                              return profitPerDayB - profitPerDayA;
                             })
                             .slice(0, 4)
                             .map(crop => {
-                              const profit = crop.sellPrice! * (crop.harvestYield || 1) - crop.seedPrice;
+                              const totalProfit = crop.sellPrice! * (crop.harvestYield || 1) - crop.seedPrice;
+                              const profitPerDay = Math.round((totalProfit / crop.growthTime) * 10) / 10;
                               return (
                                 <div key={crop.id} className="flex items-center gap-3 border border-gray-200 rounded-lg p-3 bg-white">
                                   <div className="w-12 h-12 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
@@ -606,7 +609,7 @@ export default function Home() {
                                     <h4 className="font-medium text-gray-900">{crop.name}</h4>
                                     <div className="flex justify-between">
                                       <div className="text-xs text-gray-500">{crop.growthTime} jours | {crop.season}</div>
-                                      <div className="text-xs font-medium text-green-600">+{profit} Po</div>
+                                      <div className="text-xs font-medium text-green-600">+{profitPerDay} Po/jour</div>
                                     </div>
                                   </div>
                                 </div>
@@ -622,8 +625,9 @@ export default function Home() {
                         
                         <div className="space-y-3">
                           {getAllCrops().map((crop) => {
-                            // Calcul du profit
-                            const profit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                            // Calcul du profit par jour
+                            const totalProfit = crop.sellPrice ? (crop.sellPrice * (crop.harvestYield || 1) - crop.seedPrice) : 0;
+                            const profitPerDay = totalProfit > 0 && crop.growthTime > 0 ? Math.round(totalProfit / crop.growthTime * 10) / 10 : 0;
                             
                             // Comptage des préférences
                             const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
@@ -633,7 +637,7 @@ export default function Home() {
                               <CropCard 
                                 key={crop.id}
                                 crop={crop}
-                                profit={profit}
+                                profit={profitPerDay}
                                 likesCount={likes}
                                 lovesCount={loves}
                               />
