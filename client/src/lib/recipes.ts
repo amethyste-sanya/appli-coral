@@ -74,33 +74,7 @@ export const recipes: Recipe[] = [
     sellPrice: 10000
   },
   
-  // Autres outils
-  {
-    id: "improved_watering_can",
-    name: "Arrosoir amélioré",
-    category: "tools",
-    materials: [
-      { name: "Arrosoir", quantity: 1 },
-      { name: "Minerai de cuivre", quantity: 5 },
-      { name: "Barre de fer", quantity: 1 }
-    ],
-    level: "Fermier niveau 3",
-    description: "Un arrosoir de meilleure qualité qui contient plus d'eau.",
-    imagePath: "/images/tools/improved_watering_can.png" // Chemin d'exemple
-  },
-  {
-    id: "copper_pickaxe",
-    name: "Pioche en cuivre",
-    category: "tools",
-    materials: [
-      { name: "Pioche en bois", quantity: 1 },
-      { name: "Minerai de cuivre", quantity: 10 },
-      { name: "Bûches", quantity: 5 }
-    ],
-    level: "Mineur niveau 2",
-    description: "Une pioche plus solide pour extraire des minéraux plus durs.",
-    imagePath: "/images/tools/copper_pickaxe.png" // Chemin d'exemple
-  },
+  // Pour d'autres outils, ils seront ajoutés ici
   {
     id: "veggie_preserve",
     name: "Conserves de légumes",
