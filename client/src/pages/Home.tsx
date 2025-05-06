@@ -1598,27 +1598,41 @@ export default function Home() {
                         </tr>
                       </thead>
                       <tbody>
-                        {getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => (
-                          <tr key={recipe.id} className="border-b hover:bg-gray-50">
-                            <td className="p-3 border font-medium">{recipe.name}</td>
-                            <td className="p-3 border">{recipe.level}</td>
-                            <td className="p-3 border">
-                              {recipe.materials.length > 0 ? (
-                                <ul className="list-disc pl-4">
-                                  {recipe.materials.map((material, index) => (
-                                    <li key={index} className="text-sm">
-                                      {material.quantity}x {material.name}
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                <span className="text-gray-500 italic">Aucun matériau requis</span>
-                              )}
-                            </td>
-                            <td className="p-3 border">{recipe.sellPrice} pièces</td>
-                            <td className="p-3 border text-sm">{recipe.description}</td>
-                          </tr>
-                        ))}
+                        {getRecipesByCategory(selectedCraftingCategory).map((recipe: Recipe) => {
+                          // Détermine la couleur de fond en fonction du type d'outil
+                          let bgColor = "";
+                          if (recipe.id.includes("hoe")) {
+                            bgColor = "bg-green-50 hover:bg-green-100";
+                          } else if (recipe.id.includes("axe")) {
+                            bgColor = "bg-amber-50 hover:bg-amber-100";
+                          } else if (recipe.id.includes("pickaxe")) {
+                            bgColor = "bg-blue-50 hover:bg-blue-100";
+                          } else if (recipe.id.includes("watering_can")) {
+                            bgColor = "bg-cyan-50 hover:bg-cyan-100";
+                          }
+                          
+                          return (
+                            <tr key={recipe.id} className={`border-b ${bgColor}`}>
+                              <td className="p-3 border font-medium">{recipe.name}</td>
+                              <td className="p-3 border">{recipe.level}</td>
+                              <td className="p-3 border">
+                                {recipe.materials.length > 0 ? (
+                                  <ul className="list-disc pl-4">
+                                    {recipe.materials.map((material, index) => (
+                                      <li key={index} className="text-sm">
+                                        {material.quantity}x {material.name}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <span className="text-gray-500 italic">Aucun matériau requis</span>
+                                )}
+                              </td>
+                              <td className="p-3 border">{recipe.sellPrice} pièces</td>
+                              <td className="p-3 border text-sm">{recipe.description}</td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
