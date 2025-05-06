@@ -232,28 +232,8 @@ export default function Home() {
   };
 
   // Fonctions pour la gestion des quêtes
-  const addQuest = () => {
-    if (newQuest.title.trim() === "") return;
-
-    const quest: Quest = {
-      id: Date.now(), // Utiliser un timestamp comme id temporaire
-      title: newQuest.title,
-      description: newQuest.description,
-      category: newQuest.category,
-      completed: false,
-      current: 0,
-      total: newQuest.total,
-      deadline: newQuest.deadline
-    };
-
-    setQuests([...quests, quest]);
-    setNewQuest({
-      title: "",
-      description: "",
-      category: "secondary",
-      total: 1
-    });
-    setIsAddingQuest(false);
+  const addQuest = (newQuestItem:Quest) => {
+    setQuests([...quests, newQuestItem]);
   };
 
   const updateQuestProgress = (id: number, increment: number) => {
@@ -625,6 +605,9 @@ export default function Home() {
                                         <div className="flex justify-between mb-2">
                                           <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
                                           <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="text-green-600 border-green-200 hover:bg-green-50"
                                             onClick={() => {
                                               const newQuestItem: Quest = {
                                                 id: Date.now(),
@@ -634,13 +617,10 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
-                                            variant="outline"
-                                            size="sm"
-                                            className="text-green-600 border-green-200 hover:bg-green-50"
                                             disabled={quests.some(q => q.title === presetQuest.title)}
                                           >
                                             {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
@@ -688,7 +668,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -742,7 +722,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives,
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives),
                                                 deadline: presetQuest.notes && presetQuest.notes.includes("lieu le") 
                                                   ? presetQuest.notes.split("lieu le ")[1] : undefined
                                               };
@@ -765,7 +745,7 @@ export default function Home() {
                                         {presetQuest.objectives && presetQuest.objectives.length > 0 && (
                                           <div className="mt-2">
                                             <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                            <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                            <ul className="list-discpl-5 text-xs text-gray-600 mt-1 space-y-1">
                                               {presetQuest.objectives.map((obj, idx) => (
                                                 <li key={idx}>{obj}</li>
                                               ))}
@@ -1466,8 +1446,7 @@ export default function Home() {
                         <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
                           <div className="text-gray-400 mb-2">
                             <Info className="h-12 w-12 mx-auto mb-2" />
-                          </div>
-                          <h3 className="text-lg font-medium text-gray-700 mb-1">Sélectionnez une catégorie</h3>
+                          </div                          <h3 className="text-lg font-medium text-gray-700 mb-1">Sélectionnez une catégorie</h3>
                           <p className="text-sm text-gray-500">
                             Choisissez une catégorie d'artisanat pour voir les recettes disponibles.
                           </p>
