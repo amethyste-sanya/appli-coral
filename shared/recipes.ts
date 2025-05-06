@@ -12,6 +12,7 @@ export type Recipe = {
   id: string;           // Identifiant unique de la recette
   name: string;         // Nom de la recette
   category: string;     // Catégorie (outils, tissus, agriculture, etc.)
+  subcategory?: string; // Sous-catégorie (pour la cuisine : equipment, etc.)
   materials: Material[]; // Matériaux nécessaires
   level: string;        // Niveau requis pour débloquer
   description?: string; // Description optionnelle

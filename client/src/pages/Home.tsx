@@ -251,6 +251,22 @@ export default function Home() {
   // État pour la catégorie d'artisanat sélectionnée
   const [selectedCraftingCategory, setSelectedCraftingCategory] = useState(craftingCategories[0].id);
   
+  // État pour la sous-catégorie de cuisine sélectionnée
+  const [selectedCookingSubcategory, setSelectedCookingSubcategory] = useState("");
+  
+  // Liste des sous-catégories pour l'équipement de cuisine
+  const cookingSubcategories = [
+    { id: "frying_pan", name: "Poêle à frire", icon: "🍳", color: "bg-amber-100 text-amber-800" },
+    { id: "chef_knife", name: "Couteau de chef", icon: "🔪", color: "bg-gray-100 text-gray-800" },
+    { id: "oven", name: "Four", icon: "🔥", color: "bg-red-100 text-red-800" },
+    { id: "pot", name: "Casserole", icon: "🥘", color: "bg-zinc-100 text-zinc-800" },
+    { id: "ceramic_bowl", name: "Bol en céramique", icon: "🥣", color: "bg-purple-100 text-purple-800" },
+    { id: "blender", name: "Mixeur", icon: "🥤", color: "bg-blue-100 text-blue-800" },
+    { id: "grill", name: "Grill", icon: "♨️", color: "bg-orange-100 text-orange-800" },
+    { id: "seasoning_set", name: "Ensemble d'assaisonnement", icon: "🧂", color: "bg-yellow-100 text-yellow-800" },
+    { id: "skillet", name: "Poêlon", icon: "🥘", color: "bg-zinc-100 text-zinc-800" },
+  ];
+  
   // Jour de la semaine dans Coral Island
   const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
   
