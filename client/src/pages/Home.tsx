@@ -820,6 +820,38 @@ export default function Home() {
                       <Star className="h-5 w-5 mr-2 text-amber-500" />
                       Quêtes principales
                     </h3>
+                    {/* Section Océan */}
+                    <div className="mb-4 p-3 bg-blue-100 rounded-lg">
+                      <h4 className="font-medium text-blue-800 mb-2 flex items-center">
+                        <Anchor className="h-4 w-4 mr-2" />
+                        Océan
+                      </h4>
+                      <div className="space-y-2">
+                        {quests
+                          .filter(quest => quest.category === "main" && (quest.title.includes("océan") || quest.title.includes("sirène")))
+                          .map(quest => (
+                            <div key={quest.id} className="bg-white rounded p-2 border border-blue-200">
+                              <div className="flex items-start gap-2">
+                                {quest.completed ? (
+                                  <CheckCircle 
+                                    className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                    onClick={() => toggleQuestCompletion(quest.id)}
+                                  />
+                                ) : (
+                                  <Circle 
+                                    className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
+                                    onClick={() => toggleQuestCompletion(quest.id)}
+                                  />
+                                )}
+                                <div className="flex-1">
+                                  <h5 className="font-medium text-gray-800">{quest.title}</h5>
+                                  <p className="text-sm text-gray-600">{quest.description}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
                     <div className="space-y-3">
                       {quests
                         .filter(quest => quest.category === "main")

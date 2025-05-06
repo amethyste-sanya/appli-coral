@@ -432,6 +432,40 @@ export const presetQuests: PresetQuest[] = [
     reward: "Décorations uniques pour votre ferme",
     notes: "Le festival a lieu le 14 Automne"
   }
+,
+  {
+    id: "mysteres-ocean",
+    title: "Mystères de l'océan",
+    description: "Découvrez les secrets cachés des profondeurs marines. Explorer l'océan peut révéler des trésors oubliés...",
+    category: "main",
+    total: 3,
+    giver: "Keiko (quand vous atteignez le niveau 3 de pêche)",
+    objectives: [
+      "Découvrir le temple sous-marin",
+      "Collecter 5 artefacts marins",
+      "Parler à la sirène mystérieuse"
+    ],
+    prerequisite: "Niveau 3 de pêche",
+    reward: "Équipement de plongée amélioré",
+    notes: "Commence la série de quêtes océaniques"
+  },
+  {
+    id: "tresor-sirenes",
+    title: "Le trésor des sirènes",
+    description: "Les sirènes gardent un trésor ancien dans les profondeurs. Gagnez leur confiance pour découvrir leurs secrets.",
+    category: "main",
+    total: 4,
+    giver: "Sirène mystérieuse",
+    objectives: [
+      "Gagner la confiance des sirènes",
+      "Retrouver la clé du trésor perdu",
+      "Explorer la grotte des sirènes",
+      "Récupérer le trésor ancien"
+    ],
+    prerequisite: "Mystères de l'océan",
+    reward: "Collier de perles magiques + 2000 pièces",
+    notes: "Nécessite l'équipement de plongée amélioré"
+  }
 ];
 
 // Fonctions pour récupérer les quêtes
