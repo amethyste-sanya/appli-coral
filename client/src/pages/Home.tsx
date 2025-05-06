@@ -1603,10 +1603,10 @@ export default function Home() {
                           let bgColor = "";
                           if (recipe.id.includes("hoe")) {
                             bgColor = "bg-green-50 hover:bg-green-100";
-                          } else if (recipe.id.includes("axe")) {
+                          } else if (recipe.id.includes("axe") && !recipe.id.includes("pickaxe")) {
                             bgColor = "bg-amber-50 hover:bg-amber-100";
                           } else if (recipe.id.includes("pickaxe")) {
-                            bgColor = "bg-blue-50 hover:bg-blue-100";
+                            bgColor = "bg-purple-50 hover:bg-purple-100";
                           } else if (recipe.id.includes("watering_can")) {
                             bgColor = "bg-cyan-50 hover:bg-cyan-100";
                           }
