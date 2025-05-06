@@ -22,15 +22,26 @@ export function CropCard({ crop, profit, likesCount, lovesCount }: CropCardProps
         {/* Image et badges */}
         <div className="flex-shrink-0 relative">
           <div className="w-16 h-16 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
-            <img 
-              src={crop.imagePath} 
-              alt={crop.name} 
-              className="max-w-full max-h-full object-contain" 
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
-            />
+            {/* Affiche l'image si disponible, sinon un fallback texte */}
+            <div className="w-full h-full flex items-center justify-center">
+              <img 
+                src={crop.imagePath} 
+                alt={crop.name} 
+                className="max-w-full max-h-full object-contain" 
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  // Montrer le fallback texte après erreur sur l'image
+                  const parent = target.parentNode as HTMLElement;
+                  if (parent) {
+                    const fallback = document.createElement('div');
+                    fallback.innerText = crop.name.substring(0, 2).toUpperCase();
+                    fallback.className = 'text-sm font-bold text-gray-700';
+                    parent.appendChild(fallback);
+                  }
+                }}
+              />
+            </div>
           </div>
           {crop.isGoddessOffering && (
             <div 
