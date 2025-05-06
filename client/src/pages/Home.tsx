@@ -2611,13 +2611,92 @@ export default function Home() {
             </TabsContent>
             
             <TabsContent value="animals">
-              <div className="flex items-center justify-center py-12 px-4 border rounded-lg">
-                <div className="text-center">
-                  <div className="text-5xl mx-auto">🐄</div>
-                  <h3 className="mt-4 text-xl font-medium">Encyclopédie des animaux</h3>
-                  <p className="mt-2 text-gray-600">
-                    Cette fonctionnalité sera disponible dans une prochaine mise à jour !
-                  </p>
+              <div className="space-y-6 p-4 border rounded-lg">
+                <div>
+                  <h3 className="text-xl font-medium text-yellow-800 mb-3">Animaux de la ferme</h3>
+                  
+                  {/* Animaux du Poulailler */}
+                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-4">
+                    <h4 className="font-medium text-yellow-800 mb-3 flex items-center gap-2">
+                      <span className="text-yellow-600 text-xl">🐔</span>
+                      Animaux du Poulailler
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className="bg-white p-3 rounded-md border border-yellow-100">
+                        <div className="font-medium text-yellow-800">Poulet</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit des œufs quotidiennement</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-yellow-100">
+                        <div className="font-medium text-yellow-800">Canard</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit des œufs de canard</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-yellow-100">
+                        <div className="font-medium text-yellow-800">Paon</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit des plumes décoratives</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-yellow-100">
+                        <div className="font-medium text-yellow-800">Caille</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit des œufs de caille</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Animaux de la Grange */}
+                  <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                    <h4 className="font-medium text-amber-800 mb-3 flex items-center gap-2">
+                      <span className="text-amber-600 text-xl">🐄</span>
+                      Animaux de la Grange
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Vache</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit du lait quotidiennement</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Chèvre</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit du lait de chèvre</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Mouton</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit de la laine régulièrement</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Lama</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit de la laine de lama</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Luwak</div>
+                        <div className="text-xs text-gray-600 mt-1">Produit du café de spécialité</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-md border border-amber-100">
+                        <div className="font-medium text-amber-800">Cochon</div>
+                        <div className="text-xs text-gray-600 mt-1">Trouve occasionnellement des truffes</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Informations sur les besoins des animaux */}
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <h4 className="font-medium text-green-800 mb-3">Besoins des animaux</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-0.5">✓</span>
+                      <div className="text-sm">Nourriture quotidienne (foin, céréales, etc.)</div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-0.5">✓</span>
+                      <div className="text-sm">Eau fraîche tous les jours</div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-0.5">✓</span>
+                      <div className="text-sm">Caresses et attention quotidiennes pour augmenter l'amitié</div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-0.5">✓</span>
+                      <div className="text-sm">Abri adéquat selon le type d'animal</div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </TabsContent>
