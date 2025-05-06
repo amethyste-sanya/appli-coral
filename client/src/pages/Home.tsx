@@ -206,6 +206,20 @@ export default function Home() {
       completed: false
     }));
   };
+
+  // Fonction pour créer une quête à partir d'un préset
+  const createQuestFromPreset = (presetQuest: PresetQuest): Quest => {
+    return {
+      id: Date.now(),
+      title: presetQuest.title,
+      description: presetQuest.description,
+      category: presetQuest.category,
+      completed: false,
+      current: 0,
+      total: presetQuest.total,
+      objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+    };
+  };
   
   // Fonction pour basculer l'état d'un objectif individuel
   const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
