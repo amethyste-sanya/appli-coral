@@ -611,7 +611,7 @@ export default function Home() {
                                           ))}
                                       </div>
                                     </div>
-                                    
+
                                     {/* Autres quêtes principales */}
                                     {getPresetQuestsByCategory("main")
                                       .filter(quest => 
@@ -759,7 +759,7 @@ export default function Home() {
                                         <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
                                         {presetQuest.giver && (
                                           <div className="text-xs text-gray-500 mb-1">
-                                            <span className="font-medium">Donné par:</span> {presetQuest.giver}
+                                            <span className`font-medium">Donné par:</span> {presetQuest.giver}
                                           </div>
                                         )}
                                         {presetQuest.objectives && presetQuest.objectives.length > 0 && (
@@ -1458,7 +1458,7 @@ export default function Home() {
                                       <span className="ml-2 text-amber-600">{recipe.sellPrice} pièces</span>
                                     </div>
                                   )}
-                                </div>
+                               </div>
                               ))}
                           </div>
                         </div>
