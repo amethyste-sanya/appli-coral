@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Villager } from '@/lib/villagers';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, HeartIcon, MapPinIcon, Users2Icon } from 'lucide-react';
+import { 
+  CalendarIcon, 
+  HeartIcon, 
+  MapPinIcon, 
+  Users2Icon,
+  ChevronDownIcon,
+  ChevronUpIcon
+} from 'lucide-react';
 
 type VillagerCardProps = {
   villager: Villager;
 };
 
 export function VillagerCard({ villager }: VillagerCardProps) {
-  // Déjà visible par défaut
-  const [isExpanded, setIsExpanded] = useState(true);
+  // Caché par défaut
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Génère une couleur aléatoire pastel basée sur le nom du villageois
   const generatePastelColor = (name: string) => {
@@ -22,7 +29,7 @@ export function VillagerCard({ villager }: VillagerCardProps) {
 
   return (
     <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
+      className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer"
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <div className="p-4">
@@ -58,6 +65,9 @@ export function VillagerCard({ villager }: VillagerCardProps) {
               </Badge>
             </div>
             <p className="text-sm text-gray-600">{villager.occupation}</p>
+          </div>
+          <div className="ml-2 text-gray-400">
+            {isExpanded ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />}
           </div>
         </div>
         
