@@ -652,7 +652,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
+                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
