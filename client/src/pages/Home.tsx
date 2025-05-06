@@ -212,6 +212,9 @@ export default function Home() {
     { id: "fabrics", name: "Tissus", icon: <div className="text-indigo-600">🧵</div>, color: "bg-indigo-100 text-indigo-800", count: getRecipesByCategory("fabrics").length },
     { id: "cooking", name: "Cuisine", icon: <div className="text-orange-600">🍲</div>, color: "bg-orange-100 text-orange-800", count: getRecipesByCategory("cooking").length },
     { id: "alchemy", name: "Alchimie", icon: <div className="text-purple-600">⚗️</div>, color: "bg-purple-100 text-purple-800", count: getRecipesByCategory("alchemy").length },
+    { id: "crops", name: "Cultures", icon: <div className="text-green-600">🌾</div>, color: "bg-green-100 text-green-800", count: getAllCrops().length },
+    { id: "fish", name: "Poissons", icon: <div className="text-blue-600">🐟</div>, color: "bg-blue-100 text-blue-800", count: 0 },
+    { id: "animals", name: "Animaux", icon: <div className="text-yellow-600">🐄</div>, color: "bg-yellow-100 text-yellow-800", count: 0 },
   ];
 
   // Fonction pour obtenir les classes CSS en fonction de la catégorie
@@ -1566,9 +1569,6 @@ export default function Home() {
           <Tabs defaultValue="crafting">
             <TabsList className="mb-4">
               <TabsTrigger value="crafting">Artisanat</TabsTrigger>
-              <TabsTrigger value="crops">Cultures</TabsTrigger>
-              <TabsTrigger value="fish">Poissons</TabsTrigger>
-              <TabsTrigger value="animals">Animaux</TabsTrigger>
             </TabsList>
             
             <TabsContent value="crafting">
