@@ -589,30 +589,7 @@ export const presetQuests: PresetQuest[] = [
     reward: "1000 points d'amitié avec Grog et Gong + Débloquez Handsome",
     notes: ""
   },
-  {
-    id: "aider-scott",
-    title: "Aider Scott à la ferme",
-    description: "Scott a besoin d'aide avec une commande urgente pour son restaurant.",
-    category: "secondary",
-    total: 5,
-    giver: "Scott",
-    objectives: ["Apporter 5 navets frais à Scott"],
-    prerequisite: "Avoir débloqué la culture de navets",
-    reward: "350 pièces + augmentation de relation avec Scott",
-    notes: "Les navets doivent être de qualité standard ou supérieure"
-  },
-  {
-    id: "peche-keiko",
-    title: "Pêche pour Keiko",
-    description: "Keiko étudie les poissons rares et aimerait examiner un poisson-lune.",
-    category: "secondary",
-    total: 1,
-    giver: "Keiko",
-    objectives: ["Attraper un poisson-lune et l'apporter à Keiko"],
-    prerequisite: "Avoir débloqué la canne à pêche",
-    reward: "500 pièces + recette spéciale",
-    notes: "Le poisson-lune n'est disponible qu'en été"
-  },
+  // Ajoutez vos nouvelles quêtes secondaires ici
   {
     id: "festival-printemps",
     title: "Festival du Printemps",
