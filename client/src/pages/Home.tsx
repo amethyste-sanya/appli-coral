@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -454,6 +454,85 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-6 text-amber-700">Coral Island Companion</h1>
+      
+      {/* Sections spéciales Temple et Musée */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Section Temple */}
+        <Card className="overflow-hidden border-amber-200">
+          <div className="bg-amber-50 border-b border-amber-100 p-4">
+            <div className="flex items-center gap-2">
+              <div className="text-2xl">🏛️</div>
+              <h3 className="text-lg font-semibold text-amber-800">Temple</h3>
+            </div>
+          </div>
+          <CardContent className="p-4 space-y-3">
+            <div className="text-sm text-gray-600">
+              Le Temple est un lieu spirituel où vous pouvez faire des offrandes pour obtenir des faveurs et des bénédictions.
+            </div>
+            <div className="bg-amber-50 p-3 rounded-md border border-amber-100">
+              <h4 className="text-sm font-medium text-amber-800 mb-2">Offrandes recommandées</h4>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-600">🌸</span>
+                  <span className="text-sm text-gray-700">Fleurs (Qualité ★★★)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-600">💎</span>
+                  <span className="text-sm text-gray-700">Gemmes et minéraux précieux</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-600">🍯</span>
+                  <span className="text-sm text-gray-700">Miel</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Section Musée */}
+        <Card className="overflow-hidden border-blue-200">
+          <div className="bg-blue-50 border-b border-blue-100 p-4">
+            <div className="flex items-center gap-2">
+              <div className="text-2xl">🏛️</div>
+              <h3 className="text-lg font-semibold text-blue-800">Musée</h3>
+            </div>
+          </div>
+          <CardContent className="p-4 space-y-3">
+            <div className="text-sm text-gray-600">
+              Le Musée est l'endroit où vous pouvez faire don de fossiles, d'artéfacts et de spécimens pour enrichir la collection de Coral Island.
+            </div>
+            <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
+              <h4 className="text-sm font-medium text-blue-800 mb-2">Collections</h4>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-white p-2 rounded-md border border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-blue-600">🦴</span>
+                    <span className="text-sm font-medium text-gray-700">Fossiles</span>
+                  </div>
+                </div>
+                <div className="bg-white p-2 rounded-md border border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-blue-600">🏺</span>
+                    <span className="text-sm font-medium text-gray-700">Artéfacts</span>
+                  </div>
+                </div>
+                <div className="bg-white p-2 rounded-md border border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-blue-600">🐚</span>
+                    <span className="text-sm font-medium text-gray-700">Coquillages</span>
+                  </div>
+                </div>
+                <div className="bg-white p-2 rounded-md border border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-blue-600">🪨</span>
+                    <span className="text-sm font-medium text-gray-700">Minéraux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
       
       <Tabs value={tab} onValueChange={setTab} className="bg-white p-6 rounded-xl border shadow">
         <TabsList className="grid grid-cols-5 mb-6">
