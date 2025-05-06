@@ -703,7 +703,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives)
+                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
                                               };
                                               setQuests([...quests, newQuestItem]);
                                             }}
@@ -757,7 +757,7 @@ export default function Home() {
                                                 completed: false,
                                                 current: 0,
                                                 total: presetQuest.total,
-                                                objectives: convertObjectivesToQuestObjectives(presetQuest.objectives),
+                                                objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined,
                                                 deadline: presetQuest.notes && presetQuest.notes.includes("lieu le") 
                                                   ? presetQuest.notes.split("lieu le ")[1] : undefined
                                               };
