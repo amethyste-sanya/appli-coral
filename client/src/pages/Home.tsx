@@ -32,6 +32,7 @@ export default function Home() {
   const [currentQuestForEdit, setCurrentQuestForEdit] = useState<Quest | null>(null);
   const [filterSaison, setFilterSaison] = useState<string>("all");
   const [expandedVillagers, setExpandedVillagers] = useState<{[key: string]: boolean}>({});
+  const [villagerHearts, setVillagerHearts] = useState<{[key: string]: number}>({});
   
   const addTask = () => {
     if (newTask.trim()) {
@@ -1068,7 +1069,14 @@ export default function Home() {
                 .map(villager => (
                   <Card key={villager.id} className="overflow-hidden border-neutral-200">
                     <div className="p-4">
-                      <h3 className="font-medium text-lg">{villager.name}</h3>
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium text-lg">{villager.name}</h3>
+                        {villager.romanceable && (
+                          <div className="text-rose-500 flex items-center">
+                            <Heart className="h-4 w-4 fill-rose-500" />
+                          </div>
+                        )}
+                      </div>
                       <div className="text-sm text-gray-600 flex items-center mt-1">
                         <CalendarDays className="h-3.5 w-3.5 mr-1" />
                         {villager.birthday.season}, jour {villager.birthday.day}
@@ -1076,6 +1084,31 @@ export default function Home() {
                       <div className="text-sm text-gray-600 flex items-center mt-1">
                         <Clock className="h-3.5 w-3.5 mr-1" />
                         {villager.occupation}
+                      </div>
+                      
+                      <div className="mt-2">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-medium text-gray-600">Relation</span>
+                          <span className="text-xs text-rose-500 font-medium">
+                            {villagerHearts[villager.id] || 0} / 15
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {[...Array(15)].map((_, i) => (
+                            <button 
+                              key={i}
+                              onClick={() => setVillagerHearts({...villagerHearts, [villager.id]: i + 1})}
+                              className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                (villagerHearts[villager.id] || 0) >= i + 1 
+                                  ? "text-rose-500 hover:text-rose-600" 
+                                  : "text-gray-300 hover:text-gray-400"
+                              } transition-colors`}
+                              title={`${i + 1} cœurs`}
+                            >
+                              <Heart className={`w-3 h-3 ${(villagerHearts[villager.id] || 0) >= i + 1 ? "fill-current" : ""}`} />
+                            </button>
+                          ))}
+                        </div>
                       </div>
                       
                       {villager.gifts.love.length > 0 && (
