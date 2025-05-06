@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Anchor, CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus } from "lucide-react";
+import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
@@ -553,7 +553,74 @@ export default function Home() {
 
                                 <TabsContent value="main">
                                   <div className="space-y-4">
-                                    {getPresetQuestsByCategory("main").map((presetQuest) => (
+                                    {/* Section Ville */}
+                                    <div className="bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                      <h4 className="font-medium text-gray-800 mb-3 flex items-center">
+                                        <Building2 className="h-4 w-4 mr-2" />
+                                        Ville
+                                      </h4>
+                                      <div className="space-y-4">
+                                        {getPresetQuestsByCategory("main")
+                                          .filter(quest => 
+                                            ["debuter", "nouveau-fermier", "se-faire-des-amis", "home-sweet-home", 
+                                             "visitez-beach-shack", "tout-ou-rien", "fondre-pour-progres", 
+                                             "extracteur", "extraction-essence", "produits-locaux", 
+                                             "nouvel-objectif-rang-s", "attraction-starlet-town"]
+                                            .includes(quest.id))
+                                          .map((presetQuest) => (
+                                            <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
+                                              <div className="flex justify-between mb-2">
+                                                <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
+                                                <Button
+                                                  onClick={() => {
+                                                    const newQuestItem: Quest = {
+                                                      id: Date.now(),
+                                                      title: presetQuest.title,
+                                                      description: presetQuest.description,
+                                                      category: presetQuest.category,
+                                                      completed: false,
+                                                      current: 0,
+                                                      total: presetQuest.total,
+                                                      objectives: presetQuest.objectives
+                                                    };
+                                                    addQuest(newQuestItem);
+                                                  }}
+                                                  variant="outline"
+                                                  size="sm"
+                                                >
+                                                  <Plus className="h-4 w-4" />
+                                                </Button>
+                                              </div>
+                                              <p className="text-sm text-gray-600">{presetQuest.description}</p>
+                                              {presetQuest.objectives && (
+                                                <div className="mt-2">
+                                                  <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                                  <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                                    {presetQuest.objectives.map((obj, idx) => (
+                                                      <li key={idx}>{obj}</li>
+                                                    ))}
+                                                  </ul>
+                                                </div>
+                                              )}
+                                              {presetQuest.reward && (
+                                                <div className="mt-2 text-xs text-amber-600">
+                                                  <span className="font-medium">Récompense:</span> {presetQuest.reward}
+                                                </div>
+                                              )}
+                                            </div>
+                                          ))}
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Autres quêtes principales */}
+                                    {getPresetQuestsByCategory("main")
+                                      .filter(quest => 
+                                        !["debuter", "nouveau-fermier", "se-faire-des-amis", "home-sweet-home", 
+                                          "visitez-beach-shack", "tout-ou-rien", "fondre-pour-progres", 
+                                          "extracteur", "extraction-essence", "produits-locaux", 
+                                          "nouvel-objectif-rang-s", "attraction-starlet-town"]
+                                        .includes(quest.id))
+                                      .map((presetQuest) => (
                                       <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-gray-200">
                                         <div className="flex justify-between mb-2">
                                           <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
