@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Villager } from '@/lib/villagers';
 import { Badge } from '@/components/ui/badge';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CalendarIcon, HeartIcon, MapPinIcon, Users2Icon } from 'lucide-react';
 
 type VillagerCardProps = {
@@ -9,7 +8,8 @@ type VillagerCardProps = {
 };
 
 export function VillagerCard({ villager }: VillagerCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Déjà visible par défaut
+  const [isExpanded, setIsExpanded] = useState(true);
 
   // Génère une couleur aléatoire pastel basée sur le nom du villageois
   const generatePastelColor = (name: string) => {
@@ -110,27 +110,21 @@ export function VillagerCard({ villager }: VillagerCardProps) {
             </div>
           )}
           
-          {/* Cadeaux préférés */}
-          <Accordion type="single" collapsible className="mt-3">
-            <AccordionItem value="love-gifts">
-              <AccordionTrigger className="text-sm font-medium text-gray-700 py-2">
-                Cadeaux adorés ❤️
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-2 gap-2">
-                  {villager.gifts.love.map((gift, index) => (
-                    <Badge 
-                      key={index}
-                      variant="outline" 
-                      className="text-xs py-1 bg-pink-50 text-pink-800 border-pink-200 justify-start"
-                    >
-                      {gift.item}
-                    </Badge>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          {/* Cadeaux préférés - Liste directement visible */}
+          <div className="mt-3">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Cadeaux adorés ❤️</h4>
+            <div className="grid grid-cols-2 gap-2">
+              {villager.gifts.love.map((gift, index) => (
+                <Badge 
+                  key={index}
+                  variant="outline" 
+                  className="text-xs py-1 bg-pink-50 text-pink-800 border-pink-200 justify-start"
+                >
+                  {gift.item}
+                </Badge>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
