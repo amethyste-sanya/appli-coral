@@ -1578,7 +1578,7 @@ export default function Home() {
               <p className="text-gray-600 mt-1">Calendrier des événements de l'année</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="mb-6">
               <Card className="border-blue-200">
                 <CardContent className="p-4">
                   <h3 className="font-medium text-lg mb-3 flex items-center gap-2">
@@ -1674,82 +1674,6 @@ export default function Home() {
                         <span className="text-xs text-gray-500">Semaine {Math.ceil(gameDate.day / 7)}</span>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className={cn(
-                "border",
-                gameDate.season === "Printemps" ? "border-green-200" : 
-                gameDate.season === "Été" ? "border-amber-200" : 
-                gameDate.season === "Automne" ? "border-orange-200" : 
-                "border-blue-200"
-              )}>
-                <CardContent className="p-4">
-                  <h3 className={cn(
-                    "font-medium text-lg mb-3",
-                    gameDate.season === "Printemps" ? "text-green-700" : 
-                    gameDate.season === "Été" ? "text-amber-700" : 
-                    gameDate.season === "Automne" ? "text-orange-700" : 
-                    "text-blue-700"
-                  )}>
-                    Événements du jour
-                  </h3>
-                  
-                  <div className="p-3 border rounded-md bg-gray-50">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium">
-                        {gameDate.season} - Jour {gameDate.day}
-                      </h4>
-                      <span className="text-xs text-gray-500">
-                        {gameDate.weekDay} (Semaine {Math.ceil(gameDate.day / 7)})
-                      </span>
-                    </div>
-                    
-                    {/* Affichage des événements par jour et saison */}
-                    {gameDate.season === "Printemps" && gameDate.day === 1 && (
-                      <div className="py-2 border-b border-gray-100">
-                        <h4 className="font-medium">Nouvel An</h4>
-                        <p className="text-sm text-gray-600">Célébrez le nouvel an avec les villageois à la plage.</p>
-                      </div>
-                    )}
-                    
-                    {gameDate.season === "Printemps" && gameDate.day === 14 && (
-                      <div className="py-2 border-b border-gray-100">
-                        <h4 className="font-medium">Festival de l'œuf</h4>
-                        <p className="text-sm text-gray-600">Participez à la chasse aux œufs dans le village.</p>
-                      </div>
-                    )}
-                    
-                    {gameDate.season === "Été" && gameDate.day === 7 && (
-                      <div className="py-2 border-b border-gray-100">
-                        <h4 className="font-medium">Festival de la plage</h4>
-                        <p className="text-sm text-gray-600">Concours de natation et stands de jeux sur la plage.</p>
-                      </div>
-                    )}
-                    
-                    {gameDate.season === "Automne" && gameDate.day === 21 && (
-                      <div className="py-2 border-b border-gray-100">
-                        <h4 className="font-medium">Festival des récoltes</h4>
-                        <p className="text-sm text-gray-600">Célébrez l'abondance de l'automne avec un festin et des jeux.</p>
-                      </div>
-                    )}
-                    
-                    {gameDate.season === "Hiver" && gameDate.day === 25 && (
-                      <div className="py-2 border-b border-gray-100">
-                        <h4 className="font-medium">Festival de la neige</h4>
-                        <p className="text-sm text-gray-600">Participez à des jeux d'hiver et à un concours de sculpture sur glace.</p>
-                      </div>
-                    )}
-                    
-                    {((gameDate.season === "Printemps" && gameDate.day !== 1 && gameDate.day !== 14) ||
-                      (gameDate.season === "Été" && gameDate.day !== 7) ||
-                      (gameDate.season === "Automne" && gameDate.day !== 21) ||
-                      (gameDate.season === "Hiver" && gameDate.day !== 25)) && (
-                      <div className="py-2">
-                        <p className="text-sm text-gray-600">Aucun événement spécial aujourd'hui.</p>
-                      </div>
-                    )}
                   </div>
                 </CardContent>
               </Card>
