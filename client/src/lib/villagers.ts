@@ -1266,7 +1266,8 @@ export const villagers: Villager[] = [
 
 // Fonction pour récupérer tous les villageois
 export const getAllVillagers = (): Villager[] => {
-  return villagers;
+  // Trier les villageois par ordre alphabétique (croissant)
+  return [...villagers].sort((a, b) => a.name.localeCompare(b.name));
 };
 
 // Fonction pour récupérer un villageois par son identifiant
@@ -1274,9 +1275,11 @@ export const getVillagerById = (villagerId: string): Villager | undefined => {
   return villagers.find(villager => villager.id === villagerId);
 };
 
-// Fonction pour récupérer les villageois par saison d'anniversaire
+// Fonction pour récupérer les villageois par saison d'anniversaire (triés par ordre alphabétique)
 export const getVillagersBySeason = (season: string): Villager[] => {
-  return villagers.filter(villager => villager.birthday && villager.birthday.season === season);
+  return villagers
+    .filter(villager => villager.birthday && villager.birthday.season === season)
+    .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 // Fonction pour récupérer les villageois qui aiment un objet particulier
