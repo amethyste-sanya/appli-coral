@@ -440,7 +440,82 @@ export default function Home() {
             </Card>
           </TabsContent>
 
-          {/* Relationships Tab - Maintenant accessible via le chemin /relations */}
+          {/* Relations Tab */}
+          <TabsContent value="relations">
+            <Card className="rounded-b-lg shadow-md mt-1">
+              <CardContent className="p-5">
+                <div className="space-y-4">
+                  {/* Barre de recherche */}
+                  <div className="relative mb-6">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      type="text"
+                      placeholder="Rechercher un villageois..."
+                      value={searchVillager}
+                      onChange={(e) => setSearchVillager(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  {/* Filtres par saison */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    <Badge 
+                      variant={selectedSeason === "all" ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-1"
+                      onClick={() => setSelectedSeason("all")}
+                    >
+                      Tous
+                    </Badge>
+                    <Badge 
+                      variant={selectedSeason === "Printemps" ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-1 bg-green-100 text-green-800 hover:bg-green-200 border-green-200"
+                      onClick={() => setSelectedSeason("Printemps")}
+                    >
+                      🌱 Printemps ({getVillagersBySeason("Printemps").length})
+                    </Badge>
+                    <Badge 
+                      variant={selectedSeason === "Été" ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-1 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-yellow-200"
+                      onClick={() => setSelectedSeason("Été")}
+                    >
+                      ☀️ Été ({getVillagersBySeason("Été").length})
+                    </Badge>
+                    <Badge 
+                      variant={selectedSeason === "Automne" ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-1 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200"
+                      onClick={() => setSelectedSeason("Automne")}
+                    >
+                      🍂 Automne ({getVillagersBySeason("Automne").length})
+                    </Badge>
+                    <Badge 
+                      variant={selectedSeason === "Hiver" ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-1 bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200"
+                      onClick={() => setSelectedSeason("Hiver")}
+                    >
+                      ❄️ Hiver ({getVillagersBySeason("Hiver").length})
+                    </Badge>
+                  </div>
+                  
+                  {/* Liste des villageois */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {getAllVillagers()
+                      .filter(v => 
+                        (selectedSeason === "all" || v.birthday.season === selectedSeason) &&
+                        (searchVillager === "" || 
+                          v.name.toLowerCase().includes(searchVillager.toLowerCase()) ||
+                          v.occupation.toLowerCase().includes(searchVillager.toLowerCase()) ||
+                          v.description.toLowerCase().includes(searchVillager.toLowerCase())
+                        )
+                      )
+                      .map(villager => (
+                        <VillagerCard key={villager.id} villager={villager} />
+                      ))
+                    }
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Events Tab */}
           <TabsContent value="events">
