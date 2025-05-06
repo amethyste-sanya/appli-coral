@@ -191,6 +191,200 @@ export const presetQuests: PresetQuest[] = [
     notes: ""
   },
   {
+    id: "dans-les-mines",
+    title: "Dans les mines",
+    description: "Vous pouvez pénétrer dans les puits souterrains des cavernes pour extraire des minerais et des gemmes précieux. N'oubliez pas d'emporter l'épée que Kira vous a donnée au cas où vous rencontreriez des monstres.",
+    category: "main",
+    total: 2,
+    giver: "Kira (en entrant dans la mine pour la première fois après que Mark a informé que la mine était ouverte)",
+    objectives: [
+      "Atteindre le niveau 5 (puits de terre)",
+      "Remettre l'ascenseur en marche"
+    ],
+    prerequisite: "Être informé par Mark que la mine est ouverte (le 5 printemps)",
+    reward: "100 pièces + Épée émoussée",
+    notes: "En progression: Épée émoussée"
+  },
+  {
+    id: "examen-entree",
+    title: "Examen d'entrée",
+    description: "Les petits monstres deviennent plus faciles à gérer. Cependant, un défi plus grand et plus frétillant vous attend, au plus profond de la mine.",
+    category: "main",
+    total: 2,
+    giver: "Kira (courrier après avoir atteint le niveau 10 dans la mine terrestre)",
+    objectives: [
+      "Vaincre 30 ennemis",
+      "Visiter la Bande des Sourires"
+    ],
+    prerequisite: "Avoir atteint le niveau 10 dans la mine terrestre",
+    reward: "Insigne BOS",
+    notes: ""
+  },
+  {
+    id: "reve-mythique",
+    title: "Rêve mythique",
+    description: "Tu as fait un rêve étrange la nuit dernière. Pour t'assurer que ce n'était pas autre chose, tu devrais examiner l'un des arbres sacrés de l'île.",
+    category: "main",
+    total: 4,
+    giver: "Chef (rêvant pendant son sommeil après avoir déclenché le rang de ville F)",
+    objectives: [
+      "Inspecter une tablette sur un arbre sacré",
+      "Recevoir une lettre le lendemain matin",
+      "Rencontrer le chef à gauche de votre ferme",
+      "Rencontrer la déesse au temple du lac"
+    ],
+    prerequisite: "Atteindre le rang de ville F",
+    reward: "Troisième œil",
+    notes: "En progression: Troisième œil. Achèvement: Début de l'offrande au Temple"
+  },
+  {
+    id: "offrande-temple",
+    title: "Offrande au temple",
+    description: "Un être vous a demandé d'accomplir une offrande au temple. Il vous a demandé une bénédiction et comment cela restaurerait son pouvoir.",
+    category: "main",
+    total: 1,
+    giver: "Après avoir terminé 'Rêve mythique'",
+    objectives: [
+      "Compléter une offrande au temple"
+    ],
+    prerequisite: "Rêve mythique",
+    reward: "Bénédiction de la déesse + Les points de cheminement sont débloqués",
+    notes: ""
+  },
+  {
+    id: "geant-petrifie-1",
+    title: "Géant pétrifié I",
+    description: "Explorez la porte de la Terre et trouvez un moyen de libérer le géant de la Terre.",
+    category: "main",
+    total: 1,
+    giver: "Chef, doit avoir terminé le Rêve Mythique",
+    objectives: [
+      "Libérez le géant de la Terre"
+    ],
+    prerequisite: "Rêve Mythique",
+    reward: "150 pièces + Débloquez des géants",
+    notes: ""
+  },
+  {
+    id: "village-geants",
+    title: "Village des Géants",
+    description: "Vous êtes invité à visiter le Village des Géants. Pour commencer, retrouvez Grog à gauche de votre ferme.",
+    category: "main",
+    total: 1,
+    giver: "Grog (courrier 1 jour après avoir terminé Petrified Giant I)",
+    objectives: [
+      "Allez au village des géants"
+    ],
+    prerequisite: "Géant pétrifié I",
+    reward: "Commence l'enchantement de l'outil + Le voyage de Gulliver",
+    notes: ""
+  },
+  {
+    id: "geant-petrifie-2",
+    title: "Géant pétrifié II",
+    description: "Atteignez le bas de la porte de l'eau et annulez la malédiction de pierre pour libérer le géant de l'eau.",
+    category: "main",
+    total: 1,
+    giver: "Chef de clan",
+    objectives: [
+      "Libérez le géant de l'eau"
+    ],
+    prerequisite: "Village des Géants",
+    reward: "300 pièces",
+    notes: ""
+  },
+  {
+    id: "geant-petrifie-3",
+    title: "Géant pétrifié III",
+    description: "Atteignez le bas de la porte du vent et annulez la malédiction de pierre pour libérer le géant du vent.",
+    category: "main",
+    total: 1,
+    giver: "Chef de clan",
+    objectives: [
+      "Libérez le géant du vent"
+    ],
+    prerequisite: "Géant pétrifié II",
+    reward: "450 pièces",
+    notes: ""
+  },
+  {
+    id: "geant-petrifie-4",
+    title: "Géant pétrifié IV",
+    description: "Aucun des autres Géants ne semble savoir où se trouve le Géant de Feu. Explorez la Porte du Feu pour percer le mystère.",
+    category: "main",
+    total: 1,
+    giver: "Chef de clan",
+    objectives: [
+      "Trouvez le géant du feu"
+    ],
+    prerequisite: "Géant pétrifié III",
+    reward: "600 pièces",
+    notes: ""
+  },
+  {
+    id: "coupable-petrifie",
+    title: "Le coupable pétrifié",
+    description: "Les Géants recherchent toujours leur mystérieux sixième membre. Découvrez où se trouve le dernier Géant.",
+    category: "main",
+    total: 1,
+    giver: "Chef de clan",
+    objectives: [
+      "Allez au village des géants"
+    ],
+    prerequisite: "Géant pétrifié IV",
+    reward: "Commence Le Géant Final",
+    notes: ""
+  },
+  {
+    id: "dernier-geant",
+    title: "Le dernier géant",
+    description: "Embarquez pour une aventure dans la savane et localisez Gort.",
+    category: "main",
+    total: 4,
+    giver: "Après avoir terminé 'Le coupable pétrifié'",
+    objectives: [
+      "Atteignez la savane",
+      "Entrez dans la grotte des souvenirs",
+      "Récupérez 5 fragments de mémoire de Gort",
+      "Allez dans le hall de la grotte des souvenirs"
+    ],
+    prerequisite: "Le coupable pétrifié",
+    reward: "Œil qui voit tout",
+    notes: "En progression: Œil qui voit tout"
+  },
+  {
+    id: "peinture-murale-gardien",
+    title: "Peinture murale du gardien",
+    description: "Localisez les gardiens de l'île et récupérez les fragments manquants pour terminer la fresque des gardiens.",
+    category: "main",
+    total: 1,
+    giver: "Déclenchée en visitant le Temple du Lac un jour après avoir activé le nouvel objectif: Rang de ville S!",
+    objectives: [
+      "Complétez la fresque du Gardien (4/4)"
+    ],
+    prerequisite: "Nouvel objectif : rang de ville S !",
+    reward: "Tenue de déesse + Points de cheminement de Rafflesia",
+    notes: "Progression: Débloquer les points de cheminement de Rafflesia"
+  },
+  {
+    id: "deguisement-recherche",
+    title: "Déguisement recherché",
+    description: "Gong veut devenir un « humain », mais a besoin de votre aide pour trouver le reste des objets nécessaires au déguisement.",
+    category: "main",
+    total: 5,
+    giver: "Gong",
+    objectives: [
+      "Allez au Village des Géants",
+      "Apportez le blazer Royal Grape",
+      "Apportez une fleur",
+      "Apportez des lunettes rondes et élégantes",
+      "Apportez 3 laines"
+    ],
+    prerequisite: "Avoir rencontré Gong",
+    reward: "1000 points d'amitié avec Grog et Gong + Débloquez Handsome",
+    notes: ""
+  },
+  {
     id: "aider-scott",
     title: "Aider Scott à la ferme",
     description: "Scott a besoin d'aide avec une commande urgente pour son restaurant.",
