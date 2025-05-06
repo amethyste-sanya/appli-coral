@@ -22,8 +22,59 @@ export type Recipe = {
   effects?: string[];   // Effets spéciaux (optionnel)
 };
 
-// Exemple de recettes (à remplacer par les vraies données du jeu)
+// Liste des recettes du jeu
 export const recipes: Recipe[] = [
+  // Outils - Houes
+  {
+    id: "basic_hoe",
+    name: "Houe",
+    category: "tools",
+    materials: [],
+    level: "Départ",
+    description: "La houe de départ. Laboure jusqu'à 1 case.",
+    sellPrice: 0
+  },
+  {
+    id: "bronze_hoe",
+    name: "Houe de bronze",
+    category: "tools",
+    materials: [
+      { name: "Houe", quantity: 1 },
+      { name: "Barres de bronze", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "La houe de bronze laboure 1x3 cases.",
+    sellPrice: 1500
+  },
+  {
+    id: "silver_hoe",
+    name: "Houe en argent",
+    category: "tools",
+    materials: [
+      { name: "Houe en bronze", quantity: 1 },
+      { name: "Lingots d'argent", quantity: 5 },
+      { name: "Bois", quantity: 20 }
+    ],
+    level: "Fabrication",
+    description: "La houe en argent laboure 3x3 cases.",
+    sellPrice: 3000
+  },
+  {
+    id: "gold_hoe",
+    name: "Houe en or",
+    category: "tools",
+    materials: [
+      { name: "Houe en argent", quantity: 1 },
+      { name: "Lingots d'or", quantity: 3 },
+      { name: "Bois dur", quantity: 5 }
+    ],
+    level: "Fabrication",
+    description: "La houe en or laboure 5x3 cases.",
+    sellPrice: 10000
+  },
+  
+  // Autres outils
   {
     id: "improved_watering_can",
     name: "Arrosoir amélioré",
