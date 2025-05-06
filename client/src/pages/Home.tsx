@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart } from "lucide-react";
+import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
@@ -19,6 +19,18 @@ type Task = {
   id: number;
   text: string;
   done: boolean;
+};
+
+// Type pour les quêtes
+type Quest = {
+  id: number;
+  title: string;
+  description: string;
+  completed: boolean;
+  category: "main" | "secondary" | "seasonal";
+  current: number;
+  total: number; // Pour les quêtes avec progression comme "3/10 items collectés"
+  deadline?: string; // Pour les quêtes saisonnières avec une date limite
 };
 
 // Type pour les catégories d'artisanat
@@ -37,6 +49,50 @@ export default function Home() {
   const [journalTab, setJournalTab] = useState<string>("crafting");
   const [searchVillager, setSearchVillager] = useState("");
   const [selectedSeason, setSelectedSeason] = useState<string>("all");
+  
+  // États pour la gestion des quêtes
+  const [quests, setQuests] = useState<Quest[]>([
+    {
+      id: 1,
+      title: "Rencontrer le maire",
+      description: "Présentez-vous au maire Sam pour commencer votre nouvelle vie.",
+      completed: true,
+      category: "main",
+      current: 1,
+      total: 1
+    },
+    {
+      id: 2,
+      title: "Réparer le Temple de la Déesse",
+      description: "Collectez 10 offrandes pour restaurer le Temple de la Déesse.",
+      completed: false,
+      category: "main",
+      current: 3,
+      total: 10
+    },
+    {
+      id: 3,
+      title: "Améliorer la ferme",
+      description: "Construisez votre premier poulailler pour élever des animaux.",
+      completed: false,
+      category: "main",
+      current: 0,
+      total: 1
+    }
+  ]);
+  const [isAddingQuest, setIsAddingQuest] = useState(false);
+  const [newQuest, setNewQuest] = useState<{
+    title: string;
+    description: string;
+    category: "main" | "secondary" | "seasonal";
+    total: number;
+    deadline?: string;
+  }>({
+    title: "",
+    description: "",
+    category: "secondary",
+    total: 1,
+  });
 
   // Fetch tasks
   const { data: tasks = [], refetch } = useQuery<Task[]>({
@@ -124,6 +180,63 @@ export default function Home() {
     if (e.key === 'Enter') {
       addTask();
     }
+  };
+  
+  // Fonctions pour la gestion des quêtes
+  const addQuest = () => {
+    if (newQuest.title.trim() === "") return;
+    
+    const quest: Quest = {
+      id: Date.now(), // Utiliser un timestamp comme id temporaire
+      title: newQuest.title,
+      description: newQuest.description,
+      category: newQuest.category,
+      completed: false,
+      current: 0,
+      total: newQuest.total,
+      deadline: newQuest.deadline
+    };
+    
+    setQuests([...quests, quest]);
+    setNewQuest({
+      title: "",
+      description: "",
+      category: "secondary",
+      total: 1
+    });
+    setIsAddingQuest(false);
+  };
+  
+  const updateQuestProgress = (id: number, increment: number) => {
+    setQuests(quests.map(quest => {
+      if (quest.id === id) {
+        const newCurrent = Math.min(quest.current + increment, quest.total);
+        return {
+          ...quest,
+          current: newCurrent,
+          completed: newCurrent >= quest.total
+        };
+      }
+      return quest;
+    }));
+  };
+  
+  const toggleQuestCompletion = (id: number) => {
+    setQuests(quests.map(quest => {
+      if (quest.id === id) {
+        const completed = !quest.completed;
+        return {
+          ...quest,
+          completed,
+          current: completed ? quest.total : 0
+        };
+      }
+      return quest;
+    }));
+  };
+  
+  const deleteQuest = (id: number) => {
+    setQuests(quests.filter(quest => quest.id !== id));
   };
   
   // Gérer la sélection de catégorie d'artisanat
@@ -359,80 +472,360 @@ export default function Home() {
             <Card className="rounded-b-lg shadow-md mt-1">
               <CardContent className="p-5">
                 <div className="space-y-6">
-                  <div className="bg-amber-50 rounded-lg p-4 border border-amber-200 mb-6">
-                    <h3 className="font-medium text-amber-800 mb-2 flex items-center">
+                  {/* En-tête avec bouton d'ajout */}
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-gray-800">Mes quêtes</h2>
+                    {!isAddingQuest ? (
+                      <Button 
+                        onClick={() => setIsAddingQuest(true)}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <Plus className="mr-1 h-4 w-4" />
+                        Nouvelle quête
+                      </Button>
+                    ) : (
+                      <Button 
+                        onClick={() => setIsAddingQuest(false)}
+                        variant="outline"
+                        className="text-gray-600"
+                      >
+                        <X className="mr-1 h-4 w-4" />
+                        Annuler
+                      </Button>
+                    )}
+                  </div>
+                
+                  {/* Formulaire d'ajout de quête */}
+                  {isAddingQuest && (
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-4">
+                      <h3 className="font-medium text-gray-700">Ajouter une nouvelle quête</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                          <Input
+                            type="text"
+                            placeholder="Titre de la quête"
+                            value={newQuest.title}
+                            onChange={(e) => setNewQuest({...newQuest, title: e.target.value})}
+                            className="w-full"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                          <Textarea
+                            placeholder="Description de l'objectif"
+                            value={newQuest.description}
+                            onChange={(e) => setNewQuest({...newQuest, description: e.target.value})}
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                            <Select 
+                              value={newQuest.category}
+                              onValueChange={(value) => setNewQuest({...newQuest, category: value as "main" | "secondary" | "seasonal"})}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choisir une catégorie" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="main">Principale</SelectItem>
+                                <SelectItem value="secondary">Secondaire</SelectItem>
+                                <SelectItem value="seasonal">Saisonnière</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Quantité totale</label>
+                            <Input
+                              type="number"
+                              min="1"
+                              value={newQuest.total}
+                              onChange={(e) => setNewQuest({...newQuest, total: parseInt(e.target.value) || 1})}
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
+                        {newQuest.category === "seasonal" && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Date limite</label>
+                            <Input
+                              type="text"
+                              placeholder="Ex: Été 15"
+                              value={newQuest.deadline || ""}
+                              onChange={(e) => setNewQuest({...newQuest, deadline: e.target.value})}
+                              className="w-full"
+                            />
+                          </div>
+                        )}
+                        <Button 
+                          onClick={addQuest}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
+                          disabled={newQuest.title.trim() === ""}
+                        >
+                          Ajouter la quête
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                
+                  {/* Quêtes principales */}
+                  <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                    <h3 className="font-medium text-amber-800 mb-3 flex items-center">
                       <Star className="h-5 w-5 mr-2 text-amber-500" />
                       Quêtes principales
                     </h3>
-                    <div className="space-y-2">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-gray-800 line-through">Rencontrer le maire</h4>
-                          <p className="text-sm text-gray-500">Présentez-vous au maire Sam pour commencer votre nouvelle vie.</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">Réparer le Temple de la Déesse</h4>
-                          <p className="text-sm text-gray-500">Collectez 10 offrandes pour restaurer le Temple de la Déesse.</p>
-                          <div className="mt-1 bg-gray-100 rounded-full h-2">
-                            <div className="bg-amber-500 h-2 rounded-full" style={{ width: '30%' }}></div>
+                    <div className="space-y-3">
+                      {quests
+                        .filter(quest => quest.category === "main")
+                        .map(quest => (
+                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
+                            <div className="flex items-start gap-3">
+                              {quest.completed ? (
+                                <CheckCircle 
+                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              ) : (
+                                <Circle 
+                                  className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              )}
+                              <div className="flex-1">
+                                <div className="flex justify-between items-start">
+                                  <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
+                                    {quest.title}
+                                  </h4>
+                                  <div className="flex">
+                                    <Trash 
+                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
+                                      onClick={() => deleteQuest(quest.id)}
+                                    />
+                                  </div>
+                                </div>
+                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
+                                  {quest.description}
+                                </p>
+                                
+                                {quest.total > 1 && (
+                                  <div className="mt-2">
+                                    <div className="flex justify-between items-center mb-1">
+                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
+                                      <div className="flex gap-1">
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, -1)}
+                                          disabled={quest.current <= 0}
+                                        >
+                                          <Minus className="h-3 w-3" />
+                                        </Button>
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, 1)}
+                                          disabled={quest.current >= quest.total}
+                                        >
+                                          <Plus className="h-3 w-3" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
+                                      <div 
+                                        className="bg-amber-500 h-2 rounded-full" 
+                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">3/10 offrandes collectées</p>
+                        ))}
+                      {quests.filter(quest => quest.category === "main").length === 0 && (
+                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
+                          <p className="text-sm text-gray-500">Pas de quête principale pour le moment</p>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                   
-                  <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                    <h3 className="font-medium text-green-800 mb-2 flex items-center">
-                      <Ungroup className="h-5 w-5 mr-2 text-green-500" />
+                  {/* Quêtes secondaires */}
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <h3 className="font-medium text-blue-800 mb-3 flex items-center">
+                      <Sparkles className="h-5 w-5 mr-2 text-blue-500" />
                       Quêtes secondaires
                     </h3>
-                    <div className="space-y-2">
-                      <div className="flex items-start gap-3">
-                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">Aider Scott à la ferme</h4>
-                          <p className="text-sm text-gray-500">Apportez 5 navets frais à Scott pour l'aider avec sa commande.</p>
-                          <div className="mt-1 bg-gray-100 rounded-full h-2">
-                            <div className="bg-green-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                    <div className="space-y-3">
+                      {quests
+                        .filter(quest => quest.category === "secondary")
+                        .map(quest => (
+                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
+                            <div className="flex items-start gap-3">
+                              {quest.completed ? (
+                                <CheckCircle 
+                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              ) : (
+                                <Circle 
+                                  className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              )}
+                              <div className="flex-1">
+                                <div className="flex justify-between items-start">
+                                  <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
+                                    {quest.title}
+                                  </h4>
+                                  <div className="flex">
+                                    <Trash 
+                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
+                                      onClick={() => deleteQuest(quest.id)}
+                                    />
+                                  </div>
+                                </div>
+                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
+                                  {quest.description}
+                                </p>
+                                
+                                {quest.total > 1 && (
+                                  <div className="mt-2">
+                                    <div className="flex justify-between items-center mb-1">
+                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
+                                      <div className="flex gap-1">
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, -1)}
+                                          disabled={quest.current <= 0}
+                                        >
+                                          <Minus className="h-3 w-3" />
+                                        </Button>
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, 1)}
+                                          disabled={quest.current >= quest.total}
+                                        >
+                                          <Plus className="h-3 w-3" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
+                                      <div 
+                                        className="bg-blue-500 h-2 rounded-full" 
+                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">3/5 navets récoltés</p>
+                        ))}
+                      {quests.filter(quest => quest.category === "secondary").length === 0 && (
+                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
+                          <p className="text-sm text-gray-500">Pas de quête secondaire pour le moment</p>
                         </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">Pêche pour Keiko</h4>
-                          <p className="text-sm text-gray-500">Attrapez un poisson-lune pour Keiko.</p>
-                          <div className="mt-1 text-xs italic text-blue-600">
-                            Disponible seulement en été
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                   
-                  <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                    <h3 className="font-medium text-purple-800 mb-2 flex items-center">
-                      <Calendar className="h-5 w-5 mr-2 text-purple-500" />
+                  {/* Quêtes saisonnières */}
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                    <h3 className="font-medium text-green-800 mb-3 flex items-center">
+                      <CalendarDays className="h-5 w-5 mr-2 text-green-500" />
                       Quêtes saisonnières
                     </h3>
-                    <div className="space-y-2">
-                      <div className="flex items-start gap-3">
-                        <Circle className="h-5 w-5 text-gray-300 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">Festival du Printemps</h4>
-                          <p className="text-sm text-gray-500">Cultivez une fleur primée pour le festival du printemps.</p>
-                          <div className="mt-1 text-xs italic text-purple-600 flex items-center">
-                            <ArrowRight className="h-3 w-3 mr-1" />
-                            7 jours restants
+                    <div className="space-y-3">
+                      {quests
+                        .filter(quest => quest.category === "seasonal")
+                        .map(quest => (
+                          <div key={quest.id} className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm">
+                            <div className="flex items-start gap-3">
+                              {quest.completed ? (
+                                <CheckCircle 
+                                  className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              ) : (
+                                <Clock 
+                                  className="h-5 w-5 text-orange-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                  onClick={() => toggleQuestCompletion(quest.id)}
+                                />
+                              )}
+                              <div className="flex-1">
+                                <div className="flex justify-between items-start">
+                                  <div className="flex items-center">
+                                    <h4 className={`font-medium ${quest.completed ? "text-gray-500 line-through" : "text-gray-800"}`}>
+                                      {quest.title}
+                                    </h4>
+                                    {quest.deadline && (
+                                      <Badge className="ml-2 bg-orange-100 text-orange-800 border-orange-200">
+                                        {quest.deadline}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <div className="flex">
+                                    <Trash 
+                                      className="h-4 w-4 text-gray-400 hover:text-red-500 cursor-pointer" 
+                                      onClick={() => deleteQuest(quest.id)}
+                                    />
+                                  </div>
+                                </div>
+                                <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
+                                  {quest.description}
+                                </p>
+                                
+                                {quest.total > 1 && (
+                                  <div className="mt-2">
+                                    <div className="flex justify-between items-center mb-1">
+                                      <p className="text-xs text-gray-500">{quest.current} / {quest.total} complété</p>
+                                      <div className="flex gap-1">
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, -1)}
+                                          disabled={quest.current <= 0}
+                                        >
+                                          <Minus className="h-3 w-3" />
+                                        </Button>
+                                        <Button 
+                                          variant="outline" 
+                                          size="icon" 
+                                          className="h-5 w-5 rounded-full p-0"
+                                          onClick={() => updateQuestProgress(quest.id, 1)}
+                                          disabled={quest.current >= quest.total}
+                                        >
+                                          <Plus className="h-3 w-3" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    <div className="mt-1 bg-gray-100 rounded-full h-2">
+                                      <div 
+                                        className="bg-green-500 h-2 rounded-full" 
+                                        style={{ width: `${(quest.current / quest.total) * 100}%` }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
+                        ))}
+                      {quests.filter(quest => quest.category === "seasonal").length === 0 && (
+                        <div className="text-center p-3 bg-white rounded-lg border border-gray-200">
+                          <p className="text-sm text-gray-500">Pas de quête saisonnière pour le moment</p>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
