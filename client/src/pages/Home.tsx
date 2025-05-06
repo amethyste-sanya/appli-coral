@@ -809,6 +809,19 @@ export default function Home() {
                                   {quest.description}
                                 </p>
                                 
+                                {quest.objectives && quest.objectives.length > 0 && (
+                                  <div className="mt-2">
+                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                      {quest.objectives.map((obj, idx) => (
+                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                          {obj}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                                
                                 {quest.total > 1 && (
                                   <div className="mt-2">
                                     <div className="flex justify-between items-center mb-1">
@@ -892,6 +905,19 @@ export default function Home() {
                                 <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
                                   {quest.description}
                                 </p>
+                                
+                                {quest.objectives && quest.objectives.length > 0 && (
+                                  <div className="mt-2">
+                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                      {quest.objectives.map((obj, idx) => (
+                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                          {obj}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
                                 
                                 {quest.total > 1 && (
                                   <div className="mt-2">
@@ -983,6 +1009,19 @@ export default function Home() {
                                 <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
                                   {quest.description}
                                 </p>
+                                
+                                {quest.objectives && quest.objectives.length > 0 && (
+                                  <div className="mt-2">
+                                    <span className="text-xs font-medium text-gray-600">Objectifs:</span>
+                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                      {quest.objectives.map((obj, idx) => (
+                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                          {obj}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
                                 
                                 {quest.total > 1 && (
                                   <div className="mt-2">
