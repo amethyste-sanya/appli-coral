@@ -568,7 +568,7 @@ export default function Home() {
                                   }}
                                   variant="outline"
                                   size="sm"
-                                  className="text-sky-600 border-sky-200 bg-sky-50 hover:bg-sky-100"
+                                  className="add-button-blue"
                                   disabled={quests.some(q => q.title === presetQuest.title)}
                                 >
                                   {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
@@ -617,7 +617,7 @@ export default function Home() {
                                   }}
                                   variant="outline"
                                   size="sm"
-                                  className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                  className="add-button-blue"
                                   disabled={quests.some(q => q.title === presetQuest.title)}
                                 >
                                   {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
