@@ -14,37 +14,151 @@ export type PresetQuest = {
 
 export const presetQuests: PresetQuest[] = [
   {
-    id: "mysteres-ocean",
-    title: "Mystères de l'océan",
-    description: "Découvrez les secrets cachés des profondeurs marines. Explorer l'océan peut révéler des trésors oubliés...",
+    id: "dans-locean",
+    title: "Dans l'océan",
+    description: "Ling dit que la combinaison de plongée est à toi, à une condition : tu guéris les coraux malades en activant les orbes coralliens.",
     category: "main",
-    total: 3,
-    giver: "Keiko (quand vous atteignez le niveau 3 de pêche)",
+    total: 5,
+    giver: "Ling (courrier, le plus tôt le 8 printemps)",
     objectives: [
-      "Découvrir le temple sous-marin",
-      "Collecter 5 artefacts marins",
-      "Parler à la sirène mystérieuse"
+      "Visitez Ling au quai de plongée",
+      "Plongez dans l'océan",
+      "Activez 5 orbes solaires",
+      "Soignez 5 sites coralliens",
+      "Visitez Ling au laboratoire"
     ],
-    prerequisite: "Niveau 3 de pêche",
-    reward: "Équipement de plongée amélioré",
-    notes: "Commence la série de quêtes océaniques"
+    prerequisite: "Aucun",
+    reward: "Combinaison de plongée",
+    notes: "Commence à explorer l'océan"
   },
   {
-    id: "tresor-sirenes",
-    title: "Le trésor des sirènes",
-    description: "Les sirènes gardent un trésor ancien dans les profondeurs. Gagnez leur confiance pour découvrir leurs secrets.",
+    id: "explorer-ocean",
+    title: "Explorez l'océan",
+    description: "L'océan regorge de varech précieux, de créatures marines et de trouvailles rares. Pour les atteindre, il vous faudra soigner davantage de coraux et dégager votre chemin des racines malades.",
     category: "main",
     total: 4,
-    giver: "Sirène mystérieuse",
+    giver: "Automatique après avoir terminé Dans l'océan",
     objectives: [
-      "Gagner la confiance des sirènes",
-      "Retrouver la clé du trésor perdu",
-      "Explorer la grotte des sirènes",
-      "Récupérer le trésor ancien"
+      "Soignez 20 sites coralliens",
+      "Inspectez la source du tremblement",
+      "Suivez la racine en retrait",
+      "Trouvez un moyen d'ouvrir la porte"
     ],
-    prerequisite: "Mystères de l'océan",
-    reward: "Collier de perles magiques + 2000 pièces",
-    notes: "Nécessite l'équipement de plongée amélioré"
+    prerequisite: "Dans l'océan",
+    reward: "Combinaison de plongée V2 + 300 pièces",
+    notes: "Commence le Royaume des sirènes"
+  },
+  {
+    id: "royaume-sirenes",
+    title: "Royaume des sirènes",
+    description: "Vous êtes arrivé au Royaume des Sirènes. Il est temps de trouver un moyen d'y pénétrer et d'explorer ses merveilles.",
+    category: "main",
+    total: 2,
+    giver: "Automatique après avoir terminé Explorez l'océan",
+    objectives: [
+      "Trouvez un moyen d'ouvrir la porte",
+      "Explorez le Royaume"
+    ],
+    prerequisite: "Explorez l'océan",
+    reward: "500 pièces",
+    notes: "Commence Invité indésirable"
+  },
+  {
+    id: "invite-indesirable",
+    title: "Invité indésirable",
+    description: "Vous êtes un invité indésirable au Royaume des Mers ! Denali vous a demandé de parler au roi Krakatoa au Palais Naga. Votre destin vous attend…",
+    category: "main",
+    total: 3,
+    giver: "Denali en complétant le Royaume des sirènes",
+    objectives: [
+      "Entrez dans le palais Naga",
+      "Rencontrez le roi",
+      "Entrez dans les profondeurs de la mer"
+    ],
+    prerequisite: "Royaume des sirènes",
+    reward: "Fruit de l'endurance",
+    notes: "Commence l'arbre de corail"
+  },
+  {
+    id: "arbre-corail",
+    title: "L'arbre corail",
+    description: "Entrez dans les eaux profondes et explorez tout ce que l'océan a à offrir afin de guérir l'arbre corail.",
+    category: "main",
+    total: 2,
+    giver: "Automatique après avoir terminé Invité indésirable",
+    objectives: [
+      "Entrez dans les profondeurs marines",
+      "Soignez l'arbre corail"
+    ],
+    prerequisite: "Invité indésirable",
+    reward: "10 000 pièces + 100 points océaniques + 150 points d'amitié avec tous les habitants",
+    notes: "Guérir l'océan"
+  },
+  {
+    id: "racines-audessus",
+    title: "Racines au-dessus",
+    description: "Dépêchez-vous. Vous êtes convoqué au Palais Naga !",
+    category: "main",
+    total: 3,
+    giver: "Le roi Krakatoa et la reine Nanda Devi (courrier le lendemain de la fin de l'Arbre Corail)",
+    objectives: [
+      "Visitez le palais Naga",
+      "Visitez l'arbre corail",
+      "Attendez la nuit"
+    ],
+    prerequisite: "L'arbre corail",
+    reward: "Sceau de Naga + 1 500 pièces + 50 points océaniques",
+    notes: "Suite des quêtes de l'océan"
+  },
+  {
+    id: "lun-de-nous",
+    title: "L'un de nous",
+    description: "L'Oracle prétend qu'il existe un moyen de faire de vous « l'un des nôtres ». Rassemblez les matériaux nécessaires et découvrez ce qu'elle veut dire.",
+    category: "main",
+    total: 3,
+    giver: "Cho Oyu (courrier 3 jours après avoir terminé Racines au-dessus)",
+    objectives: [
+      "Visitez l'Oracle",
+      "Apportez 5 essences d'osmium",
+      "Apportez 5 cultures d'osmium"
+    ],
+    prerequisite: "Racines au-dessus",
+    reward: "Bénédiction des sirènes + 2 000 pièces",
+    notes: "Suite des quêtes de l'océan"
+  },
+  {
+    id: "expedition-starlet",
+    title: "Expédition Starlet",
+    description: "Aventurez-vous au Palais Naga une fois lorsque vous serez prêt à en apprendre davantage sur cette « expédition Starlet ».",
+    category: "main",
+    total: 3,
+    giver: "Miranjani (courrier 5 jours après avoir terminé L'un de nous)",
+    objectives: [
+      "Allez au Palais Naga",
+      "Récoltez 75 cultures d'osmium",
+      "Récoltez 30 essences d'algues d'osmium"
+    ],
+    prerequisite: "L'un de nous",
+    reward: "Commence À la surface",
+    notes: "Suite des quêtes de l'océan"
+  },
+  {
+    id: "a-la-surface",
+    title: "À la surface",
+    description: "Vous avez rassemblé les ingrédients de la potion. Il ne vous reste plus qu'à vous rendre au lieu de rendez-vous et à emmener des sirènes sur terre !",
+    category: "main",
+    total: 5,
+    giver: "Après avoir terminé Expédition Starlet",
+    objectives: [
+      "Attendre la date de l'expédition",
+      "Se rendre au point de rendez-vous",
+      "Attendre que le temps soit clair",
+      "Attendre un jour sans festival",
+      "Se rendre au point de rendez-vous pendant une date d'expédition"
+    ],
+    prerequisite: "Expédition Starlet",
+    reward: "5 000 pièces",
+    notes: "Début de la partie 1 de l'accompagnement des sirènes"
   },
   {
     id: "debuter",
