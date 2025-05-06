@@ -21,6 +21,7 @@ import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/l
 import { CropCard } from "@/components/CropCard";
 import { getAllVillagers, getVillagersBySeason, getVillagersByLove, Villager, villagers } from "@/lib/villagers";
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
+import { CalendarEvent, EventActivity, getAllEvents, getEventsForDay, hasEvent } from "@/lib/events";
 
 export default function Home() {
   // Tâches journalières régulières
@@ -1679,15 +1680,20 @@ export default function Home() {
                         const birthdays = getVillagersBirthday(gameDate.season, dayNumber);
                         const hasBirthday = birthdays.length > 0;
                         
+                        const hasEventToday = hasEvent(gameDate.season, dayNumber);
                         return (
                           <button
                             key={i}
                             className={`relative h-8 w-full flex items-center justify-center rounded-md text-sm transition-colors ${
                               isSelected 
-                                ? "bg-blue-100 text-blue-700 font-medium" 
-                                : hasBirthday
-                                  ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
-                                  : "hover:bg-gray-100"
+                                ? "bg-blue-100 text-blue-700 font-medium border border-blue-300" 
+                                : hasBirthday && hasEventToday
+                                  ? "bg-gradient-to-br from-rose-50 to-blue-50 text-gray-700 hover:from-rose-100 hover:to-blue-100"
+                                  : hasBirthday
+                                    ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
+                                    : hasEventToday
+                                      ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                      : "hover:bg-gray-100"
                             }`}
                             onClick={() => {
                               let monthValue = 0;
@@ -1702,12 +1708,25 @@ export default function Home() {
                               newDate.setDate(dayNumber);
                               updateGameDate(newDate);
                             }}
-                            title={hasBirthday ? `Anniversaire: ${birthdays.join(', ')}` : ''}
+                            title={
+                              (hasBirthday && hasEventToday) 
+                                ? `Anniversaire: ${birthdays.join(', ')} | Événement`
+                                : hasBirthday 
+                                  ? `Anniversaire: ${birthdays.join(', ')}`
+                                  : hasEventToday 
+                                    ? `Événement festival`
+                                    : ''
+                            }
                           >
                             {dayNumber}
-                            {hasBirthday && (
-                              <div className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full"></div>
-                            )}
+                            <div className="absolute -top-1 flex gap-0.5">
+                              {hasBirthday && (
+                                <div className="-right-1 w-2 h-2 bg-rose-500 rounded-full"></div>
+                              )}
+                              {hasEventToday && (
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              )}
+                            </div>
                           </button>
                         );
                       })}
@@ -1751,11 +1770,110 @@ export default function Home() {
                       }
                       return null;
                     })()}
+
+                    {/* Affichage des événements du jour sélectionné */}
+                    {(() => {
+                      const events = getEventsForDay(gameDate.season, gameDate.day);
+                      if (events.length > 0) {
+                        return (
+                          <div className="bg-blue-50 rounded-md p-3 border border-blue-200 mt-2">
+                            {events.map((event, eventIndex) => (
+                              <div key={event.id} className={eventIndex > 0 ? "mt-4 pt-4 border-t border-blue-200" : ""}>
+                                <div className="flex items-center gap-2 mb-2">
+                                  <CalendarIcon className="h-4 w-4 text-blue-500" />
+                                  <h4 className="font-medium text-blue-700">{event.name}</h4>
+                                </div>
+                                
+                                <div className="space-y-2 text-sm text-gray-600">
+                                  {event.timeRange && (
+                                    <div className="flex items-center gap-1">
+                                      <Clock className="h-3.5 w-3.5 text-blue-500" />
+                                      <span>{event.timeRange}</span>
+                                    </div>
+                                  )}
+                                  
+                                  <div className="flex items-center gap-1">
+                                    <Building2 className="h-3.5 w-3.5 text-blue-500" />
+                                    <span>{event.location}</span>
+                                  </div>
+                                  
+                                  {event.merits && (
+                                    <div className="flex items-center gap-1">
+                                      <Star className="h-3.5 w-3.5 text-blue-500" />
+                                      <span>{event.merits} points de mérite</span>
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                <div className="mt-3">
+                                  <h5 className="text-xs font-medium text-blue-700 mb-2">Activités :</h5>
+                                  <div className="space-y-2">
+                                    {event.activities.filter(act => act.type === "Principal").map((activity, idx) => (
+                                      <div key={idx} className="bg-white rounded-md p-2 border border-blue-100">
+                                        <div className="flex items-center gap-1">
+                                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Principal</Badge>
+                                          <span className="text-sm">{activity.name}</span>
+                                        </div>
+                                        {activity.reward && (
+                                          <div className="text-xs mt-1 text-green-600">
+                                            Récompense: {activity.reward}
+                                          </div>
+                                        )}
+                                      </div>
+                                    ))}
+                                    
+                                    {event.activities.filter(act => act.type === "Côté").length > 0 && (
+                                      <div className="mt-2">
+                                        <h6 className="text-xs font-medium text-gray-600 mb-1">Activités secondaires :</h6>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                          {event.activities.filter(act => act.type === "Côté").map((activity, idx) => (
+                                            <div key={idx} className="bg-white rounded-md p-2 border border-gray-100">
+                                              <div className="flex items-center gap-1">
+                                                <Badge variant="outline" className="bg-gray-50 text-gray-600">Côté</Badge>
+                                                <span className="text-sm">{activity.name}</span>
+                                              </div>
+                                              {activity.reward && (
+                                                <div className="text-xs mt-1 text-green-600">
+                                                  Récompense: {activity.reward}
+                                                </div>
+                                              )}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                   </div>
                 </CardContent>
               </Card>
             </div>
             
+            {/* Légende du calendrier */}
+            <div className="mb-4">
+              <Card className="border-gray-200">
+                <CardContent className="p-4">
+                  <h3 className="font-medium text-sm mb-2">Légende :</h3>
+                  <div className="flex flex-wrap gap-3 text-xs">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-rose-500 rounded-full"></div>
+                      <span>Anniversaire</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span>Événement / Festival</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
           </div>
         </TabsContent>
