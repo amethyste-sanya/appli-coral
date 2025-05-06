@@ -982,25 +982,78 @@ export default function Home() {
                               {crop.preferences && crop.preferences.length > 0 && (
                                 <div className="mt-3 pt-3 border-t border-gray-100">
                                   <h5 className="text-xs font-medium text-gray-700 mb-2">Préférences des villageois:</h5>
-                                  <div className="flex flex-wrap gap-2">
-                                    {crop.preferences.map((pref, index) => (
-                                      <div 
-                                        key={index} 
-                                        className={`text-xs px-2 py-1 rounded-full ${
-                                          pref.preference === "adore" ? "bg-pink-100 text-pink-800" :
-                                          pref.preference === "aime" ? "bg-green-100 text-green-800" :
-                                          pref.preference === "déteste" ? "bg-red-100 text-red-800" :
-                                          "bg-gray-100 text-gray-800"
-                                        }`}
-                                      >
-                                        {pref.name} {
-                                          pref.preference === "adore" ? "❤️" :
-                                          pref.preference === "aime" ? "👍" :
-                                          pref.preference === "déteste" ? "👎" : ""
-                                        }
-                                      </div>
-                                    ))}
+                                  
+                                  {/* Résumé des préférences */}
+                                  <div className="mb-2 flex flex-wrap gap-2">
+                                    {(() => {
+                                      const likes = crop.preferences.filter(p => p.preference === "aime").length;
+                                      const dislikes = crop.preferences.filter(p => p.preference === "déteste").length;
+                                      const loves = crop.preferences.filter(p => p.preference === "adore").length;
+                                      const neutrals = crop.preferences.filter(p => p.preference === "neutre").length;
+                                      
+                                      const badges = [];
+                                      
+                                      if (likes > 0) {
+                                        badges.push(
+                                          <div key="likes" className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                            {likes} villageois {likes > 1 ? "aiment" : "aime"} 👍
+                                          </div>
+                                        );
+                                      }
+                                      
+                                      if (dislikes > 0) {
+                                        badges.push(
+                                          <div key="dislikes" className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                            {dislikes} villageois {dislikes > 1 ? "détestent" : "déteste"} 👎
+                                          </div>
+                                        );
+                                      }
+                                      
+                                      if (loves > 0) {
+                                        badges.push(
+                                          <div key="loves" className="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">
+                                            {loves} villageois {loves > 1 ? "adorent" : "adore"} ❤️
+                                          </div>
+                                        );
+                                      }
+                                      
+                                      if (neutrals > 0) {
+                                        badges.push(
+                                          <div key="neutrals" className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
+                                            {neutrals} villageois {neutrals > 1 ? "sont neutres" : "est neutre"}
+                                          </div>
+                                        );
+                                      }
+                                      
+                                      return badges;
+                                    })()}
                                   </div>
+                                  
+                                  {/* Détail des préférences (afficher/masquer) */}
+                                  <details className="text-sm">
+                                    <summary className="cursor-pointer text-xs text-blue-600 hover:text-blue-800 mb-2">
+                                      Voir tous les villageois ({crop.preferences.length})
+                                    </summary>
+                                    <div className="flex flex-wrap gap-2 mt-2 max-h-32 overflow-y-auto">
+                                      {crop.preferences.map((pref, index) => (
+                                        <div 
+                                          key={index} 
+                                          className={`text-xs px-2 py-1 rounded-full ${
+                                            pref.preference === "adore" ? "bg-pink-100 text-pink-800" :
+                                            pref.preference === "aime" ? "bg-green-100 text-green-800" :
+                                            pref.preference === "déteste" ? "bg-red-100 text-red-800" :
+                                            "bg-gray-100 text-gray-800"
+                                          }`}
+                                        >
+                                          {pref.name} {
+                                            pref.preference === "adore" ? "❤️" :
+                                            pref.preference === "aime" ? "👍" :
+                                            pref.preference === "déteste" ? "👎" : ""
+                                          }
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </details>
                                 </div>
                               )}
                               
