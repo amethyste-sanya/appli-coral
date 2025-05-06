@@ -117,6 +117,80 @@ export const presetQuests: PresetQuest[] = [
     notes: ""
   },
   {
+    id: "extracteur",
+    title: "L'extracteur",
+    description: "L'extracteur vous permettra d'augmenter vos revenus. Vous pouvez augmenter vos profits en expédiant des produits de meilleure qualité, et le laboratoire peut vous aider en vous fournissant de l'essence de varech. Fabriquez un extracteur pour produire de l'essence de varech.",
+    category: "main",
+    total: 1,
+    giver: "Surya (le lendemain après avoir obtenu du varech de bronze)",
+    objectives: [
+      "Fabriquer un extracteur"
+    ],
+    prerequisite: "Obtenir du varech de bronze",
+    reward: "Recette de fabrication d'extracteur",
+    notes: "En progression: Recette de fabrication d'extracteur. Terminer: Commence l'extraction d'essence"
+  },
+  {
+    id: "extraction-essence",
+    title: "Extraction d'essence",
+    description: "Maintenant que vous avez un extracteur, vous pouvez essayer de produire de l'essence d'algues bronzées. Pour fabriquer une bouteille, placez 10 algues bronzées et un verre dans l'extracteur.",
+    category: "main",
+    total: 1,
+    giver: "Après avoir terminé 'L'extracteur'",
+    objectives: [
+      "Produire de l'essence de varech bronzé à l'aide d'un extracteur"
+    ],
+    prerequisite: "L'extracteur",
+    reward: "Accès à la production d'essence de varech",
+    notes: ""
+  },
+  {
+    id: "produits-locaux",
+    title: "Produits locaux",
+    description: "Aidez Sam à relancer la section des produits locaux du magasin général en expédiant des légumes et des fruits de qualité bronze.",
+    category: "main",
+    total: 3,
+    giver: "Sam (doit avoir déclenché le rang F de la ville)",
+    objectives: [
+      "Rencontrez Sam au magasin général",
+      "Expédiez 50 légumes de qualité bronze",
+      "Expédiez 25 fruits de qualité bronze"
+    ],
+    prerequisite: "Ville de rang F, puis vente/expédition d'une récolte",
+    reward: "1000 pièces + déverrouillage du point de cheminement de la ville",
+    notes: "Le courrier de lancement de la quête sera livré 5 jours plus tard"
+  },
+  {
+    id: "nouvel-objectif-rang-s",
+    title: "Nouvel objectif : rang de ville S !",
+    description: "Aidez Starlet Town à réaliser son rêve d'atteindre le rang de ville S. Commencez par visiter le centre communautaire pour planifier les prochaines étapes.",
+    category: "main",
+    total: 2,
+    giver: "Déclenchée en entrant dans le centre communautaire après avoir obtenu le rang de ville A",
+    objectives: [
+      "Atteindre le rang S de la ville",
+      "Visiter le centre communautaire"
+    ],
+    prerequisite: "Obtenir le rang de ville A",
+    reward: "Accès aux attractions de la ville",
+    notes: ""
+  },
+  {
+    id: "attraction-starlet-town",
+    title: "Attraction de Starlet Town",
+    description: "Aidez la ville en contribuant à sa première attraction majeure. Collaborez ensuite avec les habitants pour construire toutes les attractions.",
+    category: "main",
+    total: 2,
+    giver: "Après avoir terminé 'Nouvel objectif : rang de ville S !'",
+    objectives: [
+      "Terminez une attraction de la ville (1/1)",
+      "Terminez toutes les attractions (10/10)"
+    ],
+    prerequisite: "Nouvel objectif : rang de ville S !",
+    reward: "650 × 650 pièces",
+    notes: ""
+  },
+  {
     id: "aider-scott",
     title: "Aider Scott à la ferme",
     description: "Scott a besoin d'aide avec une commande urgente pour son restaurant.",
