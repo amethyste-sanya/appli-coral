@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar } from "lucide-react";
+import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 // Task type definition
 type Task = {
@@ -68,7 +69,7 @@ export default function Home() {
 
       <div className="w-full max-w-3xl mx-auto">
         <Tabs defaultValue="checklist" className="w-full">
-          <TabsList className="grid grid-cols-4 bg-green-200 rounded-t-lg overflow-hidden">
+          <TabsList className="grid grid-cols-5 bg-green-200 rounded-t-lg overflow-hidden">
             <TabsTrigger value="checklist" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Check-list
             </TabsTrigger>
@@ -80,6 +81,9 @@ export default function Home() {
             </TabsTrigger>
             <TabsTrigger value="events" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Événements
+            </TabsTrigger>
+            <TabsTrigger value="crafting" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
+              Artisanat
             </TabsTrigger>
           </TabsList>
 
@@ -368,6 +372,142 @@ export default function Home() {
                     <Calendar className="h-4 w-4" />
                     <span>Voir toute l'année</span>
                   </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          {/* Crafting Tab */}
+          <TabsContent value="crafting">
+            <Card className="rounded-b-lg shadow-md mt-1">
+              <CardContent className="p-5">
+                <div className="space-y-6">
+                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Artisanat</h2>
+                  
+                  {/* Search and filter */}
+                  <div className="relative flex gap-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <Input 
+                        className="pl-10" 
+                        placeholder="Rechercher une recette..." 
+                      />
+                    </div>
+                    <Button variant="outline" className="bg-amber-50 border-amber-200 text-amber-800">
+                      Filtrer
+                    </Button>
+                  </div>
+                  
+                  {/* Crafting Categories */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div className="bg-amber-50 rounded-lg border border-amber-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-amber-100 transition-colors">
+                      <Hammer className="h-8 w-8 mb-2 text-amber-600" />
+                      <h3 className="font-medium text-amber-800">Outils</h3>
+                      <p className="text-xs text-amber-600 mt-1">8 recettes</p>
+                    </div>
+                    
+                    <div className="bg-blue-50 rounded-lg border border-blue-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-100 transition-colors">
+                      <div className="h-8 w-8 mb-2 text-blue-600 flex items-center justify-center text-xl">🧵</div>
+                      <h3 className="font-medium text-blue-800">Tissus</h3>
+                      <p className="text-xs text-blue-600 mt-1">12 recettes</p>
+                    </div>
+                    
+                    <div className="bg-green-50 rounded-lg border border-green-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-green-100 transition-colors">
+                      <div className="h-8 w-8 mb-2 text-green-600 flex items-center justify-center text-xl">🌱</div>
+                      <h3 className="font-medium text-green-800">Agriculture</h3>
+                      <p className="text-xs text-green-600 mt-1">10 recettes</p>
+                    </div>
+                    
+                    <div className="bg-purple-50 rounded-lg border border-purple-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-purple-100 transition-colors">
+                      <div className="h-8 w-8 mb-2 text-purple-600 flex items-center justify-center text-xl">🧪</div>
+                      <h3 className="font-medium text-purple-800">Alchimie</h3>
+                      <p className="text-xs text-purple-600 mt-1">15 recettes</p>
+                    </div>
+                    
+                    <div className="bg-red-50 rounded-lg border border-red-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-red-100 transition-colors">
+                      <div className="h-8 w-8 mb-2 text-red-600 flex items-center justify-center text-xl">🍲</div>
+                      <h3 className="font-medium text-red-800">Cuisine</h3>
+                      <p className="text-xs text-red-600 mt-1">24 recettes</p>
+                    </div>
+                    
+                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-100 transition-colors">
+                      <div className="h-8 w-8 mb-2 text-gray-600 flex items-center justify-center text-xl">🪑</div>
+                      <h3 className="font-medium text-gray-800">Meubles</h3>
+                      <p className="text-xs text-gray-600 mt-1">18 recettes</p>
+                    </div>
+                  </div>
+                  
+                  {/* Recent Recipes */}
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
+                    
+                    <div className="space-y-3">
+                      {/* Recipe 1 */}
+                      <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                        <div className="flex justify-between">
+                          <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
+                          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                        </div>
+                        
+                        <div className="mt-2 text-sm text-gray-600">
+                          <div className="flex gap-1 items-center mb-1">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>1 × Arrosoir</span>
+                          </div>
+                          <div className="flex gap-1 items-center mb-1">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>5 × Minerai de cuivre</span>
+                          </div>
+                          <div className="flex gap-1 items-center">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>1 × Barre de fer</span>
+                          </div>
+                        </div>
+                        
+                        <div className="mt-2 flex justify-between items-center text-xs">
+                          <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
+                          <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                            Détails
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {/* Recipe 2 */}
+                      <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                        <div className="flex justify-between">
+                          <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
+                          <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
+                        </div>
+                        
+                        <div className="mt-2 text-sm text-gray-600">
+                          <div className="flex gap-1 items-center mb-1">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>1 × Bocal vide</span>
+                          </div>
+                          <div className="flex gap-1 items-center mb-1">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>3 × Légumes au choix</span>
+                          </div>
+                          <div className="flex gap-1 items-center">
+                            <ArrowRight className="h-3 w-3 text-gray-400" />
+                            <span>1 × Sel</span>
+                          </div>
+                        </div>
+                        
+                        <div className="mt-2 flex justify-between items-center text-xs">
+                          <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
+                          <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                            Détails
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
+                      <Hammer className="h-4 w-4" />
+                      <span>Toutes les recettes</span>
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
