@@ -185,15 +185,12 @@ export default function Home() {
 
       <div className="w-full max-w-3xl mx-auto">
         <Tabs defaultValue="checklist" className="w-full">
-          <TabsList className="grid grid-cols-5 bg-green-200 rounded-t-lg overflow-hidden">
+          <TabsList className="grid grid-cols-4 bg-green-200 rounded-t-lg overflow-hidden">
             <TabsTrigger value="checklist" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Check-list
             </TabsTrigger>
             <TabsTrigger value="quests" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Quêtes
-            </TabsTrigger>
-            <TabsTrigger value="relationships" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Relations
             </TabsTrigger>
             <TabsTrigger value="events" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Événements
