@@ -30,6 +30,7 @@ export default function Home() {
   const [newTask, setNewTask] = useState("");
   const [craftingSearch, setCraftingSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [journalTab, setJournalTab] = useState<string>("crafting");
 
   // Fetch tasks
   const { data: tasks = [], refetch } = useQuery<Task[]>({
@@ -195,8 +196,8 @@ export default function Home() {
             <TabsTrigger value="events" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
               Événements
             </TabsTrigger>
-            <TabsTrigger value="crafting" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
-              Artisanat
+            <TabsTrigger value="journal" className="py-2 px-4 font-medium text-green-800 hover:bg-green-300 transition-colors data-[state=active]:bg-green-300">
+              Journal
             </TabsTrigger>
           </TabsList>
 
@@ -586,72 +587,100 @@ export default function Home() {
             </Card>
           </TabsContent>
           
-          {/* Crafting Tab */}
-          <TabsContent value="crafting">
+          {/* Journal Tab */}
+          <TabsContent value="journal">
             <Card className="rounded-b-lg shadow-md mt-1">
               <CardContent className="p-5">
                 <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Artisanat</h2>
+                  <h2 className="text-xl font-semibold text-green-800 border-b border-green-100 pb-2">Journal</h2>
                   
-                  {/* Search and filter */}
-                  <div className="relative flex gap-2">
-                    <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                      <Input 
-                        className="pl-10" 
-                        placeholder="Rechercher une recette..." 
-                        value={craftingSearch}
-                        onChange={(e) => setCraftingSearch(e.target.value)}
-                      />
-                    </div>
-                    <Button variant="outline" className="bg-amber-50 border-amber-200 text-amber-800">
-                      Filtrer
-                    </Button>
+                  {/* Sous-navigation du Journal */}
+                  <div className="flex border-b border-gray-200">
+                    <button
+                      className={`px-4 py-2 font-medium text-sm ${journalTab === "crafting" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
+                      onClick={() => setJournalTab("crafting")}
+                    >
+                      Artisanat
+                    </button>
+                    <button
+                      className={`px-4 py-2 font-medium text-sm ${journalTab === "items" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
+                      onClick={() => setJournalTab("items")}
+                    >
+                      Objets
+                    </button>
+                    <button
+                      className={`px-4 py-2 font-medium text-sm ${journalTab === "fish" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
+                      onClick={() => setJournalTab("fish")}
+                    >
+                      Poissons
+                    </button>
+                    <button
+                      className={`px-4 py-2 font-medium text-sm ${journalTab === "creatures" ? "text-green-600 border-b-2 border-green-500" : "text-gray-500 hover:text-gray-700"}`}
+                      onClick={() => setJournalTab("creatures")}
+                    >
+                      Créatures
+                    </button>
                   </div>
                   
-                  {/* Crafting Categories */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {craftingCategories.map((category) => {
-                      const classes = getCategoryClasses(category);
-                      return (
-                        <div 
-                          key={category.id}
-                          onClick={() => handleCategorySelect(category.id)}
-                          className={`${classes.container} rounded-lg border p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors`}
-                        >
-                          {category.icon}
-                          <h3 className={`font-medium ${classes.title}`}>
-                            {category.name}
-                          </h3>
-                          <p className={`text-xs ${classes.text} mt-1`}>
-                            {category.count} recettes
-                          </p>
+                  {/* Contenu de l'onglet Artisanat */}
+                  {journalTab === "crafting" && (
+                    <div className="space-y-6">
+                      {/* Search and filter */}
+                      <div className="relative flex gap-2">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                          <Input 
+                            className="pl-10" 
+                            placeholder="Rechercher une recette..." 
+                            value={craftingSearch}
+                            onChange={(e) => setCraftingSearch(e.target.value)}
+                          />
                         </div>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Selected Category Content */}
-                  {selectedCategory && (
-                    <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold">
-                          {craftingCategories.find(c => c.id === selectedCategory)?.name}
-                        </h3>
-                        <Button 
-                          size="sm" 
-                          variant="ghost" 
-                          onClick={() => setSelectedCategory(null)}
-                          className="h-7 text-gray-500 hover:text-gray-700"
-                        >
-                          Fermer
+                        <Button variant="outline" className="bg-amber-50 border-amber-200 text-amber-800">
+                          Filtrer
                         </Button>
                       </div>
                       
-                      <div className="space-y-3">
-                        {selectedCategory && (
-                          <>
-                            {/* Récupérer les recettes de la catégorie sélectionnée */}
+                      {/* Crafting Categories */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {craftingCategories.map((category) => {
+                          const classes = getCategoryClasses(category);
+                          return (
+                            <div 
+                              key={category.id}
+                              onClick={() => handleCategorySelect(category.id)}
+                              className={`${classes.container} rounded-lg border p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors`}
+                            >
+                              {category.icon}
+                              <h3 className={`font-medium ${classes.title}`}>
+                                {category.name}
+                              </h3>
+                              <p className={`text-xs ${classes.text} mt-1`}>
+                                {category.count} recettes
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      {/* Selected Category Content */}
+                      {selectedCategory && (
+                        <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold">
+                              {craftingCategories.find(c => c.id === selectedCategory)?.name}
+                            </h3>
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              onClick={() => setSelectedCategory(null)}
+                              className="h-7 text-gray-500 hover:text-gray-700"
+                            >
+                              Fermer
+                            </Button>
+                          </div>
+                          
+                          <div className="space-y-3">
                             {getRecipesByCategory(selectedCategory).length > 0 ? (
                               getRecipesByCategory(selectedCategory).map((recipe) => (
                                 <div key={recipe.id} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
@@ -725,83 +754,122 @@ export default function Home() {
                                 </p>
                               </div>
                             )}
-                          </>
-                        )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Recent Recipes */}
+                      {!selectedCategory && (
+                        <div>
+                          <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
+                          
+                          <div className="space-y-3">
+                            {/* Recipe 1 */}
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
+                                <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Arrosoir</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>5 × Minerai de cuivre</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Barre de fer</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            {/* Recipe 2 */}
+                            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
+                                <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
+                              </div>
+                              
+                              <div className="mt-2 text-sm text-gray-600">
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Bocal vide</span>
+                                </div>
+                                <div className="flex gap-1 items-center mb-1">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>3 × Légumes au choix</span>
+                                </div>
+                                <div className="flex gap-1 items-center">
+                                  <ArrowRight className="h-3 w-3 text-gray-400" />
+                                  <span>1 × Sel</span>
+                                </div>
+                              </div>
+                              
+                              <div className="mt-2 flex justify-between items-center text-xs">
+                                <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
+                                <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
+                                  Détails
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
+                            <Hammer className="h-4 w-4" />
+                            <span>Toutes les recettes</span>
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Contenu de l'onglet Objets */}
+                  {journalTab === "items" && (
+                    <div className="text-center py-10">
+                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
+                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
+                        <p className="text-gray-600">
+                          Cette section du journal qui contiendra tous les objets collectionnés sera bientôt disponible.
+                        </p>
                       </div>
                     </div>
                   )}
                   
-                  {/* Recent Recipes */}
-                  {!selectedCategory && (
-                    <div>
-                      <h3 className="font-medium text-gray-700 mb-3">Recettes récentes</h3>
-                      
-                      <div className="space-y-3">
-                        {/* Recipe 1 */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                          <div className="flex justify-between">
-                            <h4 className="font-medium text-gray-900">Arrosoir amélioré</h4>
-                            <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">Outil</Badge>
-                          </div>
-                          
-                          <div className="mt-2 text-sm text-gray-600">
-                            <div className="flex gap-1 items-center mb-1">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>1 × Arrosoir</span>
-                            </div>
-                            <div className="flex gap-1 items-center mb-1">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>5 × Minerai de cuivre</span>
-                            </div>
-                            <div className="flex gap-1 items-center">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>1 × Barre de fer</span>
-                            </div>
-                          </div>
-                          
-                          <div className="mt-2 flex justify-between items-center text-xs">
-                            <span className="text-gray-500">Débloqué au niveau 3 de fermier</span>
-                            <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                              Détails
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        {/* Recipe 2 */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                          <div className="flex justify-between">
-                            <h4 className="font-medium text-gray-900">Conserves de légumes</h4>
-                            <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Cuisine</Badge>
-                          </div>
-                          
-                          <div className="mt-2 text-sm text-gray-600">
-                            <div className="flex gap-1 items-center mb-1">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>1 × Bocal vide</span>
-                            </div>
-                            <div className="flex gap-1 items-center mb-1">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>3 × Légumes au choix</span>
-                            </div>
-                            <div className="flex gap-1 items-center">
-                              <ArrowRight className="h-3 w-3 text-gray-400" />
-                              <span>1 × Sel</span>
-                            </div>
-                          </div>
-                          
-                          <div className="mt-2 flex justify-between items-center text-xs">
-                            <span className="text-gray-500">Débloqué au niveau 2 de cuisine</span>
-                            <Button size="sm" variant="outline" className="h-7 bg-green-50 border-green-200 text-green-700 hover:bg-green-100">
-                              Détails
-                            </Button>
-                          </div>
-                        </div>
+                  {/* Contenu de l'onglet Poissons */}
+                  {journalTab === "fish" && (
+                    <div className="text-center py-10">
+                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
+                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
+                        <p className="text-gray-600">
+                          Cette section du journal qui contiendra tous les poissons pêchés sera bientôt disponible.
+                        </p>
                       </div>
-                      
-                      <Button className="w-full mt-4 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition-colors flex items-center justify-center gap-2">
-                        <Hammer className="h-4 w-4" />
-                        <span>Toutes les recettes</span>
-                      </Button>
+                    </div>
+                  )}
+                  
+                  {/* Contenu de l'onglet Créatures */}
+                  {journalTab === "creatures" && (
+                    <div className="text-center py-10">
+                      <div className="bg-gray-50 rounded-lg p-6 mb-4">
+                        <Info className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Section en développement</h3>
+                        <p className="text-gray-600">
+                          Cette section du journal qui contiendra toutes les créatures découvertes sera bientôt disponible.
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
