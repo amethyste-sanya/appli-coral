@@ -9,7 +9,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
-import { Crop, getAllCrops, getCropsBySeason } from "@/lib/crops";
+import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
 import { CropCard } from "@/components/CropCard";
 
 // Task type definition
@@ -582,16 +582,15 @@ export default function Home() {
                           {getAllCrops()
                             .filter(crop => crop.sellPrice)
                             .sort((a, b) => {
-                              const profitA = a.sellPrice! * (a.harvestYield || 1) - a.seedPrice;
-                              const profitB = b.sellPrice! * (b.harvestYield || 1) - b.seedPrice;
-                              const profitPerDayA = Math.round((profitA / a.growthTime) * 10) / 10;
-                              const profitPerDayB = Math.round((profitB / b.growthTime) * 10) / 10;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDayA = calculateProfitability(a);
+                              const profitPerDayB = calculateProfitability(b);
                               return profitPerDayB - profitPerDayA;
                             })
                             .slice(0, 4)
                             .map(crop => {
-                              const totalProfit = crop.sellPrice! * (crop.harvestYield || 1) - crop.seedPrice;
-                              const profitPerDay = Math.round((totalProfit / crop.growthTime) * 10) / 10;
+                              // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
+                              const profitPerDay = calculateProfitability(crop);
                               return (
                                 <div key={crop.id} className="flex items-center gap-3 border border-gray-200 rounded-lg p-3 bg-white">
                                   <div className="w-12 h-12 border border-gray-200 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">

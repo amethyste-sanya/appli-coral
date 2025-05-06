@@ -554,14 +554,39 @@ export const addCrop = (crop: Crop): void => {
   crops.push(crop);
 };
 
-// Fonction pour calculer la rentabilité d'une culture
+// Fonction pour calculer la rentabilité d'une culture sur une saison (28 jours)
 export const calculateProfitability = (crop: Crop): number => {
   if (!crop.sellPrice) return 0;
   
   const totalHarvest = crop.harvestYield || 1;
-  const totalProfit = crop.sellPrice * totalHarvest - crop.seedPrice;
+  const saisonDuration = 28; // Durée d'une saison en jours
   
-  return totalProfit;
+  // Pour les cultures qui repoussent
+  if (crop.regrowth) {
+    // Nombre de récoltes possibles sur une saison (incluant la première)
+    // La première récolte prend growthTime jours, puis chaque récolte supplémentaire prend regrowth jours
+    const firstHarvest = crop.growthTime;
+    const timeLeft = saisonDuration - firstHarvest;
+    const additionalHarvests = Math.floor(timeLeft / crop.regrowth);
+    const totalHarvests = 1 + additionalHarvests;
+    
+    // Profit total = (prix de vente * récolte totale * nombre de récoltes) - prix des graines (payé une seule fois)
+    const totalProfit = (crop.sellPrice * totalHarvest * totalHarvests) - crop.seedPrice;
+    
+    // Profit par jour sur la saison complète
+    return Math.round((totalProfit / saisonDuration) * 10) / 10;
+  } 
+  // Pour les cultures qui ne repoussent pas
+  else {
+    // Nombre de récoltes possibles sur une saison
+    const totalHarvests = Math.floor(saisonDuration / crop.growthTime);
+    
+    // Profit total = (prix de vente * récolte par plant) * nombre de récoltes - (prix des graines * nombre de replantations)
+    const totalProfit = (crop.sellPrice * totalHarvest * totalHarvests) - (crop.seedPrice * totalHarvests);
+    
+    // Profit par jour sur la saison complète
+    return Math.round((totalProfit / saisonDuration) * 10) / 10;
+  }
 };
 
 // Fonction pour récupérer les cultures les plus rentables
