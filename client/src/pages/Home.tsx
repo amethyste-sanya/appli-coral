@@ -887,6 +887,43 @@ export default function Home() {
                       <Star className="h-5 w-5 mr-2 text-amber-500" />
                       Quêtes principales
                     </h3>
+                    {/* Section Ville */}
+                    <div className="mb-4 p-3 bg-gray-100 rounded-lg">
+                      <h4 className="font-medium text-gray-800 mb-2 flex items-center">
+                        <Building2 className="h-4 w-4 mr-2" />
+                        Ville
+                      </h4>
+                      <div className="space-y-2">
+                        {quests
+                          .filter(quest => quest.category === "main" && 
+                            ["Débuter", "Le nouveau fermier", "Se faire des amis", "Home Sweet Home", 
+                             "Visitez Beach Shack", "Tout ou rien", "Fondre pour le progrès", 
+                             "Extracteur", "Extraction d'essence", "Produits locaux", 
+                             "Nouvel objectif: Rang S", "Attraction de Starlet Town"]
+                            .includes(quest.title))
+                          .map(quest => (
+                            <div key={quest.id} className="bg-white rounded p-2 border border-gray-200">
+                              <div className="flex items-start gap-2">
+                                {quest.completed ? (
+                                  <CheckCircle 
+                                    className="h-5 w-5 text-green-500 mt-1 flex-shrink-0 cursor-pointer" 
+                                    onClick={() => toggleQuestCompletion(quest.id)}
+                                  />
+                                ) : (
+                                  <Circle 
+                                    className="h-5 w-5 text-gray-300 mt-1 flex-shrink-0 cursor-pointer" 
+                                    onClick={() => toggleQuestCompletion(quest.id)}
+                                  />
+                                )}
+                                <div className="flex-1">
+                                  <h5 className="font-medium text-gray-800">{quest.title}</h5>
+                                  <p className="text-sm text-gray-600">{quest.description}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
                     {/* Section Océan */}
                     <div className="mb-4 p-3 bg-blue-100 rounded-lg">
                       <h4 className="font-medium text-blue-800 mb-2 flex items-center">
