@@ -429,61 +429,14 @@ export default function Home() {
                             </div>
                           </div>
                           
-                          {/* Section Océan */}
+                          {/* Section Océan - Commentée pour l'instant */}
                           <div className="bg-blue-100 rounded-lg p-4 border border-blue-200">
                             <h4 className="font-medium text-blue-800 mb-3 flex items-center">
                               <Anchor className="h-4 w-4 mr-2" />
                               Océan
                             </h4>
-                            <div className="space-y-4">
-                              {getPresetQuestsByCategory("main")
-                                .filter(quest => 
-                                  ["mysteres-ocean", "tresor-sirenes"]
-                                  .includes(quest.id))
-                                .map((presetQuest) => (
-                                  <div key={presetQuest.id} className="bg-white rounded-lg p-4 border border-blue-200">
-                                    <div className="flex justify-between mb-2">
-                                      <h4 className="font-medium text-gray-800">{presetQuest.title}</h4>
-                                      <Button
-                                        onClick={() => {
-                                          const newQuestItem: Quest = {
-                                            id: Date.now(),
-                                            title: presetQuest.title,
-                                            description: presetQuest.description,
-                                            category: presetQuest.category,
-                                            completed: false,
-                                            current: 0,
-                                            total: presetQuest.total,
-                                            objectives: presetQuest.objectives ? convertStringsToObjectives(presetQuest.objectives) : undefined
-                                          };
-                                          setQuests([...quests, newQuestItem]);
-                                        }}
-                                        variant="outline"
-                                        size="sm"
-                                        className="add-button-blue"
-                                        disabled={quests.some(q => q.title === presetQuest.title)}
-                                      >
-                                        {quests.some(q => q.title === presetQuest.title) ? "Déjà ajouté" : "Ajouter"}
-                                      </Button>
-                                    </div>
-                                    <p className="text-sm text-gray-600 mb-3">{presetQuest.description}</p>
-                                    {presetQuest.objectives && presetQuest.objectives.length > 0 && (
-                                      <div className="mt-2">
-                                        <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                        <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
-                                          {presetQuest.objectives.map((obj, idx) => (
-                                            <li key={idx}>{obj}</li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    )}
-                                    {presetQuest.reward && (
-                                      <div className="mt-2 text-xs text-amber-600">
-                                        <span className="font-medium">Récompense:</span> {presetQuest.reward}
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
+                            <div className="text-center py-4 text-blue-600">
+                              Aucune quête océanique disponible pour le moment
                             </div>
                           </div>
                           
