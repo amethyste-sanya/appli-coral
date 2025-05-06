@@ -60,7 +60,7 @@ export default function Home() {
   const [journalTab, setJournalTab] = useState<string>("crafting");
   const [searchVillager, setSearchVillager] = useState("");
   const [selectedSeason, setSelectedSeason] = useState<string>("all");
-  
+
   // États pour la gestion des quêtes
   const [quests, setQuests] = useState<Quest[]>([
     {
@@ -88,7 +88,13 @@ export default function Home() {
       completed: false,
       category: "main",
       current: 2,
-      total: 4
+      total: 4,
+      objectives: [
+        { text: "Rassembler 10 planches de bois", completed: false },
+        { text: "Rassembler 5 pierres", completed: true },
+        { text: "Rassembler 20 fibres", completed: false },
+        { text: "Rassembler 10 clous", completed: false}
+      ]
     }
   ]);
   const [isAddingQuest, setIsAddingQuest] = useState(false);
@@ -192,7 +198,7 @@ export default function Home() {
       addTask();
     }
   };
-  
+
   // Fonction utilitaire pour convertir les objectifs en format avec état
   const convertObjectivesToQuestObjectives = (objectives?: string[]): QuestObjective[] | undefined => {
     if (!objectives || objectives.length === 0) return undefined;
@@ -201,7 +207,7 @@ export default function Home() {
       completed: false
     }));
   };
-  
+
   // Fonction pour basculer l'état d'un objectif individuel
   const toggleObjectiveCompletion = (questId: number, objectiveIndex: number) => {
     setQuests(quests.map(quest => {
@@ -211,10 +217,10 @@ export default function Home() {
           ...newObjectives[objectiveIndex],
           completed: !newObjectives[objectiveIndex].completed
         };
-        
+
         // Vérifier si tous les objectifs sont complétés pour mettre à jour l'état global de la quête
         const allObjectivesCompleted = newObjectives.every(obj => obj.completed);
-        
+
         return {
           ...quest,
           objectives: newObjectives,
@@ -224,11 +230,11 @@ export default function Home() {
       return quest;
     }));
   };
-  
+
   // Fonctions pour la gestion des quêtes
   const addQuest = () => {
     if (newQuest.title.trim() === "") return;
-    
+
     const quest: Quest = {
       id: Date.now(), // Utiliser un timestamp comme id temporaire
       title: newQuest.title,
@@ -239,7 +245,7 @@ export default function Home() {
       total: newQuest.total,
       deadline: newQuest.deadline
     };
-    
+
     setQuests([...quests, quest]);
     setNewQuest({
       title: "",
@@ -249,7 +255,7 @@ export default function Home() {
     });
     setIsAddingQuest(false);
   };
-  
+
   const updateQuestProgress = (id: number, increment: number) => {
     setQuests(quests.map(quest => {
       if (quest.id === id) {
@@ -263,7 +269,7 @@ export default function Home() {
       return quest;
     }));
   };
-  
+
   const toggleQuestCompletion = (id: number) => {
     setQuests(quests.map(quest => {
       if (quest.id === id) {
@@ -277,11 +283,11 @@ export default function Home() {
       return quest;
     }));
   };
-  
+
   const deleteQuest = (id: number) => {
     setQuests(quests.filter(quest => quest.id !== id));
   };
-  
+
   // Gérer la sélection de catégorie d'artisanat
   const handleCategorySelect = (categoryId: string) => {
     if (selectedCategory === categoryId) {
@@ -290,17 +296,17 @@ export default function Home() {
       setSelectedCategory(categoryId);
     }
   };
-  
+
   // Fonction pour générer les classes CSS basées sur la couleur
   const getCategoryClasses = (category: CraftingCategory) => {
     const isSelected = selectedCategory === category.id;
-    
+
     let classes = {
       container: "",
       title: "",
       text: ""
     };
-    
+
     switch (category.color) {
       case "amber":
         classes.container = `bg-amber-50 border-amber-200 ${isSelected ? "ring-2 ring-amber-500 bg-amber-100" : "hover:bg-amber-100"}`;
@@ -333,7 +339,7 @@ export default function Home() {
         classes.text = "text-gray-600";
         break;
     }
-    
+
     return classes;
   };
 
@@ -343,7 +349,7 @@ export default function Home() {
         <div className="flex items-center justify-center mb-4">
           <h1 className="text-3xl font-bold text-green-800">Coral Island Companion</h1>
         </div>
-        
+
         {/* Nous n'utiliserons plus ce menu de navigation, nous mettrons Relations dans les onglets */}
       </header>
 
@@ -390,7 +396,7 @@ export default function Home() {
                       </label>
                     </div>
                   ))}
-                  
+
                   {/* Formulaire d'ajout manuel */}
                   <div className="add-task-form pt-4 mt-2 border-t border-gray-100">
                     <div className="flex gap-2">
@@ -410,7 +416,7 @@ export default function Home() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   {/* Tâches récurrentes */}
                   <div className="mt-6">
                     <h3 className="font-medium text-gray-700 mb-3">Tâches quotidiennes</h3>
@@ -471,7 +477,7 @@ export default function Home() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   {/* Tâches hebdomadaires */}
                   <div className="mt-4">
                     <h3 className="font-medium text-gray-700 mb-3">Tâches hebdomadaires</h3>
@@ -537,14 +543,14 @@ export default function Home() {
                                   Parcourez les quêtes officielles du jeu et ajoutez-les à votre suivi.
                                 </DialogDescription>
                               </DialogHeader>
-                              
+
                               <Tabs defaultValue="main">
                                 <TabsList className="grid grid-cols-3 mb-4">
                                   <TabsTrigger value="main">Quêtes principales</TabsTrigger>
                                   <TabsTrigger value="secondary">Quêtes secondaires</TabsTrigger>
                                   <TabsTrigger value="seasonal">Quêtes saisonnières</TabsTrigger>
                                 </TabsList>
-                                
+
                                 <TabsContent value="main">
                                   <div className="space-y-4">
                                     {getPresetQuestsByCategory("main").map((presetQuest) => (
@@ -598,7 +604,7 @@ export default function Home() {
                                     ))}
                                   </div>
                                 </TabsContent>
-                                
+
                                 <TabsContent value="secondary">
                                   <div className="space-y-4">
                                     {getPresetQuestsByCategory("secondary").map((presetQuest) => (
@@ -652,7 +658,7 @@ export default function Home() {
                                     ))}
                                   </div>
                                 </TabsContent>
-                                
+
                                 <TabsContent value="seasonal">
                                   <div className="space-y-4">
                                     {getPresetQuestsByCategory("seasonal").map((presetQuest) => (
@@ -711,7 +717,7 @@ export default function Home() {
                               </Tabs>
                             </DialogContent>
                           </Dialog>
-                          
+
                           <Button 
                             onClick={() => setIsAddingQuest(true)}
                             className="bg-green-600 hover:bg-green-700 text-white"
@@ -732,7 +738,7 @@ export default function Home() {
                       )}
                     </div>
                   </div>
-                
+
                   {/* Formulaire d'ajout de quête */}
                   {isAddingQuest && (
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-4">
@@ -807,7 +813,7 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-                
+
                   {/* Quêtes principales */}
                   <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                     <h3 className="font-medium text-amber-800 mb-3 flex items-center">
@@ -846,20 +852,28 @@ export default function Home() {
                                 <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
                                   {quest.description}
                                 </p>
-                                
+
                                 {quest.objectives && quest.objectives.length > 0 && (
                                   <div className="mt-2">
                                     <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
                                       {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                          {obj}
+                                        <li key={idx} className="flex items-center gap-2">
+                                          <Checkbox
+                                            checked={quest.objectives![idx].completed}
+                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
+                                            className="h-3 w-3"
+                                            disabled={quest.completed}
+                                          />
+                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                            {obj.text}
+                                          </span>
                                         </li>
                                       ))}
                                     </ul>
                                   </div>
                                 )}
-                                
+
                                 {quest.total > 1 && (
                                   <div className="mt-2">
                                     <div className="flex justify-between items-center mb-1">
@@ -904,7 +918,7 @@ export default function Home() {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Quêtes secondaires */}
                   <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
                     <h3 className="font-medium text-blue-800 mb-3 flex items-center">
@@ -943,20 +957,28 @@ export default function Home() {
                                 <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
                                   {quest.description}
                                 </p>
-                                
+
                                 {quest.objectives && quest.objectives.length > 0 && (
                                   <div className="mt-2">
                                     <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
                                       {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                          {obj}
+                                        <li key={idx} className="flex items-center gap-2">
+                                          <Checkbox
+                                            checked={quest.objectives![idx].completed}
+                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
+                                            className="h-3 w-3"
+                                            disabled={quest.completed}
+                                          />
+                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                            {obj.text}
+                                          </span>
                                         </li>
                                       ))}
                                     </ul>
                                   </div>
                                 )}
-                                
+
                                 {quest.total > 1 && (
                                   <div className="mt-2">
                                     <div className="flex justify-between items-center mb-1">
@@ -1001,7 +1023,7 @@ export default function Home() {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Quêtes saisonnières */}
                   <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                     <h3 className="font-medium text-green-800 mb-3 flex items-center">
@@ -1047,20 +1069,28 @@ export default function Home() {
                                 <p className={`text-sm ${quest.completed ? "text-gray-400" : "text-gray-500"}`}>
                                   {quest.description}
                                 </p>
-                                
+
                                 {quest.objectives && quest.objectives.length > 0 && (
                                   <div className="mt-2">
                                     <span className="text-xs font-medium text-gray-600">Objectifs:</span>
-                                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1 space-y-1">
+                                    <ul className="pl-2 text-xs text-gray-600 mt-1 space-y-1">
                                       {quest.objectives.map((obj, idx) => (
-                                        <li key={idx} className={quest.completed ? "text-gray-400 line-through" : "text-gray-600"}>
-                                          {obj}
+                                        <li key={idx} className="flex items-center gap-2">
+                                          <Checkbox
+                                            checked={quest.objectives![idx].completed}
+                                            onCheckedChange={() => toggleObjectiveCompletion(quest.id, idx)}
+                                            className="h-3 w-3"
+                                            disabled={quest.completed}
+                                          />
+                                          <span className={quest.completed || quest.objectives![idx].completed ? "text-gray-400 line-through" : "text-gray-600"}>
+                                            {obj.text}
+                                          </span>
                                         </li>
                                       ))}
                                     </ul>
                                   </div>
                                 )}
-                                
+
                                 {quest.total > 1 && (
                                   <div className="mt-2">
                                     <div className="flex justify-between items-center mb-1">
@@ -1126,7 +1156,7 @@ export default function Home() {
                       className="pl-10"
                     />
                   </div>
-                  
+
                   {/* Filtres par saison */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     <Badge 
@@ -1165,7 +1195,7 @@ export default function Home() {
                       ❄️ Hiver ({getVillagersBySeason("Hiver").length})
                     </Badge>
                   </div>
-                  
+
                   {/* Liste des villageois */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {getAllVillagers()
@@ -1205,7 +1235,7 @@ export default function Home() {
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           {/* Journal Tab */}
           <TabsContent value="journal">
             <Card className="rounded-b-lg shadow-md mt-1">
@@ -1226,7 +1256,7 @@ export default function Home() {
                       Animaux
                     </TabsTrigger>
                   </TabsList>
-                  
+
                   {/* Contenu de l'onglet Artisanat */}
                   <TabsContent value="crafting">
                     <div className="mb-4">
@@ -1240,7 +1270,7 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                    
+
                     {/* Catégories d'artisanat */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
                       {craftingCategories.map((category) => {
@@ -1260,7 +1290,7 @@ export default function Home() {
                         );
                       })}
                     </div>
-                    
+
                     {/* Liste des recettes filtrées */}
                     <div>
                       {selectedCategory ? (
@@ -1309,7 +1339,7 @@ export default function Home() {
                       )}
                     </div>
                   </TabsContent>
-                  
+
                   {/* Contenu de l'onglet Cultures */}
                   <TabsContent value="crops">
                     <div className="space-y-5">
@@ -1365,11 +1395,11 @@ export default function Home() {
                           }
                         </div>
                       </div>
-                      
+
                       {/* Liste des cultures par saison */}
                       <div className="mt-4">
                         <h3 className="font-medium text-gray-700 mb-3">Cultures par saison</h3>
-                        
+
                         {/* Printemps */}
                         <div className="mb-6">
                           <div className="flex items-center gap-2 mb-3">
@@ -1380,11 +1410,11 @@ export default function Home() {
                             {getCropsBySeason("Printemps").map((crop) => {
                               // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
                               const profitPerDay = calculateProfitability(crop);
-                              
+
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
                               const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-                              
+
                               return (
                                 <CropCard 
                                   key={crop.id}
@@ -1397,7 +1427,7 @@ export default function Home() {
                             })}
                           </div>
                         </div>
-                        
+
                         {/* Été */}
                         <div className="mb-6">
                           <div className="flex items-center gap-2 mb-3">
@@ -1408,11 +1438,11 @@ export default function Home() {
                             {getCropsBySeason("Été").map((crop) => {
                               // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
                               const profitPerDay = calculateProfitability(crop);
-                              
+
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
                               const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-                              
+
                               return (
                                 <CropCard 
                                   key={crop.id}
@@ -1430,22 +1460,21 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        
+
                         {/* Automne */}
                         <div className="mb-6">
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span>
-                            <h4 className="font-medium text-orange-800">Automne</h4>
+                            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-orange-100 text-orange-800">🍂</span<h4 className="font-medium text-orange-800">Automne</h4>
                           </div>
                           <div className="space-y-3">
                             {getCropsBySeason("Automne").map((crop) => {
                               // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
                               const profitPerDay = calculateProfitability(crop);
-                              
+
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
                               const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-                              
+
                               return (
                                 <CropCard 
                                   key={crop.id}
@@ -1463,7 +1492,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        
+
                         {/* Hiver */}
                         <div>
                           <div className="flex items-center gap-2 mb-3">
@@ -1474,11 +1503,11 @@ export default function Home() {
                             {getCropsBySeason("Hiver").map((crop) => {
                               // Utilisation de la fonction calculateProfitability qui prend en compte les repousses
                               const profitPerDay = calculateProfitability(crop);
-                              
+
                               // Comptage des préférences
                               const likes = crop.preferences ? crop.preferences.filter(p => p.preference === "aime").length : 0;
                               const loves = crop.preferences ? crop.preferences.filter(p => p.preference === "adore").length : 0;
-                              
+
                               return (
                                 <CropCard 
                                   key={crop.id}
@@ -1496,7 +1525,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                      
+
                         {/* Bouton Ajouter plus de cultures */}
                         <Button className="w-full mt-4 bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors flex items-center justify-center gap-2">
                           <Plus className="h-4 w-4" />
@@ -1505,7 +1534,7 @@ export default function Home() {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   {/* Contenu de l'onglet Poissons */}
                   <TabsContent value="fish">
                     <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
@@ -1521,7 +1550,7 @@ export default function Home() {
                       </Button>
                     </div>
                   </TabsContent>
-                  
+
                   {/* Contenu de l'onglet Animaux */}
                   <TabsContent value="animals">
                     <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
@@ -1543,7 +1572,7 @@ export default function Home() {
           </TabsContent>
         </Tabs>
       </div>
-      
+
       <footer className="max-w-3xl mx-auto mt-8 text-center text-gray-500 text-sm py-4">
         <p>Coral Island Companion © {new Date().getFullYear()} - Tous droits réservés</p>
       </footer>
