@@ -39,7 +39,11 @@ export default function Home() {
   const [expandedVillagers, setExpandedVillagers] = useState<{[key: string]: boolean}>({});
   const [villagerHearts, setVillagerHearts] = useState<{[key: string]: number}>({});
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [gameDate, setGameDate] = useState<{season: string; day: number}>({season: "Printemps", day: 1});
+  const [gameDate, setGameDate] = useState<{season: string; day: number; weekDay?: string}>({
+    season: "Printemps", 
+    day: 1,
+    weekDay: "Lundi"
+  });
   
   const addTask = () => {
     if (newTask.trim()) {
@@ -230,27 +234,50 @@ export default function Home() {
   // État pour la catégorie d'artisanat sélectionnée
   const [selectedCraftingCategory, setSelectedCraftingCategory] = useState(craftingCategories[0].id);
   
+  // Jour de la semaine dans Coral Island
+  const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
   // Fonction pour mettre à jour la saison et le jour dans le jeu
   const updateGameDate = (newDate: Date) => {
     setDate(newDate);
     
-    // Déterminer la saison en fonction du mois
-    let season = "Printemps";
+    // Dans Coral Island, chaque saison a exactement 28 jours divisés en 4 semaines de 7 jours
+    // Nous allons simplement utiliser le chiffre sélectionné pour représenter le jour
+    // et attribuer une saison en fonction du "mois" sélectionné
+    
     const month = newDate.getMonth();
-    if (month >= 2 && month <= 4) {
-      season = "Printemps";
-    } else if (month >= 5 && month <= 7) {
-      season = "Été";
-    } else if (month >= 8 && month <= 10) {
-      season = "Automne";
-    } else {
-      season = "Hiver";
+    let season = "";
+    
+    // Dans Coral Island: Printemps (1-28), Été (1-28), Automne (1-28), Hiver (1-28)
+    switch(month) {
+      case 0: // Janvier
+      case 1: // Février
+      case 2: // Mars
+        season = "Printemps";
+        break;
+      case 3: // Avril
+      case 4: // Mai
+      case 5: // Juin
+        season = "Été";
+        break;
+      case 6: // Juillet
+      case 7: // Août
+      case 8: // Septembre  
+        season = "Automne";
+        break;
+      default: // Octobre, Novembre, Décembre
+        season = "Hiver";
+        break;
     }
     
-    // Le jour est limité entre 1 et 28 dans le jeu
+    // Le jour du mois est directement utilisé (limité à 28 max)
     const day = Math.min(28, newDate.getDate());
     
-    setGameDate({ season, day });
+    // Calculer le jour de la semaine dans Coral Island (les semaines commencent le lundi)
+    // Dans Coral Island, les jours 1, 8, 15 et 22 sont des lundis
+    const weekDay = weekDays[(day - 1) % 7];
+    
+    setGameDate({ season, day, weekDay });
   };
 
   return (
@@ -1586,10 +1613,18 @@ export default function Home() {
                     
                     <div className="p-3 border rounded-md bg-blue-50">
                       <h4 className="font-medium mb-1">Date du jeu:</h4>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mb-2">
                         <span className="text-lg font-semibold">{gameDate.season}</span>
                         <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
                           Jour {gameDate.day}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <span className="text-sm text-blue-700 font-medium">{gameDate.weekDay}</span>
+                        </div>
+                        <span className="text-xs text-gray-500">
+                          Semaine {Math.ceil(gameDate.day / 7)}
                         </span>
                       </div>
                     </div>
@@ -1620,6 +1655,9 @@ export default function Home() {
                       <h4 className="font-medium">
                         {gameDate.season} - Jour {gameDate.day}
                       </h4>
+                      <span className="text-xs text-gray-500">
+                        {gameDate.weekDay} (Semaine {Math.ceil(gameDate.day / 7)})
+                      </span>
                     </div>
                     
                     {/* Affichage des événements par jour et saison */}
@@ -1680,6 +1718,7 @@ export default function Home() {
                   <div className="flex items-start gap-3 py-2 border-b border-gray-100">
                     <div className="text-center">
                       <span className="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-medium">Jour 1</span>
+                      <div className="text-xs text-gray-500 mt-1">Lundi</div>
                     </div>
                     <div>
                       <h4 className="font-medium">Nouvel An</h4>
@@ -1689,6 +1728,7 @@ export default function Home() {
                   <div className="flex items-start gap-3 py-2 border-b border-gray-100">
                     <div className="text-center">
                       <span className="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-medium">Jour 14</span>
+                      <div className="text-xs text-gray-500 mt-1">Dimanche</div>
                     </div>
                     <div>
                       <h4 className="font-medium">Festival de l'œuf</h4>
@@ -1706,6 +1746,7 @@ export default function Home() {
                   <div className="flex items-start gap-3 py-2 border-b border-gray-100">
                     <div className="text-center">
                       <span className="inline-block bg-amber-100 text-amber-700 rounded px-2 py-1 font-medium">Jour 7</span>
+                      <div className="text-xs text-gray-500 mt-1">Dimanche</div>
                     </div>
                     <div>
                       <h4 className="font-medium">Festival de la plage</h4>
@@ -1723,6 +1764,7 @@ export default function Home() {
                   <div className="flex items-start gap-3 py-2 border-b border-gray-100">
                     <div className="text-center">
                       <span className="inline-block bg-orange-100 text-orange-700 rounded px-2 py-1 font-medium">Jour 21</span>
+                      <div className="text-xs text-gray-500 mt-1">Dimanche</div>
                     </div>
                     <div>
                       <h4 className="font-medium">Festival des récoltes</h4>
@@ -1740,6 +1782,7 @@ export default function Home() {
                   <div className="flex items-start gap-3 py-2 border-b border-gray-100">
                     <div className="text-center">
                       <span className="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-medium">Jour 25</span>
+                      <div className="text-xs text-gray-500 mt-1">Jeudi</div>
                     </div>
                     <div>
                       <h4 className="font-medium">Festival de la neige</h4>
