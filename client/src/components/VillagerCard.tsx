@@ -58,13 +58,25 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           {/* Informations principales */}
           <div className="flex-1">
             <div className="flex justify-between items-start">
-              <h3 className="font-medium text-gray-900">{villager.name}</h3>
+              <div className="flex items-center">
+                <h3 className="font-medium text-gray-900">{villager.name}</h3>
+                {villager.romanceable && (
+                  <span className="ml-1 text-pink-500" title="Personnage romançable">❤️</span>
+                )}
+              </div>
               <Badge variant="outline" className="ml-2">
                 <CalendarIcon className="w-3 h-3 mr-1" />
                 {villager.birthday.day} {villager.birthday.season}
               </Badge>
             </div>
-            <p className="text-sm text-gray-600">{villager.occupation}</p>
+            <div className="flex items-center space-x-2">
+              <p className="text-sm text-gray-600">{villager.occupation}</p>
+              {villager.species && (
+                <Badge variant="outline" className="text-xs py-0">
+                  {villager.species}
+                </Badge>
+              )}
+            </div>
           </div>
           <div className="ml-2 text-gray-400">
             {isExpanded ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />}

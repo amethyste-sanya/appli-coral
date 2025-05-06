@@ -23,6 +23,8 @@ export type Villager = {
     name: string;       // Nom du villageois lié
     type: string;       // Type de relation (ex: "époux", "enfant", "ami", etc.)
   }[];
+  romanceable?: boolean; // Indique si on peut avoir une romance avec ce personnage
+  species?: string;     // Espèce du personnage (humain, sirène, etc.)
   imagePath?: string;   // Chemin vers l'image du villageois (optionnel)
 };
 
@@ -64,7 +66,9 @@ export const villagers: Villager[] = [
       season: "Printemps"
     },
     occupation: "Chef des gardes",
-    description: "Le chef des gardes. Son dévouement indéfectible à la sécurité du royaume n'a d'égal que sa loyauté et son sens du devoir indéfectibles. Il a un homard apprivoisé, Poséidon.",
+    species: "Sirène",
+    romanceable: true,
+    description: "Le chef des gardes sirène. Son dévouement indéfectible à la sécurité du royaume n'a d'égal que sa loyauté et son sens du devoir indéfectibles. Il a un homard apprivoisé, Poséidon.",
     gifts: {
       love: [
         { item: "Burger de récif" },
