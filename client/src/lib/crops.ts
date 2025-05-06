@@ -55,6 +55,24 @@ export const crops: Crop[] = [
     isGoddessOffering: true,
     goddessOfferingNote: "Requis pour le Temple de la Déesse",
   },
+  {
+    id: "marguerite",
+    name: "Marguerite",
+    category: "Fleur",
+    description: "Également connue sous le nom de marguerite commune.",
+    imagePath: "/images/crops/marguerite.jpg",
+    seedName: "Graines de marguerites",
+    seedPrice: 15,
+    seedSource: "Bazar de Sam",
+    townRank: "F",
+    season: "Printemps",
+    growthTime: 4,
+    size: "1x1",
+    sellPrice: 30,
+    harvestYield: 1,
+    isGoddessOffering: true,
+    goddessOfferingNote: "Requis pour le Temple de la Déesse",
+  },
   // Autres cultures à ajouter...
 ];
 
