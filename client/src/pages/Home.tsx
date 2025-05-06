@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { CheckCircle, Circle, Plus, Star, Ungroup, Calendar, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus } from "lucide-react";
@@ -515,7 +517,7 @@ export default function Home() {
                           <Textarea
                             placeholder="Description de l'objectif"
                             value={newQuest.description}
-                            onChange={(e) => setNewQuest({...newQuest, description: e.target.value})}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewQuest({...newQuest, description: e.target.value})}
                             className="w-full"
                           />
                         </div>
@@ -524,7 +526,7 @@ export default function Home() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                             <Select 
                               value={newQuest.category}
-                              onValueChange={(value) => setNewQuest({...newQuest, category: value as "main" | "secondary" | "seasonal"})}
+                              onValueChange={(value: string) => setNewQuest({...newQuest, category: value as "main" | "secondary" | "seasonal"})}
                             >
                               <SelectTrigger>
                                 <SelectValue placeholder="Choisir une catégorie" />
