@@ -43,16 +43,78 @@ export const presetQuests: PresetQuest[] = [
     notes: ""
   },
   {
-    id: "reparation-temple",
-    title: "Réparer le Temple de la Déesse",
-    description: "Le temple de la déesse est en ruines et a besoin de réparations. Collectez des offrandes pour restaurer ce lieu important pour la ville.",
+    id: "se-faire-des-amis",
+    title: "Se faire des amis",
+    description: "Liez-vous d'amitié avec les citadins en apprenant à les connaître et en leur offrant des cadeaux. Gagnez des points bonus si vous leur offrez quelque chose qu'ils aiment !",
     category: "main",
-    total: 10,
-    giver: "Maire Sam",
-    objectives: ["Collectez 10 offrandes pour le temple"],
-    prerequisite: "Avoir terminé 'Débuter'",
-    reward: "Accès aux bénédictions du temple",
-    notes: "Les offrandes peuvent être trouvées en explorant les mines, en pêchant ou en cultivant des plantes spéciales."
+    total: 2,
+    giver: "Après avoir terminé Le nouveau fermier",
+    objectives: [
+      "Créez un bouquet de fleurs",
+      "Offrez-le à quelqu'un"
+    ],
+    prerequisite: "Le nouveau fermier",
+    reward: "Recette de fabrication de bouquet de fleurs",
+    notes: "En progression: Recette de fabrication de bouquet de fleurs"
+  },
+  {
+    id: "home-sweet-home",
+    title: "Home Sweet Home",
+    description: "Les charpentiers peuvent réparer votre nouvelle maison, mais vous devrez d'abord rassembler quelques ressources. Rendez-leur visite une fois que vous aurez rassemblé suffisamment de bois et de pierres.",
+    category: "main",
+    total: 4,
+    giver: "Joko et Dinda (courrier du 1er printemps)",
+    objectives: [
+      "Rassemblez 50 bois",
+      "Rassemblez 20 pierres",
+      "Visitez le charpentier",
+      "Réparez votre maison"
+    ],
+    prerequisite: "Arriver au printemps",
+    reward: "100 pièces + 1 cœur points d'amitié avec Joko et Dinda",
+    notes: ""
+  },
+  {
+    id: "visitez-beach-shack",
+    title: "Visitez le Beach Shack",
+    description: "Sunny et Eleanor ont des cadeaux de bienvenue pour vous. Rendez-leur visite au Beach Shack pour découvrir ce que c'est…",
+    category: "main",
+    total: 1,
+    giver: "Sunny et Eleanor (courrier du 3e printemps)",
+    objectives: [
+      "Visitez la cabane de plage"
+    ],
+    prerequisite: "Atteindre le 3ème jour du printemps",
+    reward: "Canne à pêche + Filet anti-insectes",
+    notes: ""
+  },
+  {
+    id: "tout-ou-rien",
+    title: "Tout ou rien",
+    description: "Envisagez de fabriquer un four, vous pourrez l'utiliser pour fondre des minerais en barres !",
+    category: "main",
+    total: 1,
+    giver: "Pablo (le lendemain après avoir obtenu du minerai de bronze)",
+    objectives: [
+      "Fabriquer un four"
+    ],
+    prerequisite: "Obtenir du minerai de bronze",
+    reward: "Recette de fabrication de four",
+    notes: "En progression: Recette de fabrication de four. Terminer: Commence 'Fondre pour le progrès'"
+  },
+  {
+    id: "fondre-pour-progres",
+    title: "Fondre pour le progrès",
+    description: "Le four est prêt ! Essayez de fondre du minerai de cuivre pour en faire une barre de cuivre. Lorsque vous aurez assez de barres, rendez-vous chez le forgeron et améliorez vos outils. Cela vous simplifiera la vie à la ferme.",
+    category: "main",
+    total: 1,
+    giver: "Après avoir terminé 'Tout ou rien'",
+    objectives: [
+      "Faites fondre une barre de bronze à l'aide de votre nouveau four"
+    ],
+    prerequisite: "Tout ou rien",
+    reward: "Accès aux améliorations d'outils",
+    notes: ""
   },
   {
     id: "aider-scott",

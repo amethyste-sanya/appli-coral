@@ -58,30 +58,30 @@ export default function Home() {
   const [quests, setQuests] = useState<Quest[]>([
     {
       id: 1,
-      title: "Rencontrer le maire",
-      description: "Présentez-vous au maire Sam pour commencer votre nouvelle vie.",
+      title: "Débuter",
+      description: "Apprenons à cultiver et à démarrer notre aventure agricole.",
       completed: true,
       category: "main",
-      current: 1,
-      total: 1
+      current: 4,
+      total: 4
     },
     {
       id: 2,
-      title: "Réparer le Temple de la Déesse",
-      description: "Collectez 10 offrandes pour restaurer le Temple de la Déesse.",
+      title: "Le nouveau fermier",
+      description: "Présentez-vous aux habitants de Coral Island.",
       completed: false,
       category: "main",
-      current: 3,
-      total: 10
+      current: 18,
+      total: 30
     },
     {
       id: 3,
-      title: "Améliorer la ferme",
-      description: "Construisez votre premier poulailler pour élever des animaux.",
+      title: "Home Sweet Home",
+      description: "Les charpentiers peuvent réparer votre nouvelle maison, mais vous devrez d'abord rassembler quelques ressources.",
       completed: false,
       category: "main",
-      current: 0,
-      total: 1
+      current: 2,
+      total: 4
     }
   ]);
   const [isAddingQuest, setIsAddingQuest] = useState(false);
