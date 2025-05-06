@@ -242,8 +242,8 @@ export const villagers: Villager[] = [
     }
   },
   {
-    id: "alice",
-    name: "Alice",
+    id: "alice_auberge",
+    name: "Alice (Auberge)",
     birthday: {
       day: 27,
       season: "Hiver"
@@ -275,7 +275,13 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
-        { item: "Caméra" }
+        { item: "Carotte" }, 
+        { item: "Jus de fruits" }, 
+        { item: "Tempeh frit" }, 
+        { item: "Thé vert" }, 
+        { item: "Houmous" }, 
+        { item: "Kimchi" }, 
+        { item: "Tournesol" }
       ]
     }
   },
@@ -297,7 +303,12 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
-        { item: "Jouet pour chien" }
+        { item: "Toutes les pierres précieuses" },
+        { item: "Pâtes au pesto de basilic" },
+        { item: "Burrito" },
+        { item: "Taco de poisson" },
+        { item: "Crème glacée" },
+        { item: "Citrouille" }
       ]
     }
   },
@@ -319,7 +330,10 @@ export const villagers: Villager[] = [
     ],
     gifts: {
       love: [
-        { item: "Pâtisserie" }
+        { item: "Chou-fleur" },
+        { item: "Jonquille" },
+        { item: "Thé vert" },
+        { item: "Gâteau Red Velvet" }
       ]
     }
   },
@@ -335,6 +349,9 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
+        { item: "Taco de poisson" },
+        { item: "Jacquier" },
+        { item: "Taco végétalien" },
         { item: "Vin" }
       ]
     }
@@ -351,7 +368,12 @@ export const villagers: Villager[] = [
     romanceable: true,
     gifts: {
       love: [
-        { item: "Plante médicinale" }
+        { item: "Myrtille" },
+        { item: "Burrito" },
+        { item: "Biscuits" },
+        { item: "Diamant" },
+        { item: "Falafel" },
+        { item: "Fraise" }
       ]
     }
   },
@@ -1151,8 +1173,8 @@ export const villagers: Villager[] = [
     }
   },
   {
-    id: "aaliyah",
-    name: "Aaliyah",
+    id: "aaliyah_militaire",
+    name: "Aaliyah (Militaire)",
     birthday: {
       day: 22,
       season: "Printemps"
