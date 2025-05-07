@@ -103,33 +103,33 @@ export function VillagerCard({ villager }: VillagerCardProps) {
   const bgColor = generateAvatarColor(villager.name);
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
-      <div className="flex flex-col">
-        {/* En-tête avec avatar et informations de base */}
-        <div className="flex items-center p-4">
+    <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 h-full">
+      <div className="flex flex-col h-full">
+        {/* En-tête avec avatar et informations de base - version plus compacte */}
+        <div className="flex items-center p-3">
           {/* Avatar avec initiales */}
           <div 
-            className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
             style={{ backgroundColor: bgColor }}
           >
             {getInitials(villager.name)}
           </div>
           
           {/* Informations de base */}
-          <div className="ml-4 flex-1">
+          <div className="ml-3 flex-1">
             <div className="flex items-center">
-              <h3 className="font-medium">{villager.name}</h3>
+              <h3 className="font-medium text-sm">{villager.name}</h3>
               {villager.romanceable && (
-                <span className="ml-1 text-red-500" title="Personnage romançable">❤</span>
+                <span className="ml-1 text-red-500 text-xs" title="Personnage romançable">❤</span>
               )}
             </div>
-            <p className="text-sm text-gray-600">{villager.occupation}</p>
+            <p className="text-xs text-gray-600">{villager.occupation}</p>
           </div>
           
           {/* Icône d'anniversaire et jour */}
           {villager.birthday && (
-            <div className="flex items-center text-sm">
-              <span className="font-bold mr-1">{villager.birthday.day}</span>
+            <div className="flex items-center text-xs mr-1">
+              <span className="font-bold mr-0.5">{villager.birthday.day}</span>
               <span className="text-gray-500">{villager.birthday.season}</span>
             </div>
           )}
@@ -137,9 +137,9 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           {/* Bouton pour étendre/réduire */}
           <button 
             onClick={() => setIsExpanded(!isExpanded)} 
-            className="ml-2 text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600"
           >
-            {isExpanded ? <ChevronUpIcon size={18} /> : <ChevronDownIcon size={18} />}
+            {isExpanded ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />}
           </button>
         </div>
         
@@ -197,10 +197,10 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           </div>
         </div>
         
-        {/* Badge pour nombre de cadeaux adorés */}
-        <div className="px-4 pb-4">
+        {/* Badge pour nombre de cadeaux adorés - plus compact */}
+        <div className="px-4 pb-2">
           <div 
-            className="bg-pink-100 text-pink-800 text-sm px-3 py-1 rounded-md inline-flex items-center"
+            className="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded-md inline-flex items-center"
           >
             <span>{villager.gifts.love.length} cadeau(x) adoré(s)</span>
           </div>
@@ -208,13 +208,13 @@ export function VillagerCard({ villager }: VillagerCardProps) {
         
         {/* Partie dépliable - Cadeaux adorés */}
         {isExpanded && (
-          <div className="px-4 pb-4 border-t border-gray-100 pt-3">
-            <h4 className="font-medium text-sm mb-2">Cadeaux adorés</h4>
-            <div className="flex flex-wrap gap-2">
+          <div className="px-4 pb-3 border-t border-gray-100 pt-2">
+            <h4 className="font-medium text-xs mb-1">Cadeaux adorés</h4>
+            <div className="flex flex-wrap gap-1">
               {villager.gifts.love.map((gift, index) => (
                 <span 
                   key={index}
-                  className="bg-pink-50 text-pink-800 border border-pink-200 rounded px-2 py-1 text-xs"
+                  className="bg-pink-50 text-pink-800 border border-pink-200 rounded px-1.5 py-0.5 text-xs"
                 >
                   {gift.item}
                 </span>
@@ -223,13 +223,13 @@ export function VillagerCard({ villager }: VillagerCardProps) {
             
             {/* Relations (si présentes) */}
             {villager.relationships && villager.relationships.length > 0 && (
-              <div className="mt-3">
-                <h4 className="font-medium text-sm mb-2">Relations</h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="mt-2">
+                <h4 className="font-medium text-xs mb-1">Relations</h4>
+                <div className="flex flex-wrap gap-1">
                   {villager.relationships.map((relation, index) => (
                     <span 
                       key={index}
-                      className="bg-blue-50 text-blue-800 border border-blue-200 rounded px-2 py-1 text-xs"
+                      className="bg-blue-50 text-blue-800 border border-blue-200 rounded px-1.5 py-0.5 text-xs"
                     >
                       {relation.name} ({relation.type})
                     </span>
