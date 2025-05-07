@@ -405,9 +405,8 @@ export default function Home() {
   
   // Fonction pour récupérer les anniversaires des villageois pour un jour et une saison donnés
   const getVillagersBirthday = (season: string, day: number): string[] => {
-    return villagers
-      .filter(v => v.birthday && v.birthday.season === season && v.birthday.day === day)
-      .map(v => v.name);
+    // Pour l'instant, on retourne un tableau vide car nous avons supprimé tous les villageois
+    return [];
   };
 
   // Fonction pour mettre à jour la saison et le jour dans le jeu
