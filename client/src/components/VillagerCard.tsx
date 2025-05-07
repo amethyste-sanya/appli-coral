@@ -73,11 +73,11 @@ export function VillagerCard({ villager }: VillagerCardProps) {
       <div className="mt-5">
         <div className="flex justify-between items-center">
           <span className="text-gray-700 font-medium">Relation</span>
-          <span className="text-pink-500 font-medium">{heartLevel} / 10</span>
+          <span className="text-pink-500 font-medium villager-relation-count">{heartLevel}</span>
         </div>
         
         {/* Cœurs (une seule rangée) */}
-        <div className="flex mt-2">
+        <div className="flex mt-2 villager-hearts-container">
           {Array.from({ length: 10 }).map((_, i) => (
             <button 
               key={`heart-${i}`}

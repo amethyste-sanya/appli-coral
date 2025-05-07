@@ -1,0 +1,13 @@
+/* Forcer l'affichage de 10 cœurs maximum */
+.villager-hearts-container {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.villager-hearts-container button:nth-child(n+11) {
+  display: none !important;
+}
+
+.villager-relation-count::after {
+  content: " / 10" !important;
+}

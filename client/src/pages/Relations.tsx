@@ -164,7 +164,7 @@ export default function Relations() {
           {filteredSpringVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSpringVillagers.map((villager) => (
-                  <VillagerCardV2 key={villager.id} villager={villager} />
+                  <NewVillagerCardWith10Hearts key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -184,7 +184,7 @@ export default function Relations() {
           {filteredSummerVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSummerVillagers.map((villager) => (
-                  <VillagerCardV2 key={villager.id} villager={villager} />
+                  <NewVillagerCardWith10Hearts key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -204,7 +204,7 @@ export default function Relations() {
           {filteredFallVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredFallVillagers.map((villager) => (
-                  <VillagerCardV2 key={villager.id} villager={villager} />
+                  <NewVillagerCardWith10Hearts key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -224,7 +224,7 @@ export default function Relations() {
           {filteredWinterVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredWinterVillagers.map((villager) => (
-                  <VillagerCardV2 key={villager.id} villager={villager} />
+                  <NewVillagerCardWith10Hearts key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
