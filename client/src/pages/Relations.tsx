@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getAllVillagers, getVillagersBySeason, Villager } from '@/lib/villagers';
-import { VillagerCard } from '@/components/VillagerCard';
+import { VillagerCardV2 } from '@/components/VillagerCardV2';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -144,7 +144,7 @@ export default function Relations() {
           {filteredAllVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredAllVillagers.map((villager) => (
-                <VillagerCard key={villager.id} villager={villager} />
+                <VillagerCardV2 key={villager.id} villager={villager} />
               ))}
             </div>
           ) : (
@@ -164,7 +164,7 @@ export default function Relations() {
           {filteredSpringVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSpringVillagers.map((villager) => (
-                  <VillagerCard key={villager.id} villager={villager} />
+                  <VillagerCardV2 key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -184,7 +184,7 @@ export default function Relations() {
           {filteredSummerVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSummerVillagers.map((villager) => (
-                  <VillagerCard key={villager.id} villager={villager} />
+                  <VillagerCardV2 key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -204,7 +204,7 @@ export default function Relations() {
           {filteredFallVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredFallVillagers.map((villager) => (
-                  <VillagerCard key={villager.id} villager={villager} />
+                  <VillagerCardV2 key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
@@ -224,7 +224,7 @@ export default function Relations() {
           {filteredWinterVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredWinterVillagers.map((villager) => (
-                  <VillagerCard key={villager.id} villager={villager} />
+                  <VillagerCardV2 key={villager.id} villager={villager} />
                 ))}
             </div>
           ) : (
