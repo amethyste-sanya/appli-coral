@@ -182,13 +182,13 @@ export function VillagerCard({ villager }: VillagerCardProps) {
                 <div key={i} className="relative text-lg">
                   {/* Cœur vide (gris) */}
                   <div className="text-gray-300">
-                    ○
+                    ♡
                   </div>
                   
                   {/* Cœur rempli (si le niveau est suffisant) */}
                   {heartLevel > i && (
                     <div className="absolute inset-0 flex items-center justify-center text-red-500">
-                      ●
+                      ♥
                     </div>
                   )}
                 </div>
