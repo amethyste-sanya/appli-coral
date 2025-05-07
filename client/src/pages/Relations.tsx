@@ -142,7 +142,7 @@ export default function Relations() {
         {/* Contenu de l'onglet "Tous" */}
         <TabsContent value="all">
           {filteredAllVillagers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredAllVillagers.map((villager) => (
                 <VillagerCard key={villager.id} villager={villager} />
               ))}
@@ -162,7 +162,7 @@ export default function Relations() {
           </div>
           
           {filteredSpringVillagers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSpringVillagers.map((villager) => (
                   <VillagerCard key={villager.id} villager={villager} />
                 ))}
@@ -182,7 +182,7 @@ export default function Relations() {
           </div>
           
           {filteredSummerVillagers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredSummerVillagers.map((villager) => (
                   <VillagerCard key={villager.id} villager={villager} />
                 ))}
@@ -202,7 +202,7 @@ export default function Relations() {
           </div>
           
           {filteredFallVillagers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredFallVillagers.map((villager) => (
                   <VillagerCard key={villager.id} villager={villager} />
                 ))}
@@ -222,7 +222,7 @@ export default function Relations() {
           </div>
           
           {filteredWinterVillagers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredWinterVillagers.map((villager) => (
                   <VillagerCard key={villager.id} villager={villager} />
                 ))}

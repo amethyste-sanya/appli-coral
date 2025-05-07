@@ -143,43 +143,43 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           </button>
         </div>
         
-        {/* Description */}
+        {/* Description - plus courte avec max de 2 lignes */}
         <div className="px-4 pb-3">
-          <p className="text-sm text-gray-700">{villager.description}</p>
+          <p className="text-xs text-gray-700 line-clamp-2">{villager.description}</p>
         </div>
         
-        {/* Niveau d'amitié */}
-        <div className="px-4 pb-4">
-          <div className="bg-pink-50 p-3 rounded-md">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-700">Niveau d'amitié:</span>
-              <div className="flex items-center space-x-3">
+        {/* Niveau d'amitié - version plus compacte */}
+        <div className="px-4 pb-3">
+          <div className="bg-pink-50 p-2 rounded-md">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs text-gray-700">Niveau d'amitié:</span>
+              <div className="flex items-center space-x-2">
                 <button 
                   onClick={decrementHeartLevel} 
                   className="text-red-500 hover:text-red-700"
                 >
-                  <MinusCircleIcon size={18} />
+                  <MinusCircleIcon size={16} />
                 </button>
-                <span className="font-bold">{heartLevel}</span>
+                <span className="font-bold text-sm">{heartLevel}</span>
                 <button 
                   onClick={incrementHeartLevel} 
                   className="text-green-500 hover:text-green-700"
                 >
-                  <PlusCircleIcon size={18} />
+                  <PlusCircleIcon size={16} />
                 </button>
                 <button 
                   onClick={resetHeartLevel} 
                   className="text-gray-500 hover:text-gray-700"
                 >
-                  <XCircleIcon size={18} />
+                  <XCircleIcon size={16} />
                 </button>
               </div>
             </div>
             
-            {/* Indicateurs de cœurs - 12 au total */}
-            <div className="flex items-center justify-center space-x-1 flex-wrap">
+            {/* Indicateurs de cœurs - 12 au total - plus compact */}
+            <div className="flex items-center justify-center space-x-0.5 flex-wrap">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="relative text-lg">
+                <div key={i} className="relative text-base">
                   {/* Cœur vide (gris) */}
                   <div className="text-gray-300">
                     ♡
