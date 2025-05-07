@@ -9,7 +9,7 @@ type VillagerCardProps = {
 const STORAGE_KEY_PREFIX = 'coral_island_heart_level_';
 
 export function VillagerCard({ villager }: VillagerCardProps) {
-  // Niveau de cœur (0-15)
+  // Niveau de cœur (0-10)
   const [heartLevel, setHeartLevel] = useState(0);
   
   // État pour afficher/masquer les cadeaux préférés
@@ -73,12 +73,12 @@ export function VillagerCard({ villager }: VillagerCardProps) {
       <div className="mt-5">
         <div className="flex justify-between items-center">
           <span className="text-gray-700 font-medium">Relation</span>
-          <span className="text-pink-500 font-medium">{heartLevel} / 15</span>
+          <span className="text-pink-500 font-medium">{heartLevel} / 10</span>
         </div>
         
         {/* Cœurs (une seule rangée) */}
         <div className="flex mt-2">
-          {Array.from({ length: 15 }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <button 
               key={`heart-${i}`}
               onClick={() => handleHeartClick(i)}
