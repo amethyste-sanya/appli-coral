@@ -29,7 +29,26 @@ export type Villager = {
 };
 
 // Liste des villageois avec leurs informations
-export const villagers: Villager[] = [];
+export const villagers: Villager[] = [
+  {
+    id: "aaliyah",
+    name: "Aaliyah",
+    occupation: "Pâtissière",
+    description: "Aaliyah est pâtissière. Elle aime les muffins aux pépites de chocolat, les lasagnes aux aubergines et le houmous. Café préféré: le Gesha.",
+    romanceable: true,
+    species: "Humain",
+    gifts: {
+      love: [
+        { item: "Muffin aux pépites de chocolat" },
+        { item: "Lasagnes aux aubergines" },
+        { item: "Houmous" },
+        { item: "Café Gesha" },
+        { item: "Fraise" },
+        { item: "Hibiscus blanc" }
+      ]
+    }
+  }
+];
 
 // Fonctions d'accès aux données des villageois
 export const getAllVillagers = (): Villager[] => {

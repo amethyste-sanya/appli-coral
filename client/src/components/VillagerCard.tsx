@@ -1,34 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Villager } from '@/lib/villagers';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  CalendarIcon, 
-  HeartIcon, 
-  ChevronDownIcon,
-  ChevronUpIcon,
-  MinusCircleIcon,
-  PlusCircleIcon,
-  XCircleIcon
-} from 'lucide-react';
+import { Gift, CalendarHeart, Check } from 'lucide-react';
 
 type VillagerCardProps = {
   villager: Villager;
 };
 
 const STORAGE_KEY_PREFIX = 'coral_island_heart_level_';
+const STORAGE_KEY_GIFTS_PREFIX = 'coral_island_gifts_given_';
 
 export function VillagerCard({ villager }: VillagerCardProps) {
-  // État d'expansion de la carte
-  const [isExpanded, setIsExpanded] = useState(false);
-  // Niveau de cœur (0-12)
+  // Niveau de cœur (0-10)
   const [heartLevel, setHeartLevel] = useState(0);
+  
+  // Suivi des cadeaux offerts
+  const [giftsGiven, setGiftsGiven] = useState(0);
+  const [weeklyGiftsGiven, setWeeklyGiftsGiven] = useState(0);
 
-  // Charger le niveau de cœur depuis le stockage local
+  // Charger les données depuis le stockage local
   useEffect(() => {
     const storedLevel = localStorage.getItem(`${STORAGE_KEY_PREFIX}${villager.id}`);
     if (storedLevel) {
       setHeartLevel(parseInt(storedLevel, 10));
+    }
+    
+    const storedGifts = localStorage.getItem(`${STORAGE_KEY_GIFTS_PREFIX}${villager.id}`);
+    if (storedGifts) {
+      const [gifts, weeklyGifts] = storedGifts.split(',').map(Number);
+      setGiftsGiven(gifts);
+      setWeeklyGiftsGiven(weeklyGifts);
     }
   }, [villager.id]);
 
@@ -37,226 +38,170 @@ export function VillagerCard({ villager }: VillagerCardProps) {
     setHeartLevel(level);
     localStorage.setItem(`${STORAGE_KEY_PREFIX}${villager.id}`, level.toString());
   };
+  
+  // Sauvegarder les cadeaux offerts
+  const saveGiftsGiven = (gifts: number, weeklyGifts: number) => {
+    setGiftsGiven(gifts);
+    setWeeklyGiftsGiven(weeklyGifts);
+    localStorage.setItem(`${STORAGE_KEY_GIFTS_PREFIX}${villager.id}`, `${gifts},${weeklyGifts}`);
+  };
 
   // Incrémenter le niveau de cœur
-  const incrementHeartLevel = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
-    if (heartLevel < 12) {
+  const incrementHeartLevel = () => {
+    if (heartLevel < 10) {
       saveHeartLevel(heartLevel + 1);
     }
   };
 
   // Décrémenter le niveau de cœur
-  const decrementHeartLevel = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
+  const decrementHeartLevel = () => {
     if (heartLevel > 0) {
       saveHeartLevel(heartLevel - 1);
     }
   };
-
-  // Réinitialiser le niveau de cœur
-  const resetHeartLevel = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
-    saveHeartLevel(0);
-  };
-
-  // Génère une couleur aléatoire pastel basée sur la première lettre du nom
-  const generateAvatarColor = (name: string) => {
-    const firstChar = name.charAt(0).toLowerCase();
-    const colorMap: Record<string, string> = {
-      a: '#ff9eb3', // rose pâle pour lettres A-E
-      b: '#ff9eb3',
-      c: '#ff9eb3',
-      d: '#ff9eb3',
-      e: '#ff9eb3',
-      f: '#9eecff', // bleu clair pour lettres F-J
-      g: '#9eecff',
-      h: '#9eecff',
-      i: '#9eecff',
-      j: '#9eecff',
-      k: '#c2b280', // beige pour lettres K-O
-      l: '#c2b280',
-      m: '#c2b280',
-      n: '#c2b280',
-      o: '#c2b280',
-      p: '#b19cd9', // lavande pour lettres P-T
-      q: '#b19cd9',
-      r: '#b19cd9',
-      s: '#b19cd9',
-      t: '#b19cd9',
-      u: '#77dd77', // vert pastel pour lettres U-Z
-      v: '#77dd77',
-      w: '#77dd77',
-      x: '#77dd77',
-      y: '#77dd77',
-      z: '#77dd77',
-    };
-    
-    return colorMap[firstChar] || '#ffb347'; // orange pastel par défaut
-  };
-
-  // Obtenir les initiales du villageois
-  const getInitials = (name: string) => {
-    return name.substring(0, 2).toUpperCase();
-  };
-
-  const bgColor = generateAvatarColor(villager.name);
-
-  // Pour le débogage
-  console.log("Rendu de villager:", villager.name, "Species:", villager.species);
   
+  // Toggle les cadeaux offerts
+  const toggleGift = () => {
+    const newGifts = giftsGiven === 2 ? 0 : giftsGiven + 1;
+    saveGiftsGiven(newGifts, weeklyGiftsGiven);
+  };
+  
+  // Toggle les cadeaux hebdomadaires offerts
+  const toggleWeeklyGift = () => {
+    const newWeeklyGifts = weeklyGiftsGiven === 2 ? 0 : weeklyGiftsGiven + 1;
+    saveGiftsGiven(giftsGiven, newWeeklyGifts);
+  };
+  
+  // Réinitialiser les cadeaux (pour la nouvelle semaine)
+  const resetWeeklyGifts = () => {
+    saveGiftsGiven(giftsGiven, 0);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 h-full">
-      <div className="flex flex-col h-full">
-        {/* En-tête avec avatar et informations de base - version plus compacte */}
-        <div className="flex items-center p-3">
-          {/* Avatar avec initiales */}
-          <div 
-            className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-            style={{ backgroundColor: bgColor }}
-          >
-            {getInitials(villager.name)}
-          </div>
-          
-          {/* Informations de base */}
-          <div className="ml-3 flex-1">
-            <div className="flex items-center">
-              <h3 className="font-medium text-sm">{villager.name}</h3>
-              {villager.romanceable && (
-                <span className="ml-1 text-red-500" title="Personnage romançable">❤</span>
-              )}
-              {/* Toujours afficher l'indicateur de sirène pour Agung */}
-              {(villager.species === "Sirène" || villager.id === "agung") && (
-                <span className="ml-1 text-blue-500 text-base flex items-center" title="Sirène">
-                  <span className="mr-0.5">🧜</span>
-                  <span className="text-xs font-normal">(Sirène)</span>
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-gray-600">{villager.occupation}</p>
-          </div>
-          
-          {/* Icône d'anniversaire et jour */}
-          {villager.birthday && (
-            <div className="flex items-center text-xs mr-1">
-              <span className="font-bold mr-0.5">{villager.birthday.day}</span>
-              <span className="text-gray-500">{villager.birthday.season}</span>
+    <div className="bg-gray-100 rounded-lg shadow-md overflow-hidden w-full max-w-xs">
+      <div className="flex">
+        {/* Partie gauche - Image du personnage ou avatar par défaut */}
+        <div className="w-1/2 bg-white relative">
+          {villager.imagePath ? (
+            <img 
+              src={villager.imagePath} 
+              alt={villager.name} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-amber-50">
+              <div className="text-6xl">👤</div>
             </div>
           )}
           
-          {/* Bouton pour étendre/réduire */}
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)} 
-            className="text-gray-400 hover:text-gray-600"
-          >
-            {isExpanded ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />}
-          </button>
-        </div>
-        
-        {/* Indicateur de sirène pour Agung */}
-        {villager.id === "agung" && (
-          <div className="px-4 mb-2">
-            <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-md flex items-center">
-              <span className="text-xl mr-2">🧜</span>
-              <span className="text-sm font-medium">Sirène</span>
+          {/* Badge de statut (Solo/Marié/etc.) */}
+          <div className="absolute top-2 right-2">
+            <div className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md text-xs font-medium">
+              {villager.romanceable ? "Solo" : "Non romançable"}
             </div>
           </div>
-        )}
-        
-        {/* Description - plus courte avec max de 2 lignes */}
-        <div className="px-4 pb-3">
-          <p className="text-xs text-gray-700 line-clamp-2">{villager.description}</p>
         </div>
         
-        {/* Niveau d'amitié */}
-        <div className="px-4 pb-3">
-          <div className="bg-pink-50 p-3 rounded-md">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-pink-700 font-medium">Niveau d'amitié:</span>
-              <div className="flex items-center space-x-2">
-                <button 
-                  onClick={decrementHeartLevel} 
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <MinusCircleIcon size={16} />
-                </button>
-                <span className="font-bold text-sm">{heartLevel}</span>
-                <button 
-                  onClick={incrementHeartLevel} 
-                  className="text-green-500 hover:text-green-700"
-                >
-                  <PlusCircleIcon size={16} />
-                </button>
-                <button 
-                  onClick={resetHeartLevel} 
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <XCircleIcon size={16} />
-                </button>
-              </div>
+        {/* Partie droite - Informations du personnage */}
+        <div className="w-1/2 p-3 bg-gray-50 flex flex-col">
+          {/* Nom */}
+          <h3 className="font-bold text-lg text-gray-800">{villager.name}</h3>
+          
+          {/* Indicateurs spéciaux */}
+          {villager.species && (
+            <div className="my-1 text-xs text-blue-600">
+              {villager.species}
             </div>
-            
-            {/* Cercles de niveau d'amitié */}
-            <div className="flex items-center justify-start space-x-1">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="w-6 h-6 relative">
-                  {/* Cercle vide (gris) */}
-                  <div className="absolute inset-0 rounded-full border-2 border-pink-200"></div>
-                  
-                  {/* Cercle rempli (si le niveau est suffisant) */}
-                  {heartLevel > i && (
-                    <div className="absolute inset-0 rounded-full bg-pink-300 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-pink-500"></div>
-                    </div>
+          )}
+          
+          {/* Hearts Row 1 */}
+          <div className="flex mt-2 space-x-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <button 
+                key={`heart-${i}`}
+                onClick={() => saveHeartLevel(i+1)}
+                className="focus:outline-none"
+              >
+                <div className="w-5 h-5 text-lg">
+                  {heartLevel > i ? (
+                    <span className="text-pink-500">❤️</span>
+                  ) : (
+                    <span className="text-gray-300">❤️</span>
                   )}
                 </div>
-              ))}
-            </div>
+              </button>
+            ))}
           </div>
-        </div>
-        
-        {/* Badge pour nombre de cadeaux adorés */}
-        <div className="px-4 pb-3">
-          <div 
-            className="bg-pink-100 text-pink-800 px-3 py-1 rounded-md inline-flex items-center"
-          >
-            <span className="text-sm">❤ {villager.gifts.love.length} cadeau(x) adoré(s)</span>
+          
+          {/* Hearts Row 2 */}
+          <div className="flex mt-1 space-x-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <button 
+                key={`heart-${i+5}`}
+                onClick={() => saveHeartLevel(i+6)}
+                className="focus:outline-none"
+              >
+                <div className="w-5 h-5 text-lg">
+                  {heartLevel > i+5 ? (
+                    <span className="text-pink-500">❤️</span>
+                  ) : (
+                    <span className="text-gray-300">❤️</span>
+                  )}
+                </div>
+              </button>
+            ))}
           </div>
-        </div>
-        
-        {/* Partie dépliable - Cadeaux adorés */}
-        {isExpanded && (
-          <div className="px-4 pb-3 border-t border-gray-100 pt-2">
-            <h4 className="font-medium text-xs mb-1">Cadeaux adorés</h4>
-            <div className="flex flex-wrap gap-1">
-              {villager.gifts.love.map((gift, index) => (
-                <span 
-                  key={index}
-                  className="bg-pink-50 text-pink-800 border border-pink-200 rounded px-1.5 py-0.5 text-xs"
-                >
-                  {gift.item}
-                </span>
-              ))}
+          
+          {/* Cadeaux offerts */}
+          <div className="mt-6 flex items-center justify-between">
+            {/* Cadeaux (birthday/event) */}
+            <div className="flex items-center">
+              <button 
+                onClick={toggleGift}
+                className="flex items-center space-x-1 focus:outline-none"
+              >
+                <Gift className="h-5 w-5 text-amber-700" />
+                <span className="text-sm">{giftsGiven}/2</span>
+              </button>
             </div>
             
-            {/* Relations (si présentes) */}
-            {villager.relationships && villager.relationships.length > 0 && (
-              <div className="mt-2">
-                <h4 className="font-medium text-xs mb-1">Relations</h4>
-                <div className="flex flex-wrap gap-1">
-                  {villager.relationships.map((relation, index) => (
-                    <span 
-                      key={index}
-                      className="bg-blue-50 text-blue-800 border border-blue-200 rounded px-1.5 py-0.5 text-xs"
-                    >
-                      {relation.name} ({relation.type})
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Cadeaux hebdomadaires */}
+            <div className="flex items-center">
+              <button 
+                onClick={toggleWeeklyGift}
+                className="flex items-center space-x-1 focus:outline-none"
+              >
+                <CalendarHeart className="h-5 w-5 text-amber-700" />
+                <span className="text-sm">{weeklyGiftsGiven}/2</span>
+              </button>
+            </div>
           </div>
-        )}
+        </div>
+      </div>
+      
+      {/* Panneau de contrôle (visible seulement lors du développement) */}
+      <div className="p-2 bg-gray-200 flex justify-between text-xs">
+        <div className="flex space-x-2">
+          <button
+            onClick={decrementHeartLevel}
+            className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded"
+          >
+            -1 ❤️
+          </button>
+          <button
+            onClick={incrementHeartLevel}
+            className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded"
+          >
+            +1 ❤️
+          </button>
+        </div>
+        <button
+          onClick={resetWeeklyGifts}
+          className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
+        >
+          <Check className="h-3 w-3 mr-1" />
+          Reset Hebdo
+        </button>
       </div>
     </div>
   );
