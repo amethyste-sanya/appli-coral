@@ -29,7 +29,31 @@ export type Villager = {
 };
 
 // Liste des villageois avec leurs informations
-export const villagers: Villager[] = [];
+export const villagers: Villager[] = [
+  {
+    id: "aaliyah",
+    name: "Aaliyah",
+    birthday: {
+      day: 22,
+      season: "Printemps"
+    },
+    occupation: "Militaire",
+    description: "La sœur aînée, Aaliyah, était la reine des farces en grandissant. Elle est maintenant dans l'armée de l'air et s'entraîne pour devenir astronaute.",
+    romanceable: true,
+    species: "Humain",
+    imagePath: "/src/assets/aaliyah.jpg",
+    gifts: {
+      love: [
+        { item: "Muffin aux pépites de chocolat" },
+        { item: "Lasagnes aux aubergines" },
+        { item: "Houmous" },
+        { item: "Café Gesha" },
+        { item: "Fraise" },
+        { item: "Hibiscus blanc" }
+      ]
+    }
+  }
+];
 
 // Fonctions d'accès aux données des villageois
 export const getAllVillagers = (): Villager[] => {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Villager } from '@/lib/villagers';
-import { Button } from '@/components/ui/button';
-import { Gift, CalendarHeart, Check } from 'lucide-react';
+import { Gift, Calendar } from 'lucide-react';
 
 type VillagerCardProps = {
   villager: Villager;
@@ -46,21 +45,7 @@ export function VillagerCard({ villager }: VillagerCardProps) {
     localStorage.setItem(`${STORAGE_KEY_GIFTS_PREFIX}${villager.id}`, `${gifts},${weeklyGifts}`);
   };
 
-  // Incrémenter le niveau de cœur
-  const incrementHeartLevel = () => {
-    if (heartLevel < 10) {
-      saveHeartLevel(heartLevel + 1);
-    }
-  };
-
-  // Décrémenter le niveau de cœur
-  const decrementHeartLevel = () => {
-    if (heartLevel > 0) {
-      saveHeartLevel(heartLevel - 1);
-    }
-  };
-  
-  // Toggle les cadeaux offerts
+  // Toggle les cadeaux offerts (normaux)
   const toggleGift = () => {
     const newGifts = giftsGiven === 2 ? 0 : giftsGiven + 1;
     saveGiftsGiven(newGifts, weeklyGiftsGiven);
@@ -72,136 +57,121 @@ export function VillagerCard({ villager }: VillagerCardProps) {
     saveGiftsGiven(giftsGiven, newWeeklyGifts);
   };
   
-  // Réinitialiser les cadeaux (pour la nouvelle semaine)
-  const resetWeeklyGifts = () => {
-    saveGiftsGiven(giftsGiven, 0);
+  // Gestionnaire de clic sur un cœur
+  const handleHeartClick = (index: number) => {
+    if (heartLevel === index + 1) {
+      // Si le cœur est déjà rempli à ce niveau, on le vide (réduit d'un niveau)
+      saveHeartLevel(index);
+    } else {
+      // Sinon, on remplit jusqu'à ce niveau
+      saveHeartLevel(index + 1);
+    }
   };
 
   return (
-    <div className="bg-gray-100 rounded-lg shadow-md overflow-hidden w-full max-w-xs">
-      <div className="flex">
-        {/* Partie gauche - Image du personnage ou avatar par défaut */}
-        <div className="w-1/2 bg-white relative">
-          {villager.imagePath ? (
-            <img 
-              src={villager.imagePath} 
-              alt={villager.name} 
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-amber-50">
-              <div className="text-6xl">👤</div>
-            </div>
-          )}
-          
-          {/* Badge de statut (Solo/Marié/etc.) */}
-          <div className="absolute top-2 right-2">
-            <div className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md text-xs font-medium">
-              {villager.romanceable ? "Solo" : "Non romançable"}
-            </div>
+    <div className="rounded-lg overflow-hidden w-full max-w-sm flex">
+      {/* Partie gauche - Photo */}
+      <div className="w-1/3 bg-white relative">
+        {villager.imagePath ? (
+          <img 
+            src={villager.imagePath} 
+            alt={villager.name} 
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-amber-50">
+            <div className="text-6xl">👤</div>
+          </div>
+        )}
+        
+        {/* Badge de statut (Solo) */}
+        <div className="absolute top-2 right-2">
+          <div className="bg-amber-100/90 text-amber-800 px-2 py-0.5 rounded-md text-xs font-medium">
+            {villager.romanceable ? "Solo" : "NPC"}
           </div>
         </div>
         
-        {/* Partie droite - Informations du personnage */}
-        <div className="w-1/2 p-3 bg-gray-50 flex flex-col">
-          {/* Nom */}
-          <h3 className="font-bold text-lg text-gray-800">{villager.name}</h3>
-          
-          {/* Indicateurs spéciaux */}
-          {villager.species && (
-            <div className="my-1 text-xs text-blue-600">
-              {villager.species}
-            </div>
-          )}
-          
-          {/* Hearts Row 1 */}
-          <div className="flex mt-2 space-x-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <button 
-                key={`heart-${i}`}
-                onClick={() => saveHeartLevel(i+1)}
-                className="focus:outline-none"
-              >
-                <div className="w-5 h-5 text-lg">
-                  {heartLevel > i ? (
-                    <span className="text-pink-500">❤️</span>
-                  ) : (
-                    <span className="text-gray-300">❤️</span>
-                  )}
-                </div>
-              </button>
-            ))}
-          </div>
-          
-          {/* Hearts Row 2 */}
-          <div className="flex mt-1 space-x-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <button 
-                key={`heart-${i+5}`}
-                onClick={() => saveHeartLevel(i+6)}
-                className="focus:outline-none"
-              >
-                <div className="w-5 h-5 text-lg">
-                  {heartLevel > i+5 ? (
-                    <span className="text-pink-500">❤️</span>
-                  ) : (
-                    <span className="text-gray-300">❤️</span>
-                  )}
-                </div>
-              </button>
-            ))}
-          </div>
-          
-          {/* Cadeaux offerts */}
-          <div className="mt-6 flex items-center justify-between">
-            {/* Cadeaux (birthday/event) */}
-            <div className="flex items-center">
-              <button 
-                onClick={toggleGift}
-                className="flex items-center space-x-1 focus:outline-none"
-              >
-                <Gift className="h-5 w-5 text-amber-700" />
-                <span className="text-sm">{giftsGiven}/2</span>
-              </button>
-            </div>
-            
-            {/* Cadeaux hebdomadaires */}
-            <div className="flex items-center">
-              <button 
-                onClick={toggleWeeklyGift}
-                className="flex items-center space-x-1 focus:outline-none"
-              >
-                <CalendarHeart className="h-5 w-5 text-amber-700" />
-                <span className="text-sm">{weeklyGiftsGiven}/2</span>
-              </button>
-            </div>
-          </div>
+        {/* Nom en bas */}
+        <div className="absolute bottom-0 left-0 w-full bg-amber-800/70 py-2 px-4">
+          <h3 className="font-bold text-lg text-amber-50">{villager.name}</h3>
         </div>
       </div>
       
-      {/* Panneau de contrôle (visible seulement lors du développement) */}
-      <div className="p-2 bg-gray-200 flex justify-between text-xs">
-        <div className="flex space-x-2">
-          <button
-            onClick={decrementHeartLevel}
-            className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded"
-          >
-            -1 ❤️
-          </button>
-          <button
-            onClick={incrementHeartLevel}
-            className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded"
-          >
-            +1 ❤️
-          </button>
+      {/* Partie droite - Infos et interactions */}
+      <div className="w-2/3 p-4 bg-amber-50 flex flex-col">
+        {/* Date d'anniversaire */}
+        {villager.birthday && (
+          <div className="text-amber-800 text-sm font-medium mb-3 flex items-center">
+            <Gift className="h-4 w-4 mr-1" />
+            <span>{villager.birthday.day} {villager.birthday.season}</span>
+          </div>
+        )}
+        
+        {/* Description */}
+        <p className="text-sm text-amber-950 mb-4">{villager.description}</p>
+        
+        {/* Cœurs - Rangée 1 */}
+        <div className="flex space-x-1 mb-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <button 
+              key={`heart-${i}`}
+              onClick={() => handleHeartClick(i)}
+              className="focus:outline-none"
+            >
+              <div className="w-5 h-5">
+                {heartLevel > i ? (
+                  <span className="text-pink-500">❤️</span>
+                ) : (
+                  <span className="text-gray-300">❤️</span>
+                )}
+              </div>
+            </button>
+          ))}
         </div>
-        <button
-          onClick={resetWeeklyGifts}
-          className="px-1 py-0.5 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
-        >
-          <Check className="h-3 w-3 mr-1" />
-          Reset Hebdo
-        </button>
+        
+        {/* Cœurs - Rangée 2 */}
+        <div className="flex space-x-1 mb-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <button 
+              key={`heart-${i+5}`}
+              onClick={() => handleHeartClick(i+5)}
+              className="focus:outline-none"
+            >
+              <div className="w-5 h-5">
+                {heartLevel > i+5 ? (
+                  <span className="text-pink-500">❤️</span>
+                ) : (
+                  <span className="text-gray-300">❤️</span>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+        
+        {/* Cadeaux */}
+        <div className="flex justify-between mt-auto">
+          {/* Cadeaux normaux */}
+          <div className="flex items-center">
+            <button 
+              onClick={toggleGift}
+              className="flex items-center mr-4 focus:outline-none"
+            >
+              <Gift className="h-5 w-5 mr-1 text-amber-700" />
+              <span className="text-sm font-medium">{giftsGiven}/2</span>
+            </button>
+          </div>
+          
+          {/* Cadeaux hebdomadaires */}
+          <div className="flex items-center">
+            <button 
+              onClick={toggleWeeklyGift}
+              className="flex items-center focus:outline-none"
+            >
+              <Calendar className="h-5 w-5 mr-1 text-amber-700" />
+              <span className="text-sm font-medium">{weeklyGiftsGiven}/2</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
