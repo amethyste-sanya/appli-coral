@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getAllVillagers, getVillagersBySeason, Villager } from '@/lib/villagers';
-import { VillagerCardV2 } from '@/components/VillagerCardV2';
+import { NewVillagerCardWith10Hearts } from '@/components/NewVillagerCardWith10Hearts';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -144,7 +144,7 @@ export default function Relations() {
           {filteredAllVillagers.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredAllVillagers.map((villager) => (
-                <VillagerCardV2 key={villager.id} villager={villager} />
+                <NewVillagerCardWith10Hearts key={villager.id} villager={villager} />
               ))}
             </div>
           ) : (
