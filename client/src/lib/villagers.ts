@@ -1236,6 +1236,7 @@ export const villagers: Villager[] = [
     occupation: "Gardien royal",
     description: "Un gardien royal doté d'une curiosité insatiable et d'une soif de connaissances.",
     romanceable: true,
+    species: "Sirène",
     gifts: {
       love: [
         { item: "Livre d'histoire" }

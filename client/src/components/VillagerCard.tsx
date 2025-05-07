@@ -122,6 +122,9 @@ export function VillagerCard({ villager }: VillagerCardProps) {
               {villager.romanceable && (
                 <span className="ml-1 text-red-500 text-xs" title="Personnage romançable">❤</span>
               )}
+              {villager.species === "Sirène" && (
+                <span className="ml-1 text-blue-500 text-xs" title="Sirène">🧜</span>
+              )}
             </div>
             <p className="text-xs text-gray-600">{villager.occupation}</p>
           </div>
