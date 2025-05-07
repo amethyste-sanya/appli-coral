@@ -153,6 +153,16 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           </button>
         </div>
         
+        {/* Indicateur de sirène pour Agung */}
+        {villager.id === "agung" && (
+          <div className="px-4 mb-2">
+            <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-md flex items-center">
+              <span className="text-xl mr-2">🧜</span>
+              <span className="text-sm font-medium">Sirène</span>
+            </div>
+          </div>
+        )}
+        
         {/* Description - plus courte avec max de 2 lignes */}
         <div className="px-4 pb-3">
           <p className="text-xs text-gray-700 line-clamp-2">{villager.description}</p>
