@@ -30,27 +30,7 @@ export type Villager = {
 
 // Liste des villageois avec leurs informations
 export const villagers: Villager[] = [
-  {
-    id: "aaliyah",
-    name: "Aaliyah",
-    birthday: {
-      day: 12,
-      season: "Printemps"
-    },
-    occupation: "Pâtissière",
-    description: "Aaliyah est la propriétaire de la boulangerie de Coral Island.",
-    romanceable: true,
-    gifts: {
-      love: [
-        { item: "Muffin aux pépites de chocolat" },
-        { item: "Lasagnes aux aubergines" },
-        { item: "Houmous" },
-        { item: "Café Gesha" },
-        { item: "Fraise" },
-        { item: "Hibiscus blanc" }
-      ]
-    }
-  },
+  /* Fiche supprimée */
   {
     id: "alice",
     name: "Alice",
