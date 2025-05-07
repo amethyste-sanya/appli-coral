@@ -120,13 +120,10 @@ export function VillagerCard({ villager }: VillagerCardProps) {
             <div className="flex items-center">
               <h3 className="font-medium text-sm">{villager.name}</h3>
               {villager.romanceable && (
-                <span className="ml-1 text-red-500" title="Personnage romançable">❤</span>
+                <span className="ml-1 text-red-500 text-xs" title="Personnage romançable">❤</span>
               )}
               {villager.species === "Sirène" && (
-                <span className="ml-1 text-blue-500 text-base flex items-center" title="Sirène">
-                  <span className="mr-0.5">🧜</span>
-                  <span className="text-xs font-normal">(Sirène)</span>
-                </span>
+                <span className="ml-1 text-blue-500 text-xs" title="Sirène">🧜</span>
               )}
             </div>
             <p className="text-xs text-gray-600">{villager.occupation}</p>
@@ -154,11 +151,11 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           <p className="text-xs text-gray-700 line-clamp-2">{villager.description}</p>
         </div>
         
-        {/* Niveau d'amitié */}
+        {/* Niveau d'amitié - version plus compacte */}
         <div className="px-4 pb-3">
-          <div className="bg-pink-50 p-3 rounded-md">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-pink-700 font-medium">Niveau d'amitié:</span>
+          <div className="bg-pink-50 p-2 rounded-md">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs text-gray-700">Niveau d'amitié:</span>
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={decrementHeartLevel} 
@@ -182,17 +179,19 @@ export function VillagerCard({ villager }: VillagerCardProps) {
               </div>
             </div>
             
-            {/* Cercles de niveau d'amitié */}
-            <div className="flex items-center justify-start space-x-1">
+            {/* Indicateurs de cœurs - 12 au total - plus compact */}
+            <div className="flex items-center justify-center space-x-0.5 flex-wrap">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="w-6 h-6 relative">
-                  {/* Cercle vide (gris) */}
-                  <div className="absolute inset-0 rounded-full border-2 border-pink-200"></div>
+                <div key={i} className="relative text-base">
+                  {/* Cœur vide (gris) */}
+                  <div className="text-gray-300">
+                    ♡
+                  </div>
                   
-                  {/* Cercle rempli (si le niveau est suffisant) */}
+                  {/* Cœur rempli (si le niveau est suffisant) */}
                   {heartLevel > i && (
-                    <div className="absolute inset-0 rounded-full bg-pink-300 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-pink-500"></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-red-500">
+                      ♥
                     </div>
                   )}
                 </div>
@@ -201,12 +200,12 @@ export function VillagerCard({ villager }: VillagerCardProps) {
           </div>
         </div>
         
-        {/* Badge pour nombre de cadeaux adorés */}
-        <div className="px-4 pb-3">
+        {/* Badge pour nombre de cadeaux adorés - plus compact */}
+        <div className="px-4 pb-2">
           <div 
-            className="bg-pink-100 text-pink-800 px-3 py-1 rounded-md inline-flex items-center"
+            className="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded-md inline-flex items-center"
           >
-            <span className="text-sm">❤ {villager.gifts.love.length} cadeau(x) adoré(s)</span>
+            <span>{villager.gifts.love.length} cadeau(x) adoré(s)</span>
           </div>
         </div>
         
