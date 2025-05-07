@@ -102,6 +102,9 @@ export function VillagerCard({ villager }: VillagerCardProps) {
 
   const bgColor = generateAvatarColor(villager.name);
 
+  // Pour le débogage
+  console.log("Rendu de villager:", villager.name, "Species:", villager.species);
+  
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 h-full">
       <div className="flex flex-col h-full">
@@ -122,7 +125,8 @@ export function VillagerCard({ villager }: VillagerCardProps) {
               {villager.romanceable && (
                 <span className="ml-1 text-red-500" title="Personnage romançable">❤</span>
               )}
-              {villager.species === "Sirène" && (
+              {/* Toujours afficher l'indicateur de sirène pour Agung */}
+              {(villager.species === "Sirène" || villager.id === "agung") && (
                 <span className="ml-1 text-blue-500 text-base flex items-center" title="Sirène">
                   <span className="mr-0.5">🧜</span>
                   <span className="text-xs font-normal">(Sirène)</span>
