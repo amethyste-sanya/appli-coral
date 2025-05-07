@@ -13,13 +13,12 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { apiRequest } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar as CalendarIcon, Hammer, ArrowRight, Search, Info, Heart, Trash, X, CalendarDays, Clock, Sparkles, Minus, Mail } from "lucide-react";
+import { Anchor, Building2, CheckCircle, Circle, Plus, Star, Ungroup, Calendar as CalendarIcon, Hammer, ArrowRight, Search, Info, Trash, X, CalendarDays, Clock, Sparkles, Minus, Mail, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Recipe, getRecipesByCategory } from "@/lib/recipes";
 import { Crop, getAllCrops, getCropsBySeason, calculateProfitability } from "@/lib/crops";
 import { CropCard } from "@/components/CropCard";
-import { getAllVillagers, getVillagersBySeason, getVillagersByLove, Villager, villagers } from "@/lib/villagers";
 import { PresetQuest, getAllPresetQuests, getPresetQuestsByCategory } from "@/lib/presetQuests";
 import { CalendarEvent, EventActivity, getAllEvents, getEventsForDay, hasEvent } from "@/lib/events";
 
@@ -53,8 +52,6 @@ export default function Home() {
   const [isQuestLibraryOpen, setIsQuestLibraryOpen] = useState(false);
   const [currentQuestForEdit, setCurrentQuestForEdit] = useState<Quest | null>(null);
   const [filterSaison, setFilterSaison] = useState<string>("all");
-  const [expandedVillagers, setExpandedVillagers] = useState<{[key: string]: boolean}>({});
-  const [villagerHearts, setVillagerHearts] = useState<{[key: string]: number}>({});
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [gameDate, setGameDate] = useState<{season: string; day: number; weekDay?: string}>({
     season: "Printemps", 
@@ -405,7 +402,7 @@ export default function Home() {
   
   // Fonction pour récupérer les anniversaires des villageois pour un jour et une saison donnés
   const getVillagersBirthday = (season: string, day: number): string[] => {
-    // Pour l'instant, on retourne un tableau vide car nous avons supprimé tous les villageois
+    // Nous avons supprimé la fonctionnalité des relations et des anniversaires des villageois
     return [];
   };
 
@@ -459,10 +456,9 @@ export default function Home() {
 
       
       <Tabs value={tab} onValueChange={setTab} className="bg-white p-6 rounded-xl border shadow">
-        <TabsList className="grid grid-cols-5 mb-6">
+        <TabsList className="grid grid-cols-4 mb-6">
           <TabsTrigger value="checklist">Tâches</TabsTrigger>
           <TabsTrigger value="quests">Quêtes</TabsTrigger>
-          <TabsTrigger value="relations">Relations</TabsTrigger>
           <TabsTrigger value="events">Événements</TabsTrigger>
           <TabsTrigger value="journal">Journal</TabsTrigger>
         </TabsList>
@@ -1655,116 +1651,6 @@ export default function Home() {
               </div>
             </DialogContent>
           </Dialog>
-        </TabsContent>
-        
-        <TabsContent value="relations">
-          <div className="space-y-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Relations avec les villageois</h2>
-              <Select value={filterSaison} onValueChange={setFilterSaison}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filtrer par saison" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les villageois</SelectItem>
-                  <SelectItem value="spring">Printemps</SelectItem>
-                  <SelectItem value="summer">Été</SelectItem>
-                  <SelectItem value="fall">Automne</SelectItem>
-                  <SelectItem value="winter">Hiver</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {(filterSaison === "all" ? getAllVillagers() : getVillagersBySeason(filterSaison))
-                .map(villager => (
-                  <Card key={villager.id} className="overflow-hidden border-neutral-200">
-                    <div className="p-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-medium text-lg">{villager.name}</h3>
-                        {villager.romanceable && (
-                          <div className="text-rose-500 flex items-center">
-                            <Heart className="h-4 w-4 fill-rose-500" />
-                          </div>
-                        )}
-                      </div>
-                      {villager.birthday ? (
-                        <div className="text-sm text-gray-600 flex items-center mt-1">
-                          <CalendarDays className="h-3.5 w-3.5 mr-1" />
-                          {villager.birthday.season}, jour {villager.birthday.day}
-                        </div>
-                      ) : (
-                        <div className="text-sm text-gray-600 flex items-center mt-1">
-                          <CalendarDays className="h-3.5 w-3.5 mr-1" />
-                          Pas d'anniversaire
-                        </div>
-                      )}
-                      <div className="text-sm text-gray-600 flex items-center mt-1">
-                        <Clock className="h-3.5 w-3.5 mr-1" />
-                        {villager.occupation}
-                      </div>
-                      
-                      <div className="mt-2">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-medium text-gray-600">Relation</span>
-                          <span className="text-xs text-rose-500 font-medium">
-                            {villagerHearts[villager.id] || 0} / 15
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          {[...Array(15)].map((_, i) => (
-                            <button 
-                              key={i}
-                              onClick={() => setVillagerHearts({...villagerHearts, [villager.id]: i + 1})}
-                              className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                                (villagerHearts[villager.id] || 0) >= i + 1 
-                                  ? "text-rose-500 hover:text-rose-600" 
-                                  : "text-gray-300 hover:text-gray-400"
-                              } transition-colors`}
-                              title={`${i + 1} cœurs`}
-                            >
-                              <Heart className={`w-3 h-3 ${(villagerHearts[villager.id] || 0) >= i + 1 ? "fill-current" : ""}`} />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {villager.gifts.love.length > 0 && (
-                        <div className="mt-3">
-                          <button 
-                            onClick={() => setExpandedVillagers({...expandedVillagers, [villager.id]: !expandedVillagers[villager.id]})} 
-                            className="flex items-center text-sm text-rose-600 font-medium w-full justify-between bg-rose-50 px-2 py-1 rounded hover:bg-rose-100 transition-colors"
-                          >
-                            <span className="flex items-center">
-                              <Heart className="h-3.5 w-3.5 mr-1 fill-rose-500" />
-                              Cadeaux préférés ({villager.gifts.love.length})
-                            </span>
-                            {expandedVillagers[villager.id] ? (
-                              <span className="text-xs">▼</span>
-                            ) : (
-                              <span className="text-xs">▶</span>
-                            )}
-                          </button>
-                          
-                          {expandedVillagers[villager.id] && (
-                            <div className="flex flex-wrap gap-1 mt-1 animate-fadeIn">
-                              {villager.gifts.love.map((gift, index) => (
-                                <Badge 
-                                  key={index} 
-                                  className="bg-rose-50 text-rose-700 hover:bg-rose-100 border-rose-200"
-                                >
-                                  {gift.item}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                ))}
-            </div>
-          </div>
         </TabsContent>
         
         <TabsContent value="events">
