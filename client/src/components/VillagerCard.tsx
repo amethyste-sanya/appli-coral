@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Villager } from '@/lib/villagers';
-import { Gift, Calendar } from 'lucide-react';
+import { Gift, Calendar, Clock, ChevronRight } from 'lucide-react';
 
 type VillagerCardProps = {
   villager: Villager;
 };
 
 const STORAGE_KEY_PREFIX = 'coral_island_heart_level_';
-const STORAGE_KEY_GIFTS_PREFIX = 'coral_island_gifts_given_';
 
 export function VillagerCard({ villager }: VillagerCardProps) {
-  // Niveau de cœur (0-10)
+  // Niveau de cœur (0-15)
   const [heartLevel, setHeartLevel] = useState(0);
   
-  // Suivi des cadeaux offerts
-  const [giftsGiven, setGiftsGiven] = useState(0);
-  const [weeklyGiftsGiven, setWeeklyGiftsGiven] = useState(0);
+  // État pour afficher/masquer les cadeaux préférés
+  const [showGifts, setShowGifts] = useState(false);
 
   // Charger les données depuis le stockage local
   useEffect(() => {
@@ -23,38 +21,12 @@ export function VillagerCard({ villager }: VillagerCardProps) {
     if (storedLevel) {
       setHeartLevel(parseInt(storedLevel, 10));
     }
-    
-    const storedGifts = localStorage.getItem(`${STORAGE_KEY_GIFTS_PREFIX}${villager.id}`);
-    if (storedGifts) {
-      const [gifts, weeklyGifts] = storedGifts.split(',').map(Number);
-      setGiftsGiven(gifts);
-      setWeeklyGiftsGiven(weeklyGifts);
-    }
   }, [villager.id]);
 
   // Sauvegarder le niveau de cœur
   const saveHeartLevel = (level: number) => {
     setHeartLevel(level);
     localStorage.setItem(`${STORAGE_KEY_PREFIX}${villager.id}`, level.toString());
-  };
-  
-  // Sauvegarder les cadeaux offerts
-  const saveGiftsGiven = (gifts: number, weeklyGifts: number) => {
-    setGiftsGiven(gifts);
-    setWeeklyGiftsGiven(weeklyGifts);
-    localStorage.setItem(`${STORAGE_KEY_GIFTS_PREFIX}${villager.id}`, `${gifts},${weeklyGifts}`);
-  };
-
-  // Toggle les cadeaux offerts (normaux)
-  const toggleGift = () => {
-    const newGifts = giftsGiven === 2 ? 0 : giftsGiven + 1;
-    saveGiftsGiven(newGifts, weeklyGiftsGiven);
-  };
-  
-  // Toggle les cadeaux hebdomadaires offerts
-  const toggleWeeklyGift = () => {
-    const newWeeklyGifts = weeklyGiftsGiven === 2 ? 0 : weeklyGiftsGiven + 1;
-    saveGiftsGiven(giftsGiven, newWeeklyGifts);
   };
   
   // Gestionnaire de clic sur un cœur
@@ -69,109 +41,82 @@ export function VillagerCard({ villager }: VillagerCardProps) {
   };
 
   return (
-    <div className="rounded-lg overflow-hidden w-full max-w-sm flex">
-      {/* Partie gauche - Photo */}
-      <div className="w-1/3 bg-white relative">
-        {villager.imagePath ? (
-          <img 
-            src={villager.imagePath} 
-            alt={villager.name} 
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-amber-50">
-            <div className="text-6xl">👤</div>
+    <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-4">
+      <div className="flex justify-between items-start">
+        {/* Nom */}
+        <h3 className="text-xl font-bold text-gray-800">{villager.name}</h3>
+        
+        {/* Badge romançable */}
+        {villager.romanceable && (
+          <span className="text-pink-500 text-2xl">❤</span>
+        )}
+      </div>
+      
+      {/* Informations de base */}
+      <div className="mt-3 space-y-1">
+        {/* Date d'anniversaire */}
+        {villager.birthday && (
+          <div className="flex items-center text-gray-600">
+            <Calendar className="h-5 w-5 mr-2" />
+            <span>Printemps, jour {villager.birthday.day}</span>
           </div>
         )}
         
-        {/* Badge de statut (Solo) */}
-        <div className="absolute top-2 right-2">
-          <div className="bg-amber-100/90 text-amber-800 px-2 py-0.5 rounded-md text-xs font-medium">
-            {villager.romanceable ? "Solo" : "NPC"}
-          </div>
-        </div>
-        
-        {/* Nom en bas */}
-        <div className="absolute bottom-0 left-0 w-full bg-amber-800/70 py-2 px-4">
-          <h3 className="font-bold text-lg text-amber-50">{villager.name}</h3>
+        {/* Occupation */}
+        <div className="flex items-center text-gray-600">
+          <Clock className="h-5 w-5 mr-2" />
+          <span>{villager.occupation}</span>
         </div>
       </div>
       
-      {/* Partie droite - Infos et interactions */}
-      <div className="w-2/3 p-4 bg-amber-50 flex flex-col">
-        {/* Date d'anniversaire */}
-        {villager.birthday && (
-          <div className="text-amber-800 text-sm font-medium mb-3 flex items-center">
-            <Gift className="h-4 w-4 mr-1" />
-            <span>{villager.birthday.day} {villager.birthday.season}</span>
-          </div>
-        )}
+      {/* Section relation */}
+      <div className="mt-5">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 font-medium">Relation</span>
+          <span className="text-pink-500 font-medium">{heartLevel} / 15</span>
+        </div>
         
-        {/* Description */}
-        <p className="text-sm text-amber-950 mb-4">{villager.description}</p>
-        
-        {/* Cœurs - Rangée 1 */}
-        <div className="flex space-x-1 mb-1">
-          {Array.from({ length: 5 }).map((_, i) => (
+        {/* Cœurs (une seule rangée) */}
+        <div className="flex mt-2">
+          {Array.from({ length: 15 }).map((_, i) => (
             <button 
               key={`heart-${i}`}
               onClick={() => handleHeartClick(i)}
-              className="focus:outline-none"
+              className="focus:outline-none mr-1"
             >
-              <div className="w-5 h-5">
-                {heartLevel > i ? (
-                  <span className="text-pink-500">❤️</span>
-                ) : (
-                  <span className="text-gray-300">❤️</span>
-                )}
-              </div>
+              {heartLevel > i ? (
+                <span className="text-pink-500">❤</span>
+              ) : (
+                <span className="text-gray-200">❤</span>
+              )}
             </button>
           ))}
         </div>
+      </div>
+      
+      {/* Section cadeaux préférés */}
+      <div 
+        className="mt-5 bg-pink-50 rounded-lg p-3 cursor-pointer"
+        onClick={() => setShowGifts(!showGifts)}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex items-center text-pink-600">
+            <span className="mr-2 text-pink-500">❤</span>
+            <span className="font-medium">Cadeaux préférés ({villager.gifts.love.length})</span>
+          </div>
+          <ChevronRight className={`h-5 w-5 text-pink-500 transition-transform ${showGifts ? 'rotate-90' : ''}`} />
+        </div>
         
-        {/* Cœurs - Rangée 2 */}
-        <div className="flex space-x-1 mb-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <button 
-              key={`heart-${i+5}`}
-              onClick={() => handleHeartClick(i+5)}
-              className="focus:outline-none"
-            >
-              <div className="w-5 h-5">
-                {heartLevel > i+5 ? (
-                  <span className="text-pink-500">❤️</span>
-                ) : (
-                  <span className="text-gray-300">❤️</span>
-                )}
+        {/* Liste de cadeaux - conditionnelle */}
+        {showGifts && (
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {villager.gifts.love.map((gift, index) => (
+              <div key={index} className="text-gray-700 text-sm">
+                • {gift.item}
               </div>
-            </button>
-          ))}
-        </div>
-        
-        {/* Cadeaux */}
-        <div className="flex justify-between mt-auto">
-          {/* Cadeaux normaux */}
-          <div className="flex items-center">
-            <button 
-              onClick={toggleGift}
-              className="flex items-center mr-4 focus:outline-none"
-            >
-              <Gift className="h-5 w-5 mr-1 text-amber-700" />
-              <span className="text-sm font-medium">{giftsGiven}/2</span>
-            </button>
+            ))}
           </div>
-          
-          {/* Cadeaux hebdomadaires */}
-          <div className="flex items-center">
-            <button 
-              onClick={toggleWeeklyGift}
-              className="flex items-center focus:outline-none"
-            >
-              <Calendar className="h-5 w-5 mr-1 text-amber-700" />
-              <span className="text-sm font-medium">{weeklyGiftsGiven}/2</span>
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
