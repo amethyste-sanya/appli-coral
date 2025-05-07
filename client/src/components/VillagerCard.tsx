@@ -21,7 +21,7 @@ const STORAGE_KEY_PREFIX = 'coral_island_heart_level_';
 export function VillagerCard({ villager }: VillagerCardProps) {
   // État d'expansion de la carte
   const [isExpanded, setIsExpanded] = useState(false);
-  // Niveau de cœur (0-15)
+  // Niveau de cœur (0-12)
   const [heartLevel, setHeartLevel] = useState(0);
 
   // Charger le niveau de cœur depuis le stockage local
@@ -41,7 +41,7 @@ export function VillagerCard({ villager }: VillagerCardProps) {
   // Incrémenter le niveau de cœur
   const incrementHeartLevel = (e: React.MouseEvent) => {
     e.stopPropagation(); // Empêcher l'expansion/contraction de la carte
-    if (heartLevel < 15) {
+    if (heartLevel < 12) {
       saveHeartLevel(heartLevel + 1);
     }
   };
@@ -176,19 +176,19 @@ export function VillagerCard({ villager }: VillagerCardProps) {
               </div>
             </div>
             
-            {/* Indicateurs de cœurs */}
-            <div className="flex items-center justify-center space-x-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="relative">
+            {/* Indicateurs de cœurs - 12 au total */}
+            <div className="flex items-center justify-center space-x-1 flex-wrap">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="relative text-lg">
                   {/* Cœur vide (gris) */}
-                  <div className={`text-gray-300 ${i === 0 ? 'text-red-300' : ''}`}>
+                  <div className="text-gray-300">
                     ○
                   </div>
                   
                   {/* Cœur rempli (si le niveau est suffisant) */}
-                  {heartLevel > i * 3 && (
+                  {heartLevel > i && (
                     <div className="absolute inset-0 flex items-center justify-center text-red-500">
-                      {heartLevel >= (i * 3) + 3 ? '●' : heartLevel >= (i * 3) + 2 ? '◕' : '◔'}
+                      ●
                     </div>
                   )}
                 </div>
